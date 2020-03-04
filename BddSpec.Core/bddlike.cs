@@ -1,7 +1,5 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace bddlike
 {
@@ -73,44 +71,5 @@ namespace bddlike
 
 		public void It(string description, Action action) =>
 			testContexts.Add(new TestContext(description, TestContextType.It, action));
-	}
-
-	public class ToTest
-	{
-		public string Name { get; set; }
-	}
-
-	public class ToTestTest : BddLike
-	{
-		public override void ConfigureTests()
-		{
-			ToTest toTest = new ToTest();
-
-			When("the name is Gustavo", () =>
-			{
-				toTest.Name = "Gustavo";
-
-				It("is Gustavo", () => Assert.AreEqual(toTest.Name, "Gustavo"));
-				It("first letter is G", () => Assert.AreEqual(toTest.Name[0], 'P'));
-
-				When("has surname Rech", () =>
-				{
-					toTest.Name += " Rech";
-
-					throw new Exception("oq aconteceu");
-
-					It("is Gustavo Rech", () => Assert.AreEqual(toTest.Name, "Gustavo Rech"));
-					It("first letter is G", () => Assert.AreEqual(toTest.Name[0], 'G'));;
-				});
-			});
-
-			When("the name is Pedro", () =>
-			{
-				toTest.Name = "Pedro";
-
-				It("is Pedro", () => Assert.AreEqual(toTest.Name, "Pedro"));
-				It("first letter is P", () => Assert.AreEqual(toTest.Name[0], 'P'));
-			});
-		}
 	}
 }
