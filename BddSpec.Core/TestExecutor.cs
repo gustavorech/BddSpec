@@ -129,11 +129,16 @@ namespace bddlike
 		}
 	}
 
-	public class TestExecutor<T>
-		where T : BddLike, new()
+	public class TestExecutor
 	{
+		private Type type;
 		private int executed = 0;
 		private List<TestExecutionStep> root = new List<TestExecutionStep>();
+
+		public TestExecutor(Type type)
+		{
+			this.type = type;
+		}
 
 		public void Execute()
 		{
@@ -149,14 +154,14 @@ namespace bddlike
 		{
 			while (!root.TrueForAll(c => c.IsExecutionCompleted))
 			{
-				T instance = new T();
+				BddLike instance = (BddLike)Activator.CreateInstance(type);
 				instance.ConfigureTests();
 
 				Recursion(instance, root);
 			}
 		}
 
-		private void Recursion(T instance, List<TestExecutionStep> listToExecute)
+		private void Recursion(BddLike instance, List<TestExecutionStep> listToExecute)
 		{
 			TestExecutionStep currentTestExecutor = listToExecute.First(c => !c.IsExecutionCompleted);
 			TestContext currentTestContext = instance.testContexts[currentTestExecutor.PositionInStack];
@@ -203,7 +208,7 @@ namespace bddlike
 
 		private void Initialize()
 		{
-			T instance = new T();
+			BddLike instance = (BddLike)Activator.CreateInstance(type);
 
 			instance.ConfigureTests();
 
@@ -219,7 +224,7 @@ namespace bddlike
 			Console.ResetColor();
 			Console.WriteLine();
 			Console.WriteLine(root.First().TestContextDescription.SourceFilePath);
-			Console.WriteLine("class: " + typeof(T).Name);
+			Console.WriteLine("class: " + type.Name);
 
 			root.ForEach(c => c.Print());
 		}
