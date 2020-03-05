@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace bddlike
 {
-	public class TestExecutorDescription
+	public class TestExecutionStep
 	{
-		public List<TestExecutorDescription> Children { get; } = new List<TestExecutorDescription>();
+		public TestExecutionStep Parent { get; }
+		public List<TestExecutionStep> Children { get; } = new List<TestExecutionStep>();
 		public int PositionInStack { get; }
-		public int Level { get; }
-		public string Description { get; }
-		public TestContextType Type { get; }
+		public int StepLevel { get; }
+		public TestContextDescription TestContextDescription { get; }
 
+		public int ExecutionTimes { get; private set; }
+		public TimeSpan TimeSpent { get; private set; } = TimeSpan.Zero;
 		public bool IsChildrenDiscovered { get; set; }
 		public bool HasExecutionError { get; set; }
 
@@ -34,45 +37,95 @@ namespace bddlike
 			}
 		}
 
-		public TestExecutorDescription(TestContext context, int positionInStack, int level)
+		public TestExecutionStep(TestExecutionStep parent, TestContext context, int positionInStack, int level)
 		{
-			Description = context.Description;
-			Type = context.Type;
+			Parent = parent;
+			TestContextDescription = context.Description;
 			PositionInStack = positionInStack;
-			Level = level;
+			StepLevel = level;
 		}
 
 		public void AddChild(TestContext context, int positionInStack)
 		{
-			Children.Add(new TestExecutorDescription(context, positionInStack, Level + 1));
+			Children.Add(new TestExecutionStep(this, context, positionInStack, StepLevel + 1));
+		}
+
+		public void SafeInvoke(TestContext context)
+		{
+			Stopwatch timer = Stopwatch.StartNew();
+
+			try
+			{
+				context.Action.Invoke();
+			}
+			catch
+			{
+				HasExecutionError = true;
+			}
+			finally
+			{
+				ExecutionTimes++;
+				TimeSpent += timer.Elapsed;
+				timer.Stop();
+			}
 		}
 
 		public void Print()
 		{
-			if (Level > 0)
-				Console.Write(new string(' ', Level * 2));
+			Console.Write(new string(' ', StepLevel * 2));
 
-			if (BranchHasExecutionError)
+			if (HasExecutionError)
 				Console.ForegroundColor = ConsoleColor.DarkRed;
-			else
+			else if (Children.Count == 0)
 				Console.ForegroundColor = ConsoleColor.Green;
+			else
+				Console.ResetColor();
 
-			switch (Type)
+			switch (TestContextDescription.ContextType)
 			{
-				case TestContextType.Context:
-					Console.Write("[When] ");
+				case TestContextType.Method:
+					Console.Write("[");
+					break;
+				case TestContextType.When:
+					Console.Write("-when ");
 					break;
 				case TestContextType.It:
-					Console.Write("[It] ");
+					Console.Write(".it ");
 					break;
 				default:
 					break;
 			}
 
-			Console.Write(Description);
+			Console.Write(TestContextDescription.TestDescription);
+
+			if (TestContextDescription.ContextType == TestContextType.Method)
+				Console.Write(" method]:");
+
+			Console.ForegroundColor = ConsoleColor.DarkGray;
+			Console.Write($" (ln:{TestContextDescription.SourceFileNumber})");
+
+			//if (HasExecutionError)
+			//	Console.Write(" --FAIL--");
+
+			PrintTimeStamp();
+
 			Console.WriteLine();
 
 			Children.ForEach(c => c.Print());
+		}
+
+		public void PrintTimeStamp()
+		{
+			Console.ForegroundColor = ConsoleColor.DarkGray;
+
+			if (TimeSpent > TimeSpan.FromMinutes(1))
+				Console.Write(" (" + TimeSpent.ToString("mm:ss") + "minutes)");
+			else if (TimeSpent > TimeSpan.FromSeconds(1))
+				Console.Write(" (" + TimeSpent.ToString("ss.fff") + "s)");
+			else if (TimeSpent > TimeSpan.FromMilliseconds(100))
+				Console.Write(" (" + TimeSpent.ToString("fff") + "ms)");
+			else if (TimeSpent > TimeSpan.FromMilliseconds(10))
+				Console.Write(" (" + TimeSpent.ToString("fff").Substring(1) + "ms)");
 		}
 	}
 
@@ -80,7 +133,7 @@ namespace bddlike
 		where T : BddLike, new()
 	{
 		private int executed = 0;
-		private List<TestExecutorDescription> root = new List<TestExecutorDescription>();
+		private List<TestExecutionStep> root = new List<TestExecutionStep>();
 
 		public void Execute()
 		{
@@ -103,16 +156,20 @@ namespace bddlike
 			}
 		}
 
-		private void Recursion(T instance, List<TestExecutorDescription> listToExecute)
+		private void Recursion(T instance, List<TestExecutionStep> listToExecute)
 		{
-			TestExecutorDescription currentTestExecutor = listToExecute.First(c => !c.IsExecutionCompleted);
+			TestExecutionStep currentTestExecutor = listToExecute.First(c => !c.IsExecutionCompleted);
 			TestContext currentTestContext = instance.testContexts[currentTestExecutor.PositionInStack];
 
 			int currentStackCount = instance.testContexts.Count;
-			SafeInvoke(currentTestContext, currentTestExecutor);
+			currentTestExecutor.SafeInvoke(currentTestContext);
 
 			if (currentTestExecutor.HasExecutionError)
+			{
+				Console.ForegroundColor = ConsoleColor.DarkRed;
+				Console.Write("F");
 				return;
+			}
 
 			if (!currentTestExecutor.IsChildrenDiscovered)
 			{
@@ -125,7 +182,20 @@ namespace bddlike
 				currentTestExecutor.IsChildrenDiscovered = true;
 
 				if (currentTestExecutor.IsExecutionCompleted)
+				{
+					if (currentTestExecutor.BranchHasExecutionError)
+					{
+						Console.ForegroundColor = ConsoleColor.DarkRed;
+						Console.Write("F");
+					}
+					else
+					{
+						Console.ForegroundColor = ConsoleColor.Green;
+						Console.Write(".");
+					}
+
 					return;
+				}
 			}
 
 			Recursion(instance, currentTestExecutor.Children);
@@ -140,26 +210,16 @@ namespace bddlike
 			for (int i = executed; i < instance.testContexts.Count; i++)
 			{
 				TestContext testContext = instance.testContexts[i];
-				root.Add(new TestExecutorDescription(testContext, i, 1));
-			}
-		}
-
-		private void SafeInvoke(TestContext context, TestExecutorDescription executorDescription)
-		{
-			try
-			{
-				context.Action.Invoke();
-			}
-			catch
-			{
-				executorDescription.HasExecutionError = true;
+				root.Add(new TestExecutionStep(null, testContext, i, 1));
 			}
 		}
 
 		public void Print()
 		{
-			Console.Write(typeof(T).Name + ":");
+			Console.ResetColor();
 			Console.WriteLine();
+			Console.WriteLine(root.First().TestContextDescription.SourceFilePath);
+			Console.WriteLine("class: " + typeof(T).Name);
 
 			root.ForEach(c => c.Print());
 		}

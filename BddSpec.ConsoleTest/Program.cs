@@ -2,49 +2,26 @@
 using bddlike;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace BddSpec.ConsoleTest {
-	public class ToTest {
-		public string Name { get; set; }
-	}
+namespace BddSpec.ConsoleTest
+{
+	
 
-	public class ToTestTest : BddLike {
-		public override void ConfigureTests ()
+	class Program
+	{
+		static void Main(string[] args)
 		{
-			ToTest toTest = new ToTest ();
+			TestExecutor<ToTestTest> testExecutor = new TestExecutor<ToTestTest>();
+			testExecutor.Execute();
+			testExecutor.Print();
 
-			When ("the name is Gustavo", () => {
-				toTest.Name = "Gustavo";
+			Console.WriteLine();
+			Console.WriteLine();
 
-				It ("is Gustavo", () => Assert.AreEqual (toTest.Name, "Gustavo"));
-				It ("first letter is G", () => Assert.AreEqual (toTest.Name [0], 'P'));
+			TestExecutor<ToTestInjection> testExecutor2 = new TestExecutor<ToTestInjection>();
+			testExecutor2.Execute();
+			testExecutor2.Print();
 
-				When ("has surname Rech", () => {
-					toTest.Name += " Rech";
-
-					throw new Exception ("oq aconteceu");
-
-					It ("is Gustavo Rech", () => Assert.AreEqual (toTest.Name, "Gustavo Rech"));
-					It ("first letter is G", () => Assert.AreEqual (toTest.Name [0], 'G')); ;
-				});
-			});
-
-			When ("the name is Pedro", () => {
-				toTest.Name = "Pedro";
-
-				It ("is Pedro", () => Assert.AreEqual (toTest.Name, "Pedro"));
-				It ("first letter is P", () => Assert.AreEqual (toTest.Name [0], 'P'));
-			});
-		}
-	}
-
-	class Program {
-		static void Main (string [] args)
-		{
-			TestExecutor<ToTestTest> testExecutor = new TestExecutor<ToTestTest> ();
-			testExecutor.Execute ();
-			testExecutor.Print ();
-
-			Console.ReadLine ();
+			Console.ReadLine();
 		}
 	}
 }

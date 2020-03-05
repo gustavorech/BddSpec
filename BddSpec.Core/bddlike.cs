@@ -1,28 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace bddlike
 {
 
 	public enum TestContextType
 	{
+		Class,
+		Method,
 		Before,
 		After,
-		Method,
+		Describe,
 		Context,
-		It
+		When,
+		Then,
+		It,
+		Cleanup
+	}
+
+	public class TestContextDescription
+	{
+		public string SourceFilePath { get; }
+		public int SourceFileNumber { get; }
+		public string TestDescription { get; }
+		public TestContextType ContextType { get; }
+
+		public TestContextDescription(string sourceFilePath, int sourceFileNumber,
+			string testDescription, TestContextType contextType)
+		{
+			SourceFilePath = sourceFilePath;
+			SourceFileNumber = sourceFileNumber;
+			TestDescription = testDescription;
+			ContextType = contextType;
+		}
 	}
 
 	public class TestContext
 	{
-		public string Description { get; }
-		public TestContextType Type { get; }
+		public TestContextDescription Description { get; }
 		public Action Action { get; }
 
-		public TestContext(string description, TestContextType type, Action action)
+		public TestContext(TestContextDescription description, Action action)
 		{
 			Description = description;
-			Type = type;
 			Action = action;
 		}
 	}
@@ -34,14 +55,6 @@ namespace bddlike
 			private BddLike bddLike;
 			private string description;
 			private TestContextType type;
-
-			public Action Do
-			{
-				set
-				{
-					bddLike.testContexts.Add(new TestContext(description, type, value));
-				}
-			}
 
 			public BddLikeAction(BddLike bddLike, string description, TestContextType type)
 			{
@@ -58,18 +71,34 @@ namespace bddlike
 
 		public abstract void ConfigureTests();
 
-		public Action ConfigureContext
+		public void When(string description, Action action,
+			[CallerFilePath] string sourceFilePath = "",
+			[CallerLineNumber] int sourceLineNumber = 0)
 		{
-			set
-			{
-				testContexts.Add(new TestContext(null, TestContextType.Before, value));
-			}
+			TestContextDescription testDescription = new TestContextDescription(
+				sourceFilePath, sourceLineNumber, description, TestContextType.When);
+
+			testContexts.Add(new TestContext(testDescription, action));
 		}
 
-		public void When(string description, Action action) =>
-			testContexts.Add(new TestContext(description, TestContextType.Context, action));
+		public void It(string description, Action action,
+			[CallerFilePath] string sourceFilePath = "",
+			[CallerLineNumber] int sourceLineNumber = 0)
+		{
+			TestContextDescription testDescription = new TestContextDescription(
+				sourceFilePath, sourceLineNumber, description, TestContextType.It);
 
-		public void It(string description, Action action) =>
-			testContexts.Add(new TestContext(description, TestContextType.It, action));
+			testContexts.Add(new TestContext(testDescription, action));
+		}
+
+		public void Method(string description, Action action,
+			[CallerFilePath] string sourceFilePath = "",
+			[CallerLineNumber] int sourceLineNumber = 0)
+		{
+			TestContextDescription testDescription = new TestContextDescription(
+				sourceFilePath, sourceLineNumber, description, TestContextType.Method);
+
+			testContexts.Add(new TestContext(testDescription, action));
+		}
 	}
 }
