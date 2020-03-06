@@ -13,8 +13,8 @@ namespace bddlike
             AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(x => x.GetTypes())
                 .Where(x => typeof(BddLike).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract)
-                //.ToList()
-                .AsParallel()
+                .ToList()
+                //.AsParallel()
                 .Select(type =>
                 {
                     TestExecutor testExecutor = new TestExecutor(type);

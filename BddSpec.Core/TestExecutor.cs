@@ -120,8 +120,7 @@ namespace bddlike
 
             if (currentTestExecutor.HasExecutionError)
             {
-                Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.Write("F");
+                CentralizedPrinter.NotifyCompletion(currentTestExecutor);
                 return;
             }
 
@@ -135,21 +134,9 @@ namespace bddlike
 
                 currentTestExecutor.IsChildrenDiscovered = true;
 
+                CentralizedPrinter.NotifyCompletion(currentTestExecutor);
                 if (currentTestExecutor.IsExecutionCompleted)
-                {
-                    if (currentTestExecutor.BranchHasExecutionError)
-                    {
-                        Console.ForegroundColor = ConsoleColor.DarkRed;
-                        Console.Write("F");
-                    }
-                    else
-                    {
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.Write(".");
-                    }
-
                     return;
-                }
             }
 
             Recursion(instance, currentTestExecutor.Children);

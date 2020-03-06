@@ -4,6 +4,33 @@ using bddlike;
 
 namespace bddlike
 {
+    public enum PrinterStrategy
+    {
+        VerboseSteps,
+        VerboseAfterCompletion,
+        OnlyShowErrors
+    }
+
+    public class CentralizedPrinter
+    {
+        public static PrinterStrategy Strategy = PrinterStrategy.VerboseAfterCompletion;
+        private static object _lock = new object();
+
+        public static void NotifyCompletion(TestExecutionStep executionStep)
+        {
+            lock (_lock)
+            {
+
+                if (Strategy == PrinterStrategy.VerboseSteps)
+                    TestExecutionStepPrinter.Print(executionStep);
+                else if (executionStep.HasExecutionError)
+                    ConsolePrinter.WriteError("F");
+                else if (executionStep.Children.Count == 0)
+                    ConsolePrinter.WriteSuccess(".");
+            }
+        }
+    }
+
     public class ConsolePrinter
     {
         public static void WriteIdentation(int level) =>
