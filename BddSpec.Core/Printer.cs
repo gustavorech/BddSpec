@@ -26,7 +26,7 @@ namespace bddlike
                     TestExecutionStepPrinter.Print(executionStep);
                 else if (executionStep.ThisStepHadAnExecutionError)
                     ConsolePrinter.WriteError("F");
-                else if (executionStep.Children.Count == 0)
+                else if (executionStep.IsALeafStep)
                     ConsolePrinter.WriteSuccess(".");
             }
         }
@@ -68,7 +68,7 @@ namespace bddlike
                 ConsolePrinter.WriteInfo($" (ln:{contextDescription.SourceFileNumber})");
 
             if (CentralizedPrinter.ShowTime)
-                PrintStepTimeSpan(executionStep.TimeSpent);
+                PrintStepTimeSpan(executionStep.TotalTimeSpent);
 
             Console.WriteLine();
         }
@@ -79,7 +79,7 @@ namespace bddlike
 
             if (executionStep.ThisStepHadAnExecutionError)
                 ConsolePrinter.WriteError(message);
-            else if (executionStep.Children.Count == 0)
+            else if (executionStep.IsALeafStep)
                 ConsolePrinter.WriteSuccess(message);
             else
                 Console.Write(message);

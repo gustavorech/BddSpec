@@ -5,80 +5,6 @@ using System.Linq;
 
 namespace bddlike
 {
-    public partial class TestExecutionStep
-    {
-        public TestExecutionStep Parent { get; }
-        public List<TestExecutionStep> Children { get; } = new List<TestExecutionStep>();
-        public int PositionInStack { get; }
-        public int StepLevel { get; }
-        public TestContextDescription TestContextDescription { get; }
-
-        public int ExecutionTimes { get; private set; }
-        public TimeSpan TimeSpent { get; private set; } = TimeSpan.Zero;
-        public bool IsChildrenDiscovered { get; set; }
-
-        public bool IsExecutionCompleted
-        {
-            get
-            {
-                if (ThisStepHadAnExecutionError)
-                    return true;
-
-                return IsChildrenDiscovered && Children.TrueForAll(c => c.IsExecutionCompleted);
-            }
-        }
-
-        public TestExecutionStep(TestExecutionStep parent, TestContext context, int positionInStack, int level)
-        {
-            Parent = parent;
-            TestContextDescription = context.Description;
-            PositionInStack = positionInStack;
-            StepLevel = level;
-        }
-
-        public void AddChild(TestContext context, int positionInStack)
-        {
-            Children.Add(new TestExecutionStep(this, context, positionInStack, StepLevel + 1));
-        }
-
-        public void SafeInvoke(TestContext context)
-        {
-            Stopwatch timer = Stopwatch.StartNew();
-
-            try
-            {
-                context.Action.Invoke();
-            }
-            catch
-            {
-                NotifyHadAnExecutionError();
-            }
-            finally
-            {
-                ExecutionTimes++;
-                TimeSpent += timer.Elapsed;
-                timer.Stop();
-            }
-        }
-
-        public void Print()
-        {
-            TestExecutionStepPrinter.Print(this);
-
-            Children.ForEach(c => c.Print());
-        }
-
-        public void PrintOnlyErrors()
-        {
-            if (!this.ThisBranchHadAnExecutionError)
-                return;
-
-            TestExecutionStepPrinter.Print(this);
-
-            Children.ForEach(c => c.PrintOnlyErrors());
-        }
-    }
-
     public class TestExecutor
     {
         private Type type;
@@ -93,54 +19,61 @@ namespace bddlike
         public void Execute()
         {
             Initialize();
-
-            if (root.Count == 0)
-                return;
-
             Iterate();
         }
 
         private void Iterate()
         {
-            while (!root.TrueForAll(c => c.IsExecutionCompleted))
+            if (root.Count == 0)
+                return;
+
+            while (true)
             {
                 BddLike instance = (BddLike)Activator.CreateInstance(type);
                 instance.ConfigureTests();
 
-                Recursion(instance, root);
+                TestExecutionStep currentTestStep =
+                    root.FirstOrDefault(c => !c.IsExecutionCompleted);
+
+                if (currentTestStep == null)
+                    return;
+
+                Recursion(instance, currentTestStep);
             }
         }
 
-        private void Recursion(BddLike instance, List<TestExecutionStep> listToExecute)
+        private void Recursion(BddLike instance, TestExecutionStep currentTestStep)
         {
-            TestExecutionStep currentTestExecutor = listToExecute.First(c => !c.IsExecutionCompleted);
-            TestContext currentTestContext = instance.testContexts[currentTestExecutor.PositionInStack];
+            if (currentTestStep == null)
+                return;
+
+            TestContext currentTestContext = instance.testContexts[currentTestStep.PositionInStack];
 
             int currentStackCount = instance.testContexts.Count;
-            currentTestExecutor.SafeInvoke(currentTestContext);
+            currentTestStep.SafeInvoke(currentTestContext);
 
-            if (currentTestExecutor.ThisStepHadAnExecutionError)
+            if (currentTestStep.ThisStepHadAnExecutionError)
             {
-                CentralizedPrinter.NotifyCompletion(currentTestExecutor);
+                CentralizedPrinter.NotifyCompletion(currentTestStep);
                 return;
             }
 
-            if (!currentTestExecutor.IsChildrenDiscovered)
+            if (!currentTestStep.IsChildrenDiscovered)
             {
                 for (int i = currentStackCount; i < instance.testContexts.Count; i++)
                 {
                     TestContext childTestContext = instance.testContexts[i];
-                    currentTestExecutor.AddChild(childTestContext, i);
+                    currentTestStep.AddChild(childTestContext, i);
                 }
 
-                currentTestExecutor.IsChildrenDiscovered = true;
+                currentTestStep.IsChildrenDiscovered = true;
 
-                CentralizedPrinter.NotifyCompletion(currentTestExecutor);
-                if (currentTestExecutor.IsExecutionCompleted)
+                CentralizedPrinter.NotifyCompletion(currentTestStep);
+                if (currentTestStep.IsExecutionCompleted)
                     return;
             }
 
-            Recursion(instance, currentTestExecutor.Children);
+            Recursion(instance, currentTestStep.GetNextStepToExecute());
         }
 
         private void Initialize()

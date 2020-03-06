@@ -16,7 +16,7 @@ namespace bddlike
         {
             _hadError = true;
 
-            Parent?.NotifyChildHadAnExecutionError();
+            _parent?.NotifyChildHadAnExecutionError();
         }
 
         private void NotifyChildHadAnExecutionError()
@@ -25,7 +25,7 @@ namespace bddlike
                 return;
 
             _childHadError = true;
-            Parent?.NotifyChildHadAnExecutionError();
+            _parent?.NotifyChildHadAnExecutionError();
         }
     }
 }
