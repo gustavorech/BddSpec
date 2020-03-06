@@ -28,14 +28,6 @@ namespace bddlike
             }
         }
 
-        public bool BranchHasExecutionError
-        {
-            get
-            {
-                return ThisStepHadAnExecutionError || Children.Any(c => c.BranchHasExecutionError);
-            }
-        }
-
         public TestExecutionStep(TestExecutionStep parent, TestContext context, int positionInStack, int level)
         {
             Parent = parent;
@@ -78,7 +70,7 @@ namespace bddlike
 
         public void PrintOnlyErrors()
         {
-            if (!this.BranchHasExecutionError)
+            if (!this.ThisBranchHadAnExecutionError)
                 return;
 
             TestExecutionStepPrinter.Print(this);
@@ -176,6 +168,10 @@ namespace bddlike
 
         public void PrintOnlyErrors()
         {
+            Console.WriteLine();
+            Console.WriteLine("ERRORS!!!");
+            Console.WriteLine(root.First().TestContextDescription.SourceFilePath);
+            Console.WriteLine("class: " + type.Name);
             root.ForEach(c => c.PrintOnlyErrors());
         }
     }

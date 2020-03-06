@@ -18,7 +18,7 @@ namespace bddlike
                 && !x.IsInterface
                 && !x.IsAbstract);
 
-            List<TestExecutor> testExecutors = Asincronous(testTypes);
+            List<TestExecutor> testExecutors = Sincronous(testTypes);
 
             VerifyPrintAll(testExecutors);
 

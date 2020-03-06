@@ -12,7 +12,6 @@ namespace bddlike
         public bool ThisStepHadAnExecutionError { get => _hadError; }
         public bool ThisBranchHadAnExecutionError { get => AnyChildHadExecutionError || ThisStepHadAnExecutionError; }
 
-
         private void NotifyHadAnExecutionError()
         {
             _hadError = true;

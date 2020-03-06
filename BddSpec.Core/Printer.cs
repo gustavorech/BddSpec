@@ -13,7 +13,9 @@ namespace bddlike
 
     public class CentralizedPrinter
     {
-        public static PrinterStrategy Strategy = PrinterStrategy.VerboseAfterCompletion;
+        public static PrinterStrategy Strategy = PrinterStrategy.OnlyShowErrors;
+        public static bool ShowLine { get; set; }
+        public static bool ShowTime { get; set; }
         private static object _lock = new object();
 
         public static void NotifyCompletion(TestExecutionStep executionStep)
@@ -62,9 +64,11 @@ namespace bddlike
 
             PrintDescription(executionStep, contextDescription);
 
-            ConsolePrinter.WriteInfo($" (ln:{contextDescription.SourceFileNumber})");
+            if (CentralizedPrinter.ShowLine)
+                ConsolePrinter.WriteInfo($" (ln:{contextDescription.SourceFileNumber})");
 
-            PrintStepTimeSpan(executionStep.TimeSpent);
+            if (CentralizedPrinter.ShowTime)
+                PrintStepTimeSpan(executionStep.TimeSpent);
 
             Console.WriteLine();
         }
