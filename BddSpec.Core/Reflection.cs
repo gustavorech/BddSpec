@@ -18,48 +18,46 @@ namespace bddlike
                 && !x.IsInterface
                 && !x.IsAbstract);
 
-            Asincronous(testTypes);
+            List<TestExecutor> testExecutors = Asincronous(testTypes);
+
+            VerifyPrintAll(testExecutors);
+
+            testExecutors.ToList().ForEach(c => c.PrintOnlyErrors());
 
             Console.WriteLine("ACABEI: " + timer.Elapsed.ToString());
         }
 
-        private static void Sincronous(IEnumerable<Type> testTypes)
-        {
-            IEnumerable<TestExecutor> testExecutors = testTypes
-            .Select(type =>
+        private static List<TestExecutor> Sincronous(IEnumerable<Type> testTypes) =>
+            testTypes
+                .Select(type =>
                 {
                     TestExecutor testExecutor = new TestExecutor(type);
                     testExecutor.Execute();
 
                     return testExecutor;
-                });
+                })
+                .ToList();
 
-            VerifyPrintAll(testExecutors);
-        }
-
-        private static void Asincronous(IEnumerable<Type> testTypes)
-        {
-            IEnumerable<TestExecutor> testExecutors = testTypes
-            .AsParallel()
-            .Select(type =>
+        private static List<TestExecutor> Asincronous(IEnumerable<Type> testTypes) =>
+            testTypes
+                .AsParallel()
+                .Select(type =>
                 {
                     TestExecutor testExecutor = new TestExecutor(type);
                     testExecutor.Execute();
 
                     return testExecutor;
-                });
+                })
+                .ToList();
 
-            VerifyPrintAll(testExecutors);
-        }
-
-        private static void VerifyPrintAll(IEnumerable<TestExecutor> testExecutors)
+        private static void VerifyPrintAll(List<TestExecutor> testExecutors)
         {
             if (CentralizedPrinter.Strategy == PrinterStrategy.VerboseAfterCompletion)
-                testExecutors.ToList()
-                .ForEach(testExecutor =>
-                {
-                    testExecutor.Print();
-                });
+                testExecutors
+                    .ForEach(testExecutor =>
+                    {
+                        testExecutor.Print();
+                    });
         }
     }
 }

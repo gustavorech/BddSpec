@@ -75,6 +75,16 @@ namespace bddlike
 
             Children.ForEach(c => c.Print());
         }
+
+        public void PrintOnlyErrors()
+        {
+            if (!this.BranchHasExecutionError)
+                return;
+
+            TestExecutionStepPrinter.Print(this);
+
+            Children.ForEach(c => c.PrintOnlyErrors());
+        }
     }
 
     public class TestExecutor
@@ -162,6 +172,11 @@ namespace bddlike
             Console.WriteLine("class: " + type.Name);
 
             root.ForEach(c => c.Print());
+        }
+
+        public void PrintOnlyErrors()
+        {
+            root.ForEach(c => c.PrintOnlyErrors());
         }
     }
 }
