@@ -20,10 +20,9 @@ namespace bddlike
         {
             lock (_lock)
             {
-
                 if (Strategy == PrinterStrategy.VerboseSteps)
                     TestExecutionStepPrinter.Print(executionStep);
-                else if (executionStep.HasExecutionError)
+                else if (executionStep.ThisStepHadAnExecutionError)
                     ConsolePrinter.WriteError("F");
                 else if (executionStep.Children.Count == 0)
                     ConsolePrinter.WriteSuccess(".");
@@ -74,7 +73,7 @@ namespace bddlike
         {
             string message = $"{contextDescription.ContextTypeName}: {contextDescription.TestDescription}";
 
-            if (executionStep.HasExecutionError)
+            if (executionStep.ThisStepHadAnExecutionError)
                 ConsolePrinter.WriteError(message);
             else if (executionStep.Children.Count == 0)
                 ConsolePrinter.WriteSuccess(message);

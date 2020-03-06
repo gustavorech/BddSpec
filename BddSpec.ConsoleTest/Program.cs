@@ -7,7 +7,7 @@ namespace BddSpec.ConsoleTest
     {
         static void Main(string[] args)
         {
-            Reflection.GetAllEntities();
+            Reflection.Execute();
 
             Console.ReadLine();
         }

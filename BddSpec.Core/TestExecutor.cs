@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace bddlike
 {
-    public class TestExecutionStep
+    public partial class TestExecutionStep
     {
         public TestExecutionStep Parent { get; }
         public List<TestExecutionStep> Children { get; } = new List<TestExecutionStep>();
@@ -16,13 +16,12 @@ namespace bddlike
         public int ExecutionTimes { get; private set; }
         public TimeSpan TimeSpent { get; private set; } = TimeSpan.Zero;
         public bool IsChildrenDiscovered { get; set; }
-        public bool HasExecutionError { get; set; }
 
         public bool IsExecutionCompleted
         {
             get
             {
-                if (HasExecutionError)
+                if (ThisStepHadAnExecutionError)
                     return true;
 
                 return IsChildrenDiscovered && Children.TrueForAll(c => c.IsExecutionCompleted);
@@ -33,7 +32,7 @@ namespace bddlike
         {
             get
             {
-                return HasExecutionError || Children.Any(c => c.BranchHasExecutionError);
+                return ThisStepHadAnExecutionError || Children.Any(c => c.BranchHasExecutionError);
             }
         }
 
@@ -60,7 +59,7 @@ namespace bddlike
             }
             catch
             {
-                HasExecutionError = true;
+                NotifyHadAnExecutionError();
             }
             finally
             {
@@ -118,7 +117,7 @@ namespace bddlike
             int currentStackCount = instance.testContexts.Count;
             currentTestExecutor.SafeInvoke(currentTestContext);
 
-            if (currentTestExecutor.HasExecutionError)
+            if (currentTestExecutor.ThisStepHadAnExecutionError)
             {
                 CentralizedPrinter.NotifyCompletion(currentTestExecutor);
                 return;
