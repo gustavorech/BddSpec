@@ -11,13 +11,13 @@ namespace BddSpec.Core
     {
         private TestExecutionStep _parentExecutionStep;
         private List<TestExecutionStep> _innerExecutionSteps = new List<TestExecutionStep>();
-        public int PositionInStack { get; }
+        public int PositionToGetTheActionInTheStack { get; }
         public int StepLevel { get; }
         public TestStepDescription TestContextDescription { get; }
 
         public int TimesThisStepWasExecuted { get; private set; }
         public TimeSpan TotalTimeSpent { get; private set; } = TimeSpan.Zero;
-        public bool InnerActionsHadBeenDiscovered { get; set; }
+        public bool IsInnerActionsHadBeenDiscovered { get; set; }
         public bool IsALeafStep { get => _innerExecutionSteps.Count == 0; }
 
         public bool IsExecutionCompleted
@@ -27,7 +27,7 @@ namespace BddSpec.Core
                 if (HadAnExecutionError)
                     return true;
 
-                return InnerActionsHadBeenDiscovered && _innerExecutionSteps.TrueForAll(c => c.IsExecutionCompleted);
+                return IsInnerActionsHadBeenDiscovered && _innerExecutionSteps.TrueForAll(c => c.IsExecutionCompleted);
             }
         }
 
@@ -36,13 +36,17 @@ namespace BddSpec.Core
         {
             this._parentExecutionStep = parentExecutionStep;
             TestContextDescription = testStepAction.Description;
-            PositionInStack = positionInStack;
+            PositionToGetTheActionInTheStack = positionInStack;
             StepLevel = level;
         }
 
-        public void CreateInnerExecutionStepFromAction(TestStepAction context, int positionInStack)
+        public void CreateInnerExecutionStepFromAction(
+            TestStepAction stepAction, int positionThisActionWillBeFindOnTheStack)
         {
-            _innerExecutionSteps.Add(new TestExecutionStep(this, context, positionInStack, StepLevel + 1));
+            TestExecutionStep innerExecutionStep = new TestExecutionStep(this, stepAction,
+                positionThisActionWillBeFindOnTheStack, StepLevel + 1);
+
+            _innerExecutionSteps.Add(innerExecutionStep);
         }
 
         public TestExecutionStep GetNextStepToExecute()
@@ -50,13 +54,13 @@ namespace BddSpec.Core
             return _innerExecutionSteps.FirstOrDefault(c => !c.IsExecutionCompleted);
         }
 
-        public void SafeInvoke(TestStepAction context)
+        public void SafeInvokeAction(TestStepAction stepAction)
         {
             Stopwatch timer = Stopwatch.StartNew();
 
             try
             {
-                context.Action.Invoke();
+                stepAction.Action.Invoke();
             }
             catch
             {

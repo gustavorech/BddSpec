@@ -49,10 +49,10 @@ namespace BddSpec.Core
                 return;
 
             TestStepAction currentTestAction =
-                testClassInstance.testStepsActions[currentTestStep.PositionInStack];
+                testClassInstance.testStepsActions[currentTestStep.PositionToGetTheActionInTheStack];
 
             int currentStackCount = testClassInstance.testStepsActions.Count;
-            currentTestStep.SafeInvoke(currentTestAction);
+            currentTestStep.SafeInvokeAction(currentTestAction);
 
             if (currentTestStep.HadAnExecutionError)
             {
@@ -60,7 +60,7 @@ namespace BddSpec.Core
                 return;
             }
 
-            if (!currentTestStep.InnerActionsHadBeenDiscovered)
+            if (!currentTestStep.IsInnerActionsHadBeenDiscovered)
             {
                 for (int i = currentStackCount; i < testClassInstance.testStepsActions.Count; i++)
                 {
@@ -68,7 +68,7 @@ namespace BddSpec.Core
                     currentTestStep.CreateInnerExecutionStepFromAction(innerTestAction, i);
                 }
 
-                currentTestStep.InnerActionsHadBeenDiscovered = true;
+                currentTestStep.IsInnerActionsHadBeenDiscovered = true;
 
                 CentralizedPrinter.NotifyCompletion(currentTestStep);
                 if (currentTestStep.IsExecutionCompleted)
