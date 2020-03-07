@@ -1,5 +1,5 @@
 ﻿using System;
-using bddlike;
+using BddSpec.Core;
 
 namespace BddSpec.ConsoleTest
 {
@@ -7,7 +7,7 @@ namespace BddSpec.ConsoleTest
     {
         static void Main(string[] args)
         {
-            Reflection.Execute();
+            TestDiscoverer.DiscoverAndExecute();
 
             Console.ReadLine();
         }

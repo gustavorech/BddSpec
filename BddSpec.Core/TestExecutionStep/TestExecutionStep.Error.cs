@@ -1,7 +1,7 @@
 
 using System;
 
-namespace bddlike
+namespace BddSpec.Core
 {
     public partial class TestExecutionStep
     {
@@ -9,14 +9,14 @@ namespace bddlike
         private bool _hadError;
 
         public bool AnyChildHadExecutionError { get => _childHadError; }
-        public bool ThisStepHadAnExecutionError { get => _hadError; }
-        public bool ThisBranchHadAnExecutionError { get => AnyChildHadExecutionError || ThisStepHadAnExecutionError; }
+        public bool HadAnExecutionError { get => _hadError; }
+        public bool ThisBranchHadAnExecutionError { get => AnyChildHadExecutionError || HadAnExecutionError; }
 
         private void NotifyHadAnExecutionError()
         {
             _hadError = true;
 
-            _parent?.NotifyChildHadAnExecutionError();
+            _parentExecutionStep?.NotifyChildHadAnExecutionError();
         }
 
         private void NotifyChildHadAnExecutionError()
@@ -25,7 +25,7 @@ namespace bddlike
                 return;
 
             _childHadError = true;
-            _parent?.NotifyChildHadAnExecutionError();
+            _parentExecutionStep?.NotifyChildHadAnExecutionError();
         }
     }
 }

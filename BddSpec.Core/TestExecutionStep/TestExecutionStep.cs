@@ -3,52 +3,54 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using BddSpec.Core.Printer;
 
-namespace bddlike
+namespace BddSpec.Core
 {
     public partial class TestExecutionStep
     {
-        private TestExecutionStep _parent;
-        private List<TestExecutionStep> _children = new List<TestExecutionStep>();
+        private TestExecutionStep _parentExecutionStep;
+        private List<TestExecutionStep> _innerExecutionSteps = new List<TestExecutionStep>();
         public int PositionInStack { get; }
         public int StepLevel { get; }
-        public TestContextDescription TestContextDescription { get; }
+        public TestStepDescription TestContextDescription { get; }
 
         public int TimesThisStepWasExecuted { get; private set; }
         public TimeSpan TotalTimeSpent { get; private set; } = TimeSpan.Zero;
-        public bool IsChildrenDiscovered { get; set; }
-        public bool IsALeafStep { get => _children.Count == 0; }
+        public bool InnerActionsHadBeenDiscovered { get; set; }
+        public bool IsALeafStep { get => _innerExecutionSteps.Count == 0; }
 
         public bool IsExecutionCompleted
         {
             get
             {
-                if (ThisStepHadAnExecutionError)
+                if (HadAnExecutionError)
                     return true;
 
-                return IsChildrenDiscovered && _children.TrueForAll(c => c.IsExecutionCompleted);
+                return InnerActionsHadBeenDiscovered && _innerExecutionSteps.TrueForAll(c => c.IsExecutionCompleted);
             }
         }
 
-        public TestExecutionStep(TestExecutionStep parent, TestContext context, int positionInStack, int level)
+        public TestExecutionStep(TestExecutionStep parentExecutionStep,
+            TestStepAction testStepAction, int positionInStack, int level)
         {
-            this._parent = parent;
-            TestContextDescription = context.Description;
+            this._parentExecutionStep = parentExecutionStep;
+            TestContextDescription = testStepAction.Description;
             PositionInStack = positionInStack;
             StepLevel = level;
         }
 
-        public void AddChild(TestContext context, int positionInStack)
+        public void CreateInnerExecutionStepFromAction(TestStepAction context, int positionInStack)
         {
-            _children.Add(new TestExecutionStep(this, context, positionInStack, StepLevel + 1));
+            _innerExecutionSteps.Add(new TestExecutionStep(this, context, positionInStack, StepLevel + 1));
         }
 
         public TestExecutionStep GetNextStepToExecute()
         {
-            return _children.FirstOrDefault(c => !c.IsExecutionCompleted);
+            return _innerExecutionSteps.FirstOrDefault(c => !c.IsExecutionCompleted);
         }
 
-        public void SafeInvoke(TestContext context)
+        public void SafeInvoke(TestStepAction context)
         {
             Stopwatch timer = Stopwatch.StartNew();
 
@@ -72,7 +74,7 @@ namespace bddlike
         {
             TestExecutionStepPrinter.Print(this);
 
-            _children.ForEach(c => c.Print());
+            _innerExecutionSteps.ForEach(c => c.Print());
         }
 
         public void PrintOnlyErrors()
@@ -82,7 +84,7 @@ namespace bddlike
 
             TestExecutionStepPrinter.Print(this);
 
-            _children.ForEach(c => c.PrintOnlyErrors());
+            _innerExecutionSteps.ForEach(c => c.PrintOnlyErrors());
         }
     }
 }

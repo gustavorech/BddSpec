@@ -2,12 +2,13 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Collections.Generic;
+using BddSpec.Core.Printer;
 
-namespace bddlike
+namespace BddSpec.Core
 {
-    public class Reflection
+    public class TestDiscoverer
     {
-        public static void Execute()
+        public static void DiscoverAndExecute()
         {
             Stopwatch timer = Stopwatch.StartNew();
 
@@ -18,7 +19,7 @@ namespace bddlike
                 && !x.IsInterface
                 && !x.IsAbstract);
 
-            List<TestExecutor> testExecutors = Sincronous(testTypes);
+            List<TestClassExecutor> testExecutors = Sincronous(testTypes);
 
             VerifyPrintAll(testExecutors);
 
@@ -27,30 +28,30 @@ namespace bddlike
             Console.WriteLine("ACABEI: " + timer.Elapsed.ToString());
         }
 
-        private static List<TestExecutor> Sincronous(IEnumerable<Type> testTypes) =>
+        private static List<TestClassExecutor> Sincronous(IEnumerable<Type> testTypes) =>
             testTypes
                 .Select(type =>
                 {
-                    TestExecutor testExecutor = new TestExecutor(type);
+                    TestClassExecutor testExecutor = new TestClassExecutor(type);
                     testExecutor.Execute();
 
                     return testExecutor;
                 })
                 .ToList();
 
-        private static List<TestExecutor> Asincronous(IEnumerable<Type> testTypes) =>
+        private static List<TestClassExecutor> Asincronous(IEnumerable<Type> testTypes) =>
             testTypes
                 .AsParallel()
                 .Select(type =>
                 {
-                    TestExecutor testExecutor = new TestExecutor(type);
+                    TestClassExecutor testExecutor = new TestClassExecutor(type);
                     testExecutor.Execute();
 
                     return testExecutor;
                 })
                 .ToList();
 
-        private static void VerifyPrintAll(List<TestExecutor> testExecutors)
+        private static void VerifyPrintAll(List<TestClassExecutor> testExecutors)
         {
             if (CentralizedPrinter.Strategy == PrinterStrategy.VerboseAfterCompletion)
                 testExecutors
