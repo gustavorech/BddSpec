@@ -8,12 +8,15 @@ namespace BddSpec.Core
         private bool _childHadError;
         private bool _hadError;
 
+        public Exception ErrorException { get; private set; }
+
         public bool AnyChildHadExecutionError { get => _childHadError; }
         public bool HadAnExecutionError { get => _hadError; }
         public bool ThisBranchHadAnExecutionError { get => AnyChildHadExecutionError || HadAnExecutionError; }
 
-        private void NotifyHadAnExecutionError()
+        private void NotifyHadAnExecutionError(Exception ex)
         {
+            ErrorException = ex;
             _hadError = true;
 
             _parentExecutionStep?.NotifyChildHadAnExecutionError();

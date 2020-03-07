@@ -62,9 +62,9 @@ namespace BddSpec.Core
             {
                 stepAction.Action.Invoke();
             }
-            catch
+            catch (Exception ex)
             {
-                NotifyHadAnExecutionError();
+                NotifyHadAnExecutionError(ex);
             }
             finally
             {

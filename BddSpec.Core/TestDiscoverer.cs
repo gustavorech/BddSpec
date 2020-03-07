@@ -12,6 +12,7 @@ namespace BddSpec.Core
         {
             Stopwatch timer = Stopwatch.StartNew();
 
+            Console.WriteLine("Initializing tests...");
             IEnumerable<Type> testTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(x => x.GetTypes())
                 .Where(x =>
@@ -19,10 +20,14 @@ namespace BddSpec.Core
                 && !x.IsInterface
                 && !x.IsAbstract);
 
-            List<TestClassExecutor> testExecutors = Sincronous(testTypes);
+            Console.WriteLine("Executing...");
+            Console.WriteLine();
+            List<TestClassExecutor> testExecutors = Asincronous(testTypes);
 
             VerifyPrintAll(testExecutors);
 
+            CentralizedPrinter.PrintExceptions = true;
+            CentralizedPrinter.ShowLine = true;
             testExecutors.ToList().ForEach(c => c.PrintOnlyErrors());
 
             Console.WriteLine("ACABEI: " + timer.Elapsed.ToString());

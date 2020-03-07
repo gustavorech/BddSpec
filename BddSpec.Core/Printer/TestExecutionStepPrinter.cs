@@ -19,6 +19,8 @@ namespace BddSpec.Core.Printer
             if (CentralizedPrinter.ShowTime)
                 PrintStepTimeSpan(testExecutionStep.TotalTimeSpent);
 
+            PrintException(testExecutionStep.ErrorException);
+
             Console.WriteLine();
         }
 
@@ -45,6 +47,18 @@ namespace BddSpec.Core.Printer
                 ConsolePrinter.WriteInfo(" (" + time.ToString("fff") + "ms)");
             else if (time > TimeSpan.FromMilliseconds(10))
                 ConsolePrinter.WriteInfo(" (" + time.ToString("fff").Substring(1) + "ms)");
+        }
+
+        private static void PrintException(Exception ex)
+        {
+            if (!CentralizedPrinter.PrintExceptions || ex == null)
+                return;
+
+            Console.WriteLine();
+            ConsolePrinter.WriteError("Erro: " + ex.Message);
+            Console.WriteLine();
+            ConsolePrinter.WriteInfo("StackTrace: " + ex.StackTrace);
+            Console.WriteLine();
         }
     }
 }

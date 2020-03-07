@@ -5,7 +5,8 @@ namespace BddSpec.Core.Printer
 {
     public class CentralizedPrinter
     {
-        public static PrinterStrategy Strategy = PrinterStrategy.OnlyShowErrors;
+        public static PrinterStrategy Strategy = PrinterStrategy.VerboseAfterCompletion;
+        public static bool PrintExceptions { get; set; }
         public static bool ShowLine { get; set; }
         public static bool ShowTime { get; set; }
         private static object _lock = new object();
