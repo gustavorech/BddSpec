@@ -32,7 +32,7 @@ namespace BddSpec.Core.Printer
             if (executionStep.IsCompleted)
                 return;
 
-            if (!executionStep.IsALeafStep)
+            if (!executionStep.IsALeafStep && Strategy == PrinterStrategy.VerboseSteps)
                 TestExecutionStepPrinter.Print(executionStep);
         }
     }

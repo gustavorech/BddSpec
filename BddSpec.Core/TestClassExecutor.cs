@@ -53,7 +53,7 @@ namespace BddSpec.Core
 
         public void PrintOnlyErrors()
         {
-            if (rootExecutionStep.IsBranchHadError)
+            if (!rootExecutionStep.IsBranchHadError)
                 return;
 
             Console.WriteLine();
