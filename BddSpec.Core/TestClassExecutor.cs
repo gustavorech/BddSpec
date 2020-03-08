@@ -44,7 +44,7 @@ namespace BddSpec.Core
 
             currentStep.Execute(currentAction, testClassInstance);
 
-            Recursion(testClassInstance, currentStep.GetNextStepToExecute());
+            Recursion(testClassInstance, currentStep.GetCurrentStepToExecute());
         }
 
         public void Print()
