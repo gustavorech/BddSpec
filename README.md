@@ -2,14 +2,15 @@
 
 Currently, a proof of concept only
 
-### Things to do:
+## Things to do:
 
 * ~~Treat and show exceptions~~
-* Ident errors better
+⋅⋅* Ident errors better
 * Specify and work with input args to configure the output
 * Search how to create a CLI, dotnet tool, nuget package
 * Try to reduce a little of the recursion repetition
-* Print the statistics at the end of the execution
+* ~~Print the statistics at the end of the execution~~
+⋅⋅* Print it better
 * Search how to inform the terminal that not all tests passed (exit 0 os something like that)
 * Add all the test types
 * Test especific class / line number
