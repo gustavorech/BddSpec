@@ -16,10 +16,15 @@ namespace BddSpec.Core
 
         private void NotifyHadError(Exception ex)
         {
+            if (_isHadError)
+                return;
+
             ErrorException = ex;
             _isHadError = true;
 
-            _parentExecutionStep?.NotifyInnerStepHadError();
+            NotifyCompleted();
+
+            _parentStep?.NotifyInnerStepHadError();
         }
 
         private void NotifyInnerStepHadError()
@@ -28,7 +33,7 @@ namespace BddSpec.Core
                 return;
 
             _isInnerStepHadError = true;
-            _parentExecutionStep?.NotifyInnerStepHadError();
+            _parentStep?.NotifyInnerStepHadError();
         }
     }
 }

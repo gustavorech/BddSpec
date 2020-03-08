@@ -11,17 +11,23 @@ namespace BddSpec.Core.Printer
         public static bool ShowTime { get; set; }
         private static object _lock = new object();
 
-        public static void NotifyCompletion(TestExecutionStep testExecutionStep)
+        public static void NotifyCompleted(TestExecutionStep executionStep)
         {
             lock (_lock)
             {
                 if (Strategy == PrinterStrategy.VerboseSteps)
-                    TestExecutionStepPrinter.Print(testExecutionStep);
-                else if (testExecutionStep.IsHadError)
+                    TestExecutionStepPrinter.Print(executionStep);
+                else if (executionStep.IsHadError)
                     ConsolePrinter.WriteError("F");
-                else if (testExecutionStep.IsALeafStep)
+                else if (executionStep.IsALeafStep)
                     ConsolePrinter.WriteSuccess(".");
             }
+        }
+
+        public static void NotifyInitialized(TestExecutionStep executionStep)
+        {
+            if (Strategy == PrinterStrategy.VerboseSteps && !executionStep.IsALeafStep)
+                TestExecutionStepPrinter.Print(executionStep);
         }
     }
 }

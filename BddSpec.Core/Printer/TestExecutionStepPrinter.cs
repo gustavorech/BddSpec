@@ -7,7 +7,7 @@ namespace BddSpec.Core.Printer
     {
         public static void Print(TestExecutionStep testExecutionStep)
         {
-            TestStepDescription testStepDescription = testExecutionStep.TestContextDescription;
+            TestStepDescription testStepDescription = testExecutionStep.TestStepDescription;
 
             ConsolePrinter.WriteIdentation(testExecutionStep.StepLevel);
 

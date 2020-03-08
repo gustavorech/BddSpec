@@ -55,7 +55,7 @@ namespace BddSpec.Core
 
             if (currentTestStep.IsHadError)
             {
-                CentralizedPrinter.NotifyCompletion(currentTestStep);
+                CentralizedPrinter.NotifyCompleted(currentTestStep);
                 return;
             }
 
@@ -64,12 +64,12 @@ namespace BddSpec.Core
                 for (int i = currentStackCount; i < testClassInstance.testStepsActions.Count; i++)
                 {
                     TestStepAction innerTestAction = testClassInstance.testStepsActions[i];
-                    currentTestStep.CreateInnerExecutionStepFromAction(innerTestAction, i);
+                    currentTestStep.CreateInnerStepFromAction(innerTestAction, i);
                 }
 
                 currentTestStep.IsInnerActionsHadBeenDiscovered = true;
 
-                CentralizedPrinter.NotifyCompletion(currentTestStep);
+                CentralizedPrinter.NotifyCompleted(currentTestStep);
                 if (currentTestStep.IsExecutionCompleted)
                     return;
             }
@@ -94,7 +94,7 @@ namespace BddSpec.Core
         {
             Console.ResetColor();
             Console.WriteLine();
-            Console.WriteLine(stepsDeclaredOnTop.First().TestContextDescription.SourceFilePath);
+            Console.WriteLine(stepsDeclaredOnTop.First().TestStepDescription.SourceFilePath);
             Console.WriteLine("class: " + type.Name);
 
             stepsDeclaredOnTop.ForEach(c => c.Print());
@@ -107,7 +107,7 @@ namespace BddSpec.Core
 
             Console.WriteLine();
             Console.WriteLine("ERRORS!!!");
-            Console.WriteLine(stepsDeclaredOnTop.First().TestContextDescription.SourceFilePath);
+            Console.WriteLine(stepsDeclaredOnTop.First().TestStepDescription.SourceFilePath);
             Console.WriteLine("class: " + type.Name);
             stepsDeclaredOnTop.ForEach(c => c.PrintOnlyErrors());
         }
