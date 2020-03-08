@@ -19,8 +19,8 @@ namespace BddSpec.Core
             if (_isHadError)
                 return;
 
-            ErrorException = ex;
             _isHadError = true;
+            ErrorException = ex;
 
             NotifyCompleted();
 

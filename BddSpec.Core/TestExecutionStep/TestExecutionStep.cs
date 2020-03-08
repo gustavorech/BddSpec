@@ -17,19 +17,7 @@ namespace BddSpec.Core
 
         public int TimesThisStepWasExecuted { get; private set; }
         public TimeSpan TotalTimeSpent { get; private set; } = TimeSpan.Zero;
-        public bool IsInnerActionsHadBeenDiscovered { get; set; }
         public bool IsALeafStep { get => _innerSteps.Count == 0; }
-
-        public bool IsExecutionCompleted
-        {
-            get
-            {
-                if (IsHadError)
-                    return true;
-
-                return IsInnerActionsHadBeenDiscovered && _innerSteps.TrueForAll(c => c.IsExecutionCompleted);
-            }
-        }
 
         public TestExecutionStep(TestExecutionStep parentStep,
             TestStepAction stepAction, int positionInStack, int level)
@@ -51,27 +39,7 @@ namespace BddSpec.Core
 
         public TestExecutionStep GetNextStepToExecute()
         {
-            return _innerSteps.FirstOrDefault(c => !c.IsExecutionCompleted);
-        }
-
-        public void SafeInvokeAction(TestStepAction stepAction)
-        {
-            Stopwatch timer = Stopwatch.StartNew();
-
-            try
-            {
-                stepAction.Action.Invoke();
-            }
-            catch (Exception ex)
-            {
-                NotifyHadError(ex);
-            }
-            finally
-            {
-                timer.Stop();
-                TimesThisStepWasExecuted++;
-                TotalTimeSpent += timer.Elapsed;
-            }
+            return _innerSteps.FirstOrDefault(c => !c.IsCompleted);
         }
 
         public void Print()

@@ -8,7 +8,7 @@ namespace BddSpec.Core
     public class TestClassExecutor
     {
         private Type type;
-        private List<TestExecutionStep> stepsDeclaredOnTop = new List<TestExecutionStep>();
+        private TestExecutionStep rootExecutionStep;
 
         public TestClassExecutor(Type type)
         {
@@ -17,106 +17,58 @@ namespace BddSpec.Core
 
         public void Execute()
         {
-            Initialize();
-
-            if (stepsDeclaredOnTop.Count == 0)
-                return;
-
-            ExecuteEveryTestClass();
-        }
-
-        private void ExecuteEveryTestClass()
-        {
-            while (true)
+            do
             {
                 BddLike testClassInstance = (BddLike)Activator.CreateInstance(type);
-                testClassInstance.ConfigureTests();
 
-                TestExecutionStep currentExecutionStep =
-                    stepsDeclaredOnTop.FirstOrDefault(c => !c.IsExecutionCompleted);
+                TestStepDescription stepDescription = new TestStepDescription("", 0, type.Name, TestStepType.Class);
+                TestStepAction stepAction = new TestStepAction(stepDescription, testClassInstance.ConfigureTests);
 
-                if (currentExecutionStep == null)
-                    return;
+                testClassInstance.testStepsActions.Add(stepAction);
 
-                Recursion(testClassInstance, currentExecutionStep);
+                if (rootExecutionStep == null)
+                    rootExecutionStep = new TestExecutionStep(null, stepAction, 0, 0);
+
+                Recursion(testClassInstance, rootExecutionStep);
             }
+            while (!rootExecutionStep.IsCompleted);
         }
 
-        private void Recursion(BddLike testClassInstance, TestExecutionStep currentTestStep)
+        private void Recursion(BddLike testClassInstance, TestExecutionStep currentStep)
         {
-            if (currentTestStep == null)
+            if (currentStep == null)
                 return;
 
-            TestStepAction currentTestAction =
-                testClassInstance.testStepsActions[currentTestStep.PositionToGetTheActionInTheStack];
+            TestStepAction currentAction =
+                testClassInstance.testStepsActions[currentStep.PositionToGetTheActionInTheStack];
 
-            int currentStackCount = testClassInstance.testStepsActions.Count;
-            currentTestStep.SafeInvokeAction(currentTestAction);
+            currentStep.Execute(currentAction, testClassInstance);
 
-            if (currentTestStep.IsHadError)
-            {
-                CentralizedPrinter.NotifyCompleted(currentTestStep);
-                return;
-            }
-
-            if (!currentTestStep.IsInnerActionsHadBeenDiscovered)
-            {
-                for (int i = currentStackCount; i < testClassInstance.testStepsActions.Count; i++)
-                {
-                    TestStepAction innerTestAction = testClassInstance.testStepsActions[i];
-                    currentTestStep.CreateInnerStepFromAction(innerTestAction, i);
-                }
-
-                currentTestStep.IsInnerActionsHadBeenDiscovered = true;
-
-                CentralizedPrinter.NotifyCompleted(currentTestStep);
-                if (currentTestStep.IsExecutionCompleted)
-                    return;
-            }
-
-            Recursion(testClassInstance, currentTestStep.GetNextStepToExecute());
-        }
-
-        private void Initialize()
-        {
-            BddLike testClassInstance = (BddLike)Activator.CreateInstance(type);
-
-            testClassInstance.ConfigureTests();
-
-            for (int i = 0; i < testClassInstance.testStepsActions.Count; i++)
-            {
-                TestStepAction stepAction = testClassInstance.testStepsActions[i];
-                stepsDeclaredOnTop.Add(new TestExecutionStep(null, stepAction, i, 1));
-            }
+            Recursion(testClassInstance, currentStep.GetNextStepToExecute());
         }
 
         public void Print()
         {
-            Console.ResetColor();
             Console.WriteLine();
-            Console.WriteLine(stepsDeclaredOnTop.First().TestStepDescription.SourceFilePath);
-            Console.WriteLine("class: " + type.Name);
 
-            stepsDeclaredOnTop.ForEach(c => c.Print());
+            rootExecutionStep.Print();
         }
 
         public void PrintOnlyErrors()
         {
-            if (!stepsDeclaredOnTop.Any(c => c.IsBranchHadError))
+            if (rootExecutionStep.IsBranchHadError)
                 return;
 
             Console.WriteLine();
             Console.WriteLine("ERRORS!!!");
-            Console.WriteLine(stepsDeclaredOnTop.First().TestStepDescription.SourceFilePath);
-            Console.WriteLine("class: " + type.Name);
-            stepsDeclaredOnTop.ForEach(c => c.PrintOnlyErrors());
+            rootExecutionStep.PrintOnlyErrors();
         }
 
         public void CollectMetrics(Metrics metrics)
         {
             metrics.TotalTestClasses++;
 
-            stepsDeclaredOnTop.ForEach(step => step.CollectMetrics(metrics));
+            rootExecutionStep.CollectMetrics(metrics);
         }
     }
 }
