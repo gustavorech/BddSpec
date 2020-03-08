@@ -56,7 +56,7 @@ namespace BddSpec.ConsoleTest
 
                     It("do not call M2", () =>
                     {
-                        Auto.Mock<IInject>().Verify(c => c.M2(), Times.Never); Thread.Sleep(1000);
+                        Auto.Mock<IInject>().Verify(c => c.M2(), Times.Never);
                     });
                 });
 
@@ -93,7 +93,7 @@ namespace BddSpec.ConsoleTest
 
                     It("do not call M2", () =>
                     {
-                        Auto.Mock<IInject>().Verify(c => c.M2(), Times.Never); Thread.Sleep(1000);
+                        Auto.Mock<IInject>().Verify(c => c.M2(), Times.Never);
                     });
                 });
 
@@ -149,7 +149,7 @@ namespace BddSpec.ConsoleTest
 
                     It("do not call M2", () =>
                     {
-                        Auto.Mock<IInject>().Verify(c => c.M2(), Times.Never); Thread.Sleep(1000);
+                        Auto.Mock<IInject>().Verify(c => c.M2(), Times.Never);
                     });
                 });
 
@@ -186,7 +186,7 @@ namespace BddSpec.ConsoleTest
 
                     It("do not call M2", () =>
                     {
-                        Auto.Mock<IInject>().Verify(c => c.M2(), Times.Never); Thread.Sleep(1000);
+                        Auto.Mock<IInject>().Verify(c => c.M2(), Times.Never);
                     });
                 });
 
@@ -242,7 +242,7 @@ namespace BddSpec.ConsoleTest
 
                     It("do not call M2", () =>
                     {
-                        Auto.Mock<IInject>().Verify(c => c.M2(), Times.Never); Thread.Sleep(1000);
+                        Auto.Mock<IInject>().Verify(c => c.M2(), Times.Never);
                     });
                 });
 
@@ -279,7 +279,7 @@ namespace BddSpec.ConsoleTest
 
                     It("do not call M2", () =>
                     {
-                        Auto.Mock<IInject>().Verify(c => c.M2(), Times.Never); Thread.Sleep(1000);
+                        Auto.Mock<IInject>().Verify(c => c.M2(), Times.Never);
                     });
                 });
 

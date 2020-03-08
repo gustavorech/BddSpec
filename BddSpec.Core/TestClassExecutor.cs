@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using BddSpec.Core.Printer;
 
@@ -103,11 +102,21 @@ namespace BddSpec.Core
 
         public void PrintOnlyErrors()
         {
+            if (!stepsDeclaredOnTop.Any(c => c.ThisBranchHadAnExecutionError))
+                return;
+
             Console.WriteLine();
             Console.WriteLine("ERRORS!!!");
             Console.WriteLine(stepsDeclaredOnTop.First().TestContextDescription.SourceFilePath);
             Console.WriteLine("class: " + type.Name);
             stepsDeclaredOnTop.ForEach(c => c.PrintOnlyErrors());
+        }
+
+        public void CollectMetrics(Metrics metrics)
+        {
+            metrics.TotalTestClasses++;
+
+            stepsDeclaredOnTop.ForEach(step => step.CollectMetrics(metrics));
         }
     }
 }

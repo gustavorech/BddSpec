@@ -4,7 +4,7 @@ Currently, a proof of concept only
 
 ### Things to do:
 
-~~* Treat and show exceptions~~
+* ~~Treat and show exceptions~~
 * Ident errors better
 * Specify and work with input args to configure the output
 * Search how to create a CLI, dotnet tool, nuget package

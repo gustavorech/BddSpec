@@ -68,9 +68,9 @@ namespace BddSpec.Core
             }
             finally
             {
+                timer.Stop();
                 TimesThisStepWasExecuted++;
                 TotalTimeSpent += timer.Elapsed;
-                timer.Stop();
             }
         }
 
@@ -89,6 +89,24 @@ namespace BddSpec.Core
             TestExecutionStepPrinter.Print(this);
 
             _innerExecutionSteps.ForEach(c => c.PrintOnlyErrors());
+        }
+
+        public void CollectMetrics(Metrics metrics)
+        {
+            metrics.TotalNodesReached++;
+
+            if (IsALeafStep)
+                metrics.TotalLeafNodes++;
+
+            if (HadAnExecutionError)
+                metrics.TotalNodeErrors++;
+            else if (IsALeafStep)
+                metrics.TotalLeafNodesPassed++;
+
+            metrics.TotalNodesExecuted += TimesThisStepWasExecuted;
+            metrics.TotalTime += TotalTimeSpent;
+
+            _innerExecutionSteps.ForEach(step => step.CollectMetrics(metrics));
         }
     }
 }
