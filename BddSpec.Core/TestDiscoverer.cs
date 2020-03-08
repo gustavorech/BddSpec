@@ -22,12 +22,12 @@ namespace BddSpec.Core
 
             Console.WriteLine("Executing...");
             Console.WriteLine();
-            List<TestClassExecutor> testExecutors = Sincronous(testTypes);
+            List<TestClassExecutor> testExecutors = Asincronous(testTypes);
 
             VerifyPrintAll(testExecutors);
 
-            CentralizedPrinter.PrintExceptions = true;
-            CentralizedPrinter.ShowLine = true;
+            PrinterConfiguration.PrintExceptions = true;
+            PrinterConfiguration.ShowLine = true;
 
             testExecutors.ForEach(c => c.PrintOnlyErrors());
 
@@ -61,7 +61,7 @@ namespace BddSpec.Core
 
         private static void VerifyPrintAll(List<TestClassExecutor> testExecutors)
         {
-            if (CentralizedPrinter.Strategy == PrinterStrategy.VerboseAfterCompletion)
+            if (PrinterConfiguration.Strategy == PrinterStrategy.VerboseAfterCompletion)
                 testExecutors
                     .ForEach(testExecutor =>
                     {

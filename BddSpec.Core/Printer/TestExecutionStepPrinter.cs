@@ -5,21 +5,42 @@ namespace BddSpec.Core.Printer
 {
     public class TestExecutionStepPrinter
     {
-        public static void Print(TestExecutionStep testExecutionStep)
+        private static object _printerLock = new object();
+
+        public static void PrintVerboseOrStatus(TestExecutionStep executionStep)
         {
-            TestStepDescription testStepDescription = testExecutionStep.TestStepDescription;
+            lock (_printerLock)
+            {
+                if (PrinterConfiguration.Strategy == PrinterStrategy.VerboseSteps)
+                    TestExecutionStepPrinter.PrintVerbose(executionStep);
+                else
+                    PrintOnlyStatus(executionStep);
+            }
+        }
 
-            ConsolePrinter.WriteIdentation(testExecutionStep.StepLevel);
+        public static void PrintOnlyStatus(TestExecutionStep executionStep)
+        {
+            if (executionStep.IsHadError)
+                ConsolePrinter.WriteError("F");
+            else if (executionStep.IsALeafStep)
+                ConsolePrinter.WriteSuccess(".");
+        }
 
-            PrintDescription(testExecutionStep, testStepDescription);
+        public static void PrintVerbose(TestExecutionStep executionStep)
+        {
+            TestStepDescription testStepDescription = executionStep.TestStepDescription;
 
-            if (CentralizedPrinter.ShowLine)
+            ConsolePrinter.WriteIdentation(executionStep.StepLevel);
+
+            PrintDescription(executionStep, testStepDescription);
+
+            if (PrinterConfiguration.ShowLine)
                 ConsolePrinter.WriteInfo($" (ln:{testStepDescription.SourceFileNumber})");
 
-            if (CentralizedPrinter.ShowTime)
-                PrintStepTimeSpan(testExecutionStep.TotalTimeSpent);
+            if (PrinterConfiguration.ShowTime)
+                PrintStepTimeSpan(executionStep.TotalTimeSpent);
 
-            PrintException(testExecutionStep.ErrorException);
+            PrintException(executionStep.ErrorException);
 
             Console.WriteLine();
         }
@@ -51,7 +72,7 @@ namespace BddSpec.Core.Printer
 
         private static void PrintException(Exception ex)
         {
-            if (!CentralizedPrinter.PrintExceptions || ex == null)
+            if (!PrinterConfiguration.PrintExceptions || ex == null)
                 return;
 
             Console.WriteLine();

@@ -38,10 +38,10 @@ namespace BddSpec.Core
 
             _isInitialized = true;
 
-            CentralizedPrinter.NotifyInitialized(this);
-
-            if (_innerSteps.Count == 0)
+            if (IsALeafStep)
                 NotifyCompleted();
+            else if (!IsCompleted)
+                TestExecutionStepPrinter.PrintVerboseOrStatus(this);
         }
 
         private void SafeExecute(TestStepAction stepAction)

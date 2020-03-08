@@ -25,7 +25,7 @@ namespace BddSpec.Core
 
         public void Print()
         {
-            TestExecutionStepPrinter.Print(this);
+            TestExecutionStepPrinter.PrintVerbose(this);
 
             _innerSteps.ForEach(c => c.Print());
         }
@@ -35,7 +35,7 @@ namespace BddSpec.Core
             if (!this.IsBranchHadError)
                 return;
 
-            TestExecutionStepPrinter.Print(this);
+            TestExecutionStepPrinter.PrintVerbose(this);
 
             _innerSteps.ForEach(c => c.PrintOnlyErrors());
         }
