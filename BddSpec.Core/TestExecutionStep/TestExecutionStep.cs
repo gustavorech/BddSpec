@@ -1,8 +1,5 @@
 
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using BddSpec.Core.Printer;
 
 namespace BddSpec.Core
@@ -14,7 +11,7 @@ namespace BddSpec.Core
         public int StepLevel { get; }
         public TestStepDescription TestStepDescription { get; }
 
-        public int TimesThisStepWasExecuted { get; private set; }
+        public int TimesExecuted { get; private set; }
         public TimeSpan TotalTimeSpent { get; private set; } = TimeSpan.Zero;
 
         public TestExecutionStep(TestExecutionStep parentStep,
@@ -55,7 +52,7 @@ namespace BddSpec.Core
             else if (IsALeafStep)
                 metrics.TotalLeafNodesPassed++;
 
-            metrics.TotalNodesExecuted += TimesThisStepWasExecuted;
+            metrics.TotalNodesExecuted += TimesExecuted;
             metrics.TotalTime += TotalTimeSpent;
 
             _innerSteps.ForEach(step => step.CollectMetrics(metrics));

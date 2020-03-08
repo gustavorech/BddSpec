@@ -17,10 +17,10 @@ namespace BddSpec.Core
             SafeExecute(stepAction);
 
             if (!IsInitialized)
-                Initialize(stepAction, testClassInstance);
+                CreateInnerStepsFromAddedActions(testClassInstance);
         }
 
-        private void Initialize(TestStepAction stepAction, BddLike testClassInstance)
+        private void CreateInnerStepsFromAddedActions(BddLike testClassInstance)
         {
             for (int i = 0; i < testClassInstance.testStepsActions.Count; i++)
             {
@@ -59,7 +59,7 @@ namespace BddSpec.Core
             finally
             {
                 timer.Stop();
-                TimesThisStepWasExecuted++;
+                TimesExecuted++;
                 TotalTimeSpent += timer.Elapsed;
             }
         }
