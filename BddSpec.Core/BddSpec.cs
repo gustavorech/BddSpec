@@ -4,11 +4,11 @@ using System.Runtime.CompilerServices;
 
 namespace BddSpec.Core
 {
-    public abstract partial class BddLike
+    public abstract partial class SpecClass
     {
         public List<TestStepAction> testStepsActions { get; } = new List<TestStepAction>();
 
-        public abstract void ConfigureTests();
+        public abstract void SetUpSpecs();
 
         public void When(string description, Action action,
             [CallerFilePath] string sourceFilePath = "",

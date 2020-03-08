@@ -11,20 +11,20 @@ namespace BddSpec.Core
 
         public bool IsInitialized { get => _isInitialized; }
 
-        public void Execute(TestStepAction stepAction, BddLike testClassInstance)
+        public void Execute(TestStepAction stepAction, SpecClass specClassInstance)
         {
-            testClassInstance.testStepsActions.Clear();
+            specClassInstance.testStepsActions.Clear();
             SafeExecute(stepAction);
 
             if (!IsInitialized)
-                CreateInnerStepsFromAddedActions(testClassInstance);
+                CreateInnerStepsFromAddedActions(specClassInstance);
         }
 
-        private void CreateInnerStepsFromAddedActions(BddLike testClassInstance)
+        private void CreateInnerStepsFromAddedActions(SpecClass specClassInstance)
         {
-            for (int i = 0; i < testClassInstance.testStepsActions.Count; i++)
+            for (int i = 0; i < specClassInstance.testStepsActions.Count; i++)
             {
-                TestStepAction innerTestAction = testClassInstance.testStepsActions[i];
+                TestStepAction innerTestAction = specClassInstance.testStepsActions[i];
                 CreateInnerStepFromAction(innerTestAction, i);
             }
 

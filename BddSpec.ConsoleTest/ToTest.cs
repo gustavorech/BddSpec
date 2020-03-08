@@ -9,9 +9,9 @@ namespace BddSpec.ConsoleTest
         public string Name { get; set; }
     }
 
-    public class ToTestTest : BddLike
+    public class ToTestTest : SpecClass
     {
-        public override void ConfigureTests()
+        public override void SetUpSpecs()
         {
             ToTest toTest = new ToTest();
 

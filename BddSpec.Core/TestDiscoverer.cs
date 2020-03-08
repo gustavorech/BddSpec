@@ -16,7 +16,7 @@ namespace BddSpec.Core
             IEnumerable<Type> testTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(x => x.GetTypes())
                 .Where(x =>
-                typeof(BddLike).IsAssignableFrom(x)
+                typeof(SpecClass).IsAssignableFrom(x)
                 && !x.IsInterface
                 && !x.IsAbstract);
 

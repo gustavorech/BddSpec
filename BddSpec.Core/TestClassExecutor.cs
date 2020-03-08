@@ -16,32 +16,32 @@ namespace BddSpec.Core
         {
             do
             {
-                BddLike testClassInstance = (BddLike)Activator.CreateInstance(type);
+                SpecClass specClassInstance = (SpecClass)Activator.CreateInstance(type);
 
                 TestStepDescription stepDescription = new TestStepDescription("", 0, type.Name, TestStepType.Class);
-                TestStepAction stepAction = new TestStepAction(stepDescription, testClassInstance.ConfigureTests);
+                TestStepAction stepAction = new TestStepAction(stepDescription, specClassInstance.SetUpSpecs);
 
-                testClassInstance.testStepsActions.Add(stepAction);
+                specClassInstance.testStepsActions.Add(stepAction);
 
                 if (rootExecutionStep == null)
                     rootExecutionStep = new TestExecutionStep(null, stepAction, 0, 0);
 
-                Recursion(testClassInstance, rootExecutionStep);
+                ExecuteOnePath(specClassInstance, rootExecutionStep);
             }
             while (!rootExecutionStep.IsCompleted);
         }
 
-        private void Recursion(BddLike testClassInstance, TestExecutionStep currentStep)
+        private void ExecuteOnePath(SpecClass specClassInstance, TestExecutionStep currentStep)
         {
-            if (currentStep == null)
-                return;
+            while (currentStep != null)
+            {
+                TestStepAction currentAction =
+                    specClassInstance.testStepsActions[currentStep.PositionToGetTheActionInTheStack];
 
-            TestStepAction currentAction =
-                testClassInstance.testStepsActions[currentStep.PositionToGetTheActionInTheStack];
+                currentStep.Execute(currentAction, specClassInstance);
 
-            currentStep.Execute(currentAction, testClassInstance);
-
-            Recursion(testClassInstance, currentStep.GetCurrentStepToExecute());
+                currentStep = currentStep.GetCurrentInnerStepToExecute();
+            }
         }
 
         public void Print()

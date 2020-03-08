@@ -9,7 +9,7 @@ namespace BddSpec.Core
 
         public bool IsALeafStep { get => _innerSteps.Count == 0; }
 
-        public TestExecutionStep GetCurrentStepToExecute()
+        public TestExecutionStep GetCurrentInnerStepToExecute()
         {
             if (_quantityOfInnerStepsCompleted >= _innerSteps.Count)
                 return null;
