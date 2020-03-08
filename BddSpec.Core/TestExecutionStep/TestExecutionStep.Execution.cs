@@ -13,19 +13,16 @@ namespace BddSpec.Core
 
         public void Execute(TestStepAction stepAction, BddLike testClassInstance)
         {
+            testClassInstance.testStepsActions.Clear();
+            SafeExecute(stepAction);
+
             if (!IsInitialized)
                 Initialize(stepAction, testClassInstance);
-            else
-                SafeExecute(stepAction);
         }
 
         private void Initialize(TestStepAction stepAction, BddLike testClassInstance)
         {
-            int currentStackCount = testClassInstance.testStepsActions.Count;
-
-            SafeExecute(stepAction);
-
-            for (int i = currentStackCount; i < testClassInstance.testStepsActions.Count; i++)
+            for (int i = 0; i < testClassInstance.testStepsActions.Count; i++)
             {
                 TestStepAction innerTestAction = testClassInstance.testStepsActions[i];
                 CreateInnerStepFromAction(innerTestAction, i);
