@@ -17,3 +17,4 @@ Currently, a proof of concept only
 * Understands how to integrate with assertions libraries
 * Protect test discoverer and test execution from possible errors
 * Protect the entire suit from possible errors and show it
+* For a paralel execution find a non blocking way to write on the console
