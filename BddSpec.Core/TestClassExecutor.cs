@@ -4,34 +4,39 @@ namespace BddSpec.Core
 {
     public class TestClassExecutor
     {
-        private Type type;
-        private TestExecutionStep rootExecutionStep;
+        private Type _type;
+        private TestExecutionStep _rootStep;
 
         public TestClassExecutor(Type type)
         {
-            this.type = type;
+            this._type = type;
         }
 
-        public void Execute()
+        public void IsolateAndExecuteAllPaths()
         {
             do
             {
-                SpecClass specClassInstance = (SpecClass)Activator.CreateInstance(type);
+                SpecClass specClassInstance = (SpecClass)Activator.CreateInstance(_type);
 
-                TestStepDescription stepDescription = new TestStepDescription("", 0, type.Name, TestStepType.Class);
+                TestStepDescription stepDescription = new TestStepDescription("", 0, _type.Name, TestStepType.Class);
                 TestStepAction stepAction = new TestStepAction(stepDescription, specClassInstance.SetUpSpecs);
 
                 specClassInstance.testStepsActions.Add(stepAction);
 
-                if (rootExecutionStep == null)
-                    rootExecutionStep = new TestExecutionStep(null, stepAction, 0, 0);
+                VerifyInitalizeRootStructureOnFirstPath(stepAction);
 
-                ExecuteOnePath(specClassInstance, rootExecutionStep);
+                ExecuteOnePathThroughCompletion(specClassInstance, _rootStep);
             }
-            while (!rootExecutionStep.IsCompleted);
+            while (!_rootStep.IsCompleted);
         }
 
-        private void ExecuteOnePath(SpecClass specClassInstance, TestExecutionStep currentStep)
+        private void VerifyInitalizeRootStructureOnFirstPath(TestStepAction stepAction)
+        {
+            if (_rootStep == null)
+                _rootStep = new TestExecutionStep(null, stepAction, 0, 0);
+        }
+
+        private void ExecuteOnePathThroughCompletion(SpecClass specClassInstance, TestExecutionStep currentStep)
         {
             while (currentStep != null)
             {
@@ -44,28 +49,28 @@ namespace BddSpec.Core
             }
         }
 
-        public void Print()
+        public void PrintAllVerbose()
         {
             Console.WriteLine();
 
-            rootExecutionStep.Print();
+            _rootStep.Print();
         }
 
         public void PrintOnlyErrors()
         {
-            if (!rootExecutionStep.IsBranchHadError)
+            if (!_rootStep.IsBranchHadError)
                 return;
 
             Console.WriteLine();
             Console.WriteLine("ERRORS!!!");
-            rootExecutionStep.PrintOnlyErrors();
+            _rootStep.PrintOnlyErrors();
         }
 
         public void CollectMetrics(Metrics metrics)
         {
             metrics.TotalTestClasses++;
 
-            rootExecutionStep.CollectMetrics(metrics);
+            _rootStep.CollectMetrics(metrics);
         }
     }
 }

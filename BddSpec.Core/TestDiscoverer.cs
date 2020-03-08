@@ -41,7 +41,7 @@ namespace BddSpec.Core
                 .Select(type =>
                 {
                     TestClassExecutor testExecutor = new TestClassExecutor(type);
-                    testExecutor.Execute();
+                    testExecutor.IsolateAndExecuteAllPaths();
 
                     return testExecutor;
                 })
@@ -53,7 +53,7 @@ namespace BddSpec.Core
                 .Select(type =>
                 {
                     TestClassExecutor testExecutor = new TestClassExecutor(type);
-                    testExecutor.Execute();
+                    testExecutor.IsolateAndExecuteAllPaths();
 
                     return testExecutor;
                 })
@@ -65,7 +65,7 @@ namespace BddSpec.Core
                 testExecutors
                     .ForEach(testExecutor =>
                     {
-                        testExecutor.Print();
+                        testExecutor.PrintAllVerbose();
                     });
         }
 
