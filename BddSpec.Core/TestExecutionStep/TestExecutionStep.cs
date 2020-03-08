@@ -24,7 +24,7 @@ namespace BddSpec.Core
         {
             get
             {
-                if (IsHadAnExecutionError)
+                if (IsHadError)
                     return true;
 
                 return IsInnerActionsHadBeenDiscovered && _innerExecutionSteps.TrueForAll(c => c.IsExecutionCompleted);
@@ -64,7 +64,7 @@ namespace BddSpec.Core
             }
             catch (Exception ex)
             {
-                NotifyHadAnExecutionError(ex);
+                NotifyHadError(ex);
             }
             finally
             {
@@ -83,7 +83,7 @@ namespace BddSpec.Core
 
         public void PrintOnlyErrors()
         {
-            if (!this.IsBranchHadAnExecutionError)
+            if (!this.IsBranchHadError)
                 return;
 
             TestExecutionStepPrinter.Print(this);
@@ -98,7 +98,7 @@ namespace BddSpec.Core
             if (IsALeafStep)
                 metrics.TotalLeafNodes++;
 
-            if (IsHadAnExecutionError)
+            if (IsHadError)
                 metrics.TotalNodeErrors++;
             else if (IsALeafStep)
                 metrics.TotalLeafNodesPassed++;

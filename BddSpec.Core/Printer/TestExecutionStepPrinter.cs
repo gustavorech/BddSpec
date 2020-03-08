@@ -29,7 +29,7 @@ namespace BddSpec.Core.Printer
         {
             string message = $"{testStepDescription.ContextTypeName}: {testStepDescription.TestDescription}";
 
-            if (testExecutionStep.IsHadAnExecutionError)
+            if (testExecutionStep.IsHadError)
                 ConsolePrinter.WriteError(message);
             else if (testExecutionStep.IsALeafStep)
                 ConsolePrinter.WriteSuccess(message);
