@@ -5,30 +5,30 @@ namespace BddSpec.Core
 {
     public partial class TestExecutionStep
     {
-        private bool _childHadError;
+        private bool _innerStepHadError;
         private bool _hadError;
 
         public Exception ErrorException { get; private set; }
 
-        public bool AnyChildHadExecutionError { get => _childHadError; }
-        public bool HadAnExecutionError { get => _hadError; }
-        public bool ThisBranchHadAnExecutionError { get => AnyChildHadExecutionError || HadAnExecutionError; }
+        public bool IsInnerStepHadExecutionError { get => _innerStepHadError; }
+        public bool IsHadAnExecutionError { get => _hadError; }
+        public bool IsBranchHadAnExecutionError { get => IsInnerStepHadExecutionError || IsHadAnExecutionError; }
 
         private void NotifyHadAnExecutionError(Exception ex)
         {
             ErrorException = ex;
             _hadError = true;
 
-            _parentExecutionStep?.NotifyChildHadAnExecutionError();
+            _parentExecutionStep?.NotifyInnerStepHadAnExecutionError();
         }
 
-        private void NotifyChildHadAnExecutionError()
+        private void NotifyInnerStepHadAnExecutionError()
         {
-            if (_childHadError)
+            if (_innerStepHadError)
                 return;
 
-            _childHadError = true;
-            _parentExecutionStep?.NotifyChildHadAnExecutionError();
+            _innerStepHadError = true;
+            _parentExecutionStep?.NotifyInnerStepHadAnExecutionError();
         }
     }
 }

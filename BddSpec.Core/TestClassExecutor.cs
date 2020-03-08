@@ -53,7 +53,7 @@ namespace BddSpec.Core
             int currentStackCount = testClassInstance.testStepsActions.Count;
             currentTestStep.SafeInvokeAction(currentTestAction);
 
-            if (currentTestStep.HadAnExecutionError)
+            if (currentTestStep.IsHadAnExecutionError)
             {
                 CentralizedPrinter.NotifyCompletion(currentTestStep);
                 return;
@@ -102,7 +102,7 @@ namespace BddSpec.Core
 
         public void PrintOnlyErrors()
         {
-            if (!stepsDeclaredOnTop.Any(c => c.ThisBranchHadAnExecutionError))
+            if (!stepsDeclaredOnTop.Any(c => c.IsBranchHadAnExecutionError))
                 return;
 
             Console.WriteLine();

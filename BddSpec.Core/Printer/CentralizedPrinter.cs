@@ -17,7 +17,7 @@ namespace BddSpec.Core.Printer
             {
                 if (Strategy == PrinterStrategy.VerboseSteps)
                     TestExecutionStepPrinter.Print(testExecutionStep);
-                else if (testExecutionStep.HadAnExecutionError)
+                else if (testExecutionStep.IsHadAnExecutionError)
                     ConsolePrinter.WriteError("F");
                 else if (testExecutionStep.IsALeafStep)
                     ConsolePrinter.WriteSuccess(".");
