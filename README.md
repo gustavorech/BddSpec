@@ -4,6 +4,7 @@ Currently, a proof of concept only
 
 ## Things to do
 
+* Add after stack execution
 * Search how to create a CLI, dotnet tool, nuget package
 * Print it better
 * Search how to inform the terminal that not all tests passed (exit 0 os something like that)
