@@ -8,67 +8,81 @@ namespace BddSpec.Core
 {
     internal class TestDiscoverer
     {
+        private static List<Type> specClassesTypes = new List<Type>();
+
         internal static void DiscoverAndExecute()
         {
             Stopwatch timer = Stopwatch.StartNew();
 
             Console.WriteLine("Initializing tests...");
-            IEnumerable<Type> testTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(x => x.GetTypes())
-                .Where(x =>
-                typeof(SpecClass).IsAssignableFrom(x)
-                && !x.IsInterface
-                && !x.IsAbstract);
-
             Console.WriteLine("Executing...");
             Console.WriteLine();
 
-            List<TestClassExecutor> testExecutors;
+            DiscoverSpecClassesTypes();
 
-            bool shouldBlockAsynchronous =
-                ExecutionConfiguration.Verbosity == PrinterVerbosity.VerboseSteps;
+            List<TestClassExecutor> specExecutors = ExecuteSyncOrASync();
 
-            if (ExecutionConfiguration.ExecuteAsynchronous && !shouldBlockAsynchronous)
-                testExecutors = ExecuteAsynchronous(testTypes);
-            else
-                testExecutors = ExecuteSynchronous(testTypes);
+            VerifyPrintSummaryAtEnd(specExecutors);
 
-            VerifyPrintAll(testExecutors);
+            PrintErorrsIfOccurred(specExecutors);
 
-            ExecutionConfiguration.PrintExceptions = true;
-            ExecutionConfiguration.ShowLine = true;
-
-            testExecutors.ForEach(c => c.PrintOnlyErrors());
-
-            CollectAndPrintMetrics(testExecutors);
+            CollectAndPrintMetrics(specExecutors);
 
             Console.WriteLine("Total time: " + timer.Elapsed.ToString());
         }
 
-        private static List<TestClassExecutor> ExecuteSynchronous(IEnumerable<Type> testTypes) =>
-            testTypes
-                .Select(type =>
+        private static void DiscoverSpecClassesTypes()
+        {
+            specClassesTypes = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(x => x.GetTypes())
+                .Where(x =>
                 {
-                    TestClassExecutor testExecutor = new TestClassExecutor(type);
-                    testExecutor.IsolateAndExecuteAllPaths();
-
-                    return testExecutor;
+                    return typeof(SpecClass).IsAssignableFrom(x)
+                    && !x.IsInterface
+                    && !x.IsAbstract;
                 })
                 .ToList();
 
-        private static List<TestClassExecutor> ExecuteAsynchronous(IEnumerable<Type> testTypes) =>
-            testTypes
+            if (!specClassesTypes.Any())
+            {
+                Console.WriteLine();
+                Console.WriteLine();
+                ConsolePrinter.WriteError("No spec classes was found");
+                Environment.Exit(1);
+            }
+        }
+
+        private static List<TestClassExecutor> ExecuteSyncOrASync()
+        {
+            bool shouldBlockAsynchronous =
+                ExecutionConfiguration.Verbosity == PrinterVerbosity.VerboseSteps;
+
+            if (ExecutionConfiguration.ExecuteAsynchronous && !shouldBlockAsynchronous)
+                return ExecuteAsynchronous();
+            else
+                return ExecuteSynchronous();
+        }
+
+        private static List<TestClassExecutor> ExecuteSynchronous() =>
+            specClassesTypes
+                .Select(CreateAndExecuteTestClassExecutor)
+                .ToList();
+
+        private static List<TestClassExecutor> ExecuteAsynchronous() =>
+            specClassesTypes
                 .AsParallel()
-                .Select(type =>
-                {
-                    TestClassExecutor testExecutor = new TestClassExecutor(type);
-                    testExecutor.IsolateAndExecuteAllPaths();
-
-                    return testExecutor;
-                })
+                .Select(CreateAndExecuteTestClassExecutor)
                 .ToList();
 
-        private static void VerifyPrintAll(List<TestClassExecutor> testExecutors)
+        private static TestClassExecutor CreateAndExecuteTestClassExecutor(Type type)
+        {
+            TestClassExecutor testExecutor = new TestClassExecutor(type);
+            testExecutor.IsolateAndExecuteAllPaths();
+
+            return testExecutor;
+        }
+
+        private static void VerifyPrintSummaryAtEnd(List<TestClassExecutor> testExecutors)
         {
             if (ExecutionConfiguration.Verbosity == PrinterVerbosity.VerboseAfterCompletion)
                 testExecutors
@@ -76,6 +90,14 @@ namespace BddSpec.Core
                     {
                         testExecutor.PrintAllVerbose();
                     });
+        }
+
+        private static void PrintErorrsIfOccurred(List<TestClassExecutor> specExecutors)
+        {
+            ExecutionConfiguration.PrintExceptions = true;
+            ExecutionConfiguration.ShowLine = true;
+
+            specExecutors.ForEach(c => c.PrintOnlyErrors());
         }
 
         private static void CollectAndPrintMetrics(List<TestClassExecutor> testExecutors)
