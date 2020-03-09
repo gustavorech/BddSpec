@@ -3,7 +3,7 @@ using CommandLine;
 
 namespace BddSpec.Core.Options
 {
-    internal enum OptionVerbosityLevel
+    public enum OptionVerbosityLevel
     {
         errors = 0,
         e = 0,
