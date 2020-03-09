@@ -20,15 +20,27 @@ namespace BddSpec.Core
 
             DiscoverSpecClassesTypes();
 
+            Console.WriteLine("Spec classes:");
+            specClassesTypes
+                .Select(c => c.FullName)
+                .ToList()
+                .ForEach(c => Console.WriteLine(c));
+            Console.WriteLine();
+
             List<TestClassExecutor> specExecutors = ExecuteSyncOrASync();
+            Console.WriteLine();
+            Console.WriteLine();
 
             VerifyPrintSummaryAtEnd(specExecutors);
 
             PrintErorrsIfOccurred(specExecutors);
 
-            CollectAndPrintMetrics(specExecutors);
+            bool hasErrors = CollectAndPrintMetrics(specExecutors);
 
             Console.WriteLine("Total time: " + timer.Elapsed.ToString());
+
+            if (hasErrors)
+                Environment.Exit(1);
         }
 
         private static void DiscoverSpecClassesTypes()
@@ -100,7 +112,7 @@ namespace BddSpec.Core
             specExecutors.ForEach(c => c.PrintOnlyErrors());
         }
 
-        private static void CollectAndPrintMetrics(List<TestClassExecutor> testExecutors)
+        private static bool CollectAndPrintMetrics(List<TestClassExecutor> testExecutors)
         {
             Metrics metrics = new Metrics();
             testExecutors.ForEach(c => c.CollectMetrics(metrics));
@@ -134,6 +146,8 @@ namespace BddSpec.Core
                 Console.WriteLine();
                 Console.WriteLine();
             }
+
+            return metrics.TotalNodeErrors > 0;
         }
     }
 }
