@@ -8,7 +8,7 @@ namespace BddSpec.ConsoleTest
     {
         static void Main(string[] args)
         {
-            if(!OptionsProcessor.ReadOptions(args))
+            if (!OptionsProcessor.ReadOptions(args))
                 Environment.Exit(1);
 
             TestDiscoverer.DiscoverAndExecute();

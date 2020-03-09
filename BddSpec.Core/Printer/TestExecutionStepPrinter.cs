@@ -11,7 +11,7 @@ namespace BddSpec.Core.Printer
         {
             lock (_printerLock)
             {
-                if (PrinterConfiguration.Strategy == PrinterStrategy.VerboseSteps)
+                if (ExecutionConfiguration.Verbosity == PrinterVerbosity.VerboseSteps)
                     TestExecutionStepPrinter.PrintVerbose(executionStep);
                 else
                     PrintOnlyStatus(executionStep);
@@ -34,10 +34,10 @@ namespace BddSpec.Core.Printer
 
             PrintDescription(executionStep, testStepDescription);
 
-            if (PrinterConfiguration.ShowLine)
+            if (ExecutionConfiguration.ShowLine)
                 ConsolePrinter.WriteInfo($" (ln:{testStepDescription.SourceFileNumber})");
 
-            if (PrinterConfiguration.ShowTime)
+            if (ExecutionConfiguration.ShowTime)
                 PrintStepTimeSpan(executionStep.TotalTimeSpent);
 
             PrintException(executionStep.ErrorException);
@@ -72,7 +72,7 @@ namespace BddSpec.Core.Printer
 
         private static void PrintException(Exception ex)
         {
-            if (!PrinterConfiguration.PrintExceptions || ex == null)
+            if (!ExecutionConfiguration.PrintExceptions || ex == null)
                 return;
 
             Console.WriteLine();

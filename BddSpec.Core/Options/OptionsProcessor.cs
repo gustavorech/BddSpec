@@ -1,22 +1,44 @@
-using System.Runtime.CompilerServices;
-using System;
-using CommandLine;
 
-namespace BddSpec.Core.Options {
+using CommandLine;
+using BddSpec.Core.Printer;
+
+namespace BddSpec.Core.Options
+{
     public class OptionsProcessor
     {
-        public static CoreOptions CoreOptions{ get; private set; }
         public static bool ReadOptions(string[] args)
         {
-            bool _isSuccess = true;
+            bool isSuccess = true;
 
-            Parser.Default.ParseArguments<CoreOptions>(args)
-                .WithParsed<CoreOptions>(c => OptionsProcessor.CoreOptions = c)
-                .WithNotParsed(c => {
-                    _isSuccess = false;
+            Parser.Default.ParseArguments<StartOptions>(args)
+                .WithParsed<StartOptions>(options =>
+                {
+                    ExecutionConfiguration.ShowLine = options.ShowLine;
+                    ExecutionConfiguration.ShowTime = options.ShowTime;
+                    ExecutionConfiguration.ExecuteAsynchronous = options.ExecuteAsynchronous;
+
+                    switch (options.VerbosityLevel)
+                    {
+                        case OptionVerbosityLevel.errors:
+                            ExecutionConfiguration.Verbosity = PrinterVerbosity.OnlyShowErrors;
+                            break;
+                        case OptionVerbosityLevel.verbose:
+                            ExecutionConfiguration.Verbosity = PrinterVerbosity.VerboseSteps;
+                            break;
+                        case OptionVerbosityLevel.summary:
+                            ExecutionConfiguration.Verbosity = PrinterVerbosity.VerboseAfterCompletion;
+                            break;
+                    }
+
+                    if (options.VerbosityLevel == OptionVerbosityLevel.errors)
+                        ExecutionConfiguration.Verbosity = PrinterVerbosity.OnlyShowErrors;
+                })
+                .WithNotParsed(c =>
+                {
+                    isSuccess = false;
                 });
 
-            return _isSuccess;
+            return isSuccess;
         }
     }
 }

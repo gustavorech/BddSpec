@@ -22,12 +22,21 @@ namespace BddSpec.Core
 
             Console.WriteLine("Executing...");
             Console.WriteLine();
-            List<TestClassExecutor> testExecutors = Asincronous(testTypes);
+
+            List<TestClassExecutor> testExecutors;
+
+            bool shouldBlockAsynchronous =
+                ExecutionConfiguration.Verbosity == PrinterVerbosity.VerboseSteps;
+
+            if (ExecutionConfiguration.ExecuteAsynchronous && !shouldBlockAsynchronous)
+                testExecutors = ExecuteAsynchronous(testTypes);
+            else
+                testExecutors = ExecuteSynchronous(testTypes);
 
             VerifyPrintAll(testExecutors);
 
-            PrinterConfiguration.PrintExceptions = true;
-            PrinterConfiguration.ShowLine = true;
+            ExecutionConfiguration.PrintExceptions = true;
+            ExecutionConfiguration.ShowLine = true;
 
             testExecutors.ForEach(c => c.PrintOnlyErrors());
 
@@ -36,7 +45,7 @@ namespace BddSpec.Core
             Console.WriteLine("Total time: " + timer.Elapsed.ToString());
         }
 
-        private static List<TestClassExecutor> Sincronous(IEnumerable<Type> testTypes) =>
+        private static List<TestClassExecutor> ExecuteSynchronous(IEnumerable<Type> testTypes) =>
             testTypes
                 .Select(type =>
                 {
@@ -47,7 +56,7 @@ namespace BddSpec.Core
                 })
                 .ToList();
 
-        private static List<TestClassExecutor> Asincronous(IEnumerable<Type> testTypes) =>
+        private static List<TestClassExecutor> ExecuteAsynchronous(IEnumerable<Type> testTypes) =>
             testTypes
                 .AsParallel()
                 .Select(type =>
@@ -61,7 +70,7 @@ namespace BddSpec.Core
 
         private static void VerifyPrintAll(List<TestClassExecutor> testExecutors)
         {
-            if (PrinterConfiguration.Strategy == PrinterStrategy.VerboseAfterCompletion)
+            if (ExecutionConfiguration.Verbosity == PrinterVerbosity.VerboseAfterCompletion)
                 testExecutors
                     .ForEach(testExecutor =>
                     {

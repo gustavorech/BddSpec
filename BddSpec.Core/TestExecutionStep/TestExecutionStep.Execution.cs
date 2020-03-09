@@ -40,7 +40,8 @@ namespace BddSpec.Core
 
             if (IsALeafStep)
                 NotifyCompleted();
-            else if (!IsCompleted)
+
+            if (IsCompleted || !IsALeafStep)
                 TestExecutionStepPrinter.PrintVerboseOrStatus(this);
         }
 

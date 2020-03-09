@@ -17,8 +17,6 @@ namespace BddSpec.Core
 
             _isCompleted = true;
 
-            TestExecutionStepPrinter.PrintVerboseOrStatus(this);
-
             _parentStep?.NotifyInnerStepCompleted();
         }
 
