@@ -3,16 +3,16 @@ using System;
 
 namespace BddSpec.Core
 {
-    public partial class TestExecutionStep
+    internal partial class TestExecutionStep
     {
         private bool _isInnerStepHadError;
         private bool _isHadError;
 
-        public Exception ErrorException { get; private set; }
+        internal Exception ErrorException { get; private set; }
 
-        public bool IsInnerStepHadError { get => _isInnerStepHadError; }
-        public bool IsHadError { get => _isHadError; }
-        public bool IsBranchHadError { get => IsInnerStepHadError || IsHadError; }
+        internal bool IsInnerStepHadError { get => _isInnerStepHadError; }
+        internal bool IsHadError { get => _isHadError; }
+        internal bool IsBranchHadError { get => IsInnerStepHadError || IsHadError; }
 
         private void NotifyHadError(Exception ex)
         {

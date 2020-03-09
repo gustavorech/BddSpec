@@ -2,17 +2,17 @@
 
 namespace BddSpec.Core
 {
-    public class TestClassExecutor
+    internal class TestClassExecutor
     {
         private Type _type;
         private TestExecutionStep _rootStep;
 
-        public TestClassExecutor(Type type)
+        internal TestClassExecutor(Type type)
         {
             this._type = type;
         }
 
-        public void IsolateAndExecuteAllPaths()
+        internal void IsolateAndExecuteAllPaths()
         {
             do
             {
@@ -21,7 +21,7 @@ namespace BddSpec.Core
                 TestStepDescription stepDescription = new TestStepDescription("", 0, _type.Name, TestStepType.Class);
                 TestStepAction stepAction = new TestStepAction(stepDescription, specClassInstance.SetUpSpecs);
 
-                specClassInstance.testStepsActions.Add(stepAction);
+                specClassInstance.TestStepActions.Add(stepAction);
 
                 VerifyInitalizeRootStructureOnFirstPath(stepAction);
 
@@ -41,7 +41,7 @@ namespace BddSpec.Core
             while (currentStep != null)
             {
                 TestStepAction currentAction =
-                    specClassInstance.testStepsActions[currentStep.PositionToGetTheActionInTheStack];
+                    specClassInstance.TestStepActions[currentStep.PositionToGetTheActionInTheStack];
 
                 currentStep.Execute(currentAction, specClassInstance);
 
@@ -49,14 +49,14 @@ namespace BddSpec.Core
             }
         }
 
-        public void PrintAllVerbose()
+        internal void PrintAllVerbose()
         {
             Console.WriteLine();
 
             _rootStep.Print();
         }
 
-        public void PrintOnlyErrors()
+        internal void PrintOnlyErrors()
         {
             if (!_rootStep.IsBranchHadError)
                 return;
@@ -66,7 +66,7 @@ namespace BddSpec.Core
             _rootStep.PrintOnlyErrors();
         }
 
-        public void CollectMetrics(Metrics metrics)
+        internal void CollectMetrics(Metrics metrics)
         {
             metrics.TotalTestClasses++;
 

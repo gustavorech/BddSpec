@@ -6,9 +6,9 @@ using BddSpec.Core.Printer;
 
 namespace BddSpec.Core
 {
-    public class TestDiscoverer
+    internal class TestDiscoverer
     {
-        public static void DiscoverAndExecute()
+        internal static void DiscoverAndExecute()
         {
             Stopwatch timer = Stopwatch.StartNew();
 

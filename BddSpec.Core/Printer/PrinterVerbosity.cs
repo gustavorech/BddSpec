@@ -1,7 +1,7 @@
 ﻿
 namespace BddSpec.Core.Printer
 {
-    public enum PrinterVerbosity
+    internal enum PrinterVerbosity
     {
         VerboseSteps,
         VerboseAfterCompletion,

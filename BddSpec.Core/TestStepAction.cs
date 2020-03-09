@@ -2,12 +2,12 @@ using System;
 
 namespace BddSpec.Core
 {
-    public class TestStepAction
+    internal class TestStepAction
     {
-        public TestStepDescription Description { get; }
-        public Action Action { get; }
+        internal TestStepDescription Description { get; }
+        internal Action Action { get; }
 
-        public TestStepAction(TestStepDescription description, Action action)
+        internal TestStepAction(TestStepDescription description, Action action)
         {
             Description = description;
             Action = action;

@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace BddSpec.Core
 {
-    public partial class TestExecutionStep
+    internal partial class TestExecutionStep
     {
         private List<TestExecutionStep> _innerSteps = new List<TestExecutionStep>();
 
-        public bool IsALeafStep { get => _innerSteps.Count == 0; }
+        internal bool IsALeafStep { get => _innerSteps.Count == 0; }
 
-        public TestExecutionStep GetCurrentInnerStepToExecute()
+        internal TestExecutionStep GetCurrentInnerStepToExecute()
         {
             if (_quantityOfInnerStepsCompleted >= _innerSteps.Count)
                 return null;

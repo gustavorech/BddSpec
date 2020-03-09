@@ -3,14 +3,14 @@ using BddSpec.Core.Printer;
 
 namespace BddSpec.Core
 {
-    public partial class TestExecutionStep
+    internal partial class TestExecutionStep
     {
         private bool _isCompleted;
         private int _quantityOfInnerStepsCompleted;
 
-        public bool IsCompleted { get => _isCompleted; }
+        internal bool IsCompleted { get => _isCompleted; }
 
-        public void NotifyCompleted()
+        internal void NotifyCompleted()
         {
             if (_isCompleted)
                 return;
@@ -20,7 +20,7 @@ namespace BddSpec.Core
             _parentStep?.NotifyInnerStepCompleted();
         }
 
-        public void NotifyInnerStepCompleted()
+        internal void NotifyInnerStepCompleted()
         {
             _quantityOfInnerStepsCompleted++;
 

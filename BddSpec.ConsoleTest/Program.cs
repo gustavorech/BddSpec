@@ -1,6 +1,5 @@
 ﻿using System;
 using BddSpec.Core;
-using BddSpec.Core.Options;
 
 namespace BddSpec.ConsoleTest
 {
@@ -8,10 +7,7 @@ namespace BddSpec.ConsoleTest
     {
         static void Main(string[] args)
         {
-            if (!OptionsProcessor.ReadOptions(args))
-                Environment.Exit(1);
-
-            TestDiscoverer.DiscoverAndExecute();
+            SpecExecutor.Execute(args);
 
             Console.ReadLine();
         }

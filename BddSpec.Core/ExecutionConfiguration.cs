@@ -3,12 +3,12 @@ using BddSpec.Core.Printer;
 
 namespace BddSpec.Core
 {
-    public class ExecutionConfiguration
+    internal class ExecutionConfiguration
     {
-        public static PrinterVerbosity Verbosity = PrinterVerbosity.VerboseAfterCompletion;
-        public static bool ExecuteAsynchronous { get; set; }
-        public static bool PrintExceptions { get; set; }
-        public static bool ShowLine { get; set; }
-        public static bool ShowTime { get; set; }
+        internal static PrinterVerbosity Verbosity = PrinterVerbosity.VerboseAfterCompletion;
+        internal static bool ExecuteAsynchronous { get; set; }
+        internal static bool PrintExceptions { get; set; }
+        internal static bool ShowLine { get; set; }
+        internal static bool ShowTime { get; set; }
     }
 }

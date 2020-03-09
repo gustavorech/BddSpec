@@ -4,9 +4,9 @@ using BddSpec.Core.Printer;
 
 namespace BddSpec.Core.Options
 {
-    public class OptionsProcessor
+    internal class OptionsProcessor
     {
-        public static bool ReadOptions(string[] args)
+        internal static bool ReadOptions(string[] args)
         {
             bool isSuccess = true;
 

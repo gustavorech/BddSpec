@@ -6,7 +6,7 @@ namespace BddSpec.Core
 {
     public abstract partial class SpecClass
     {
-        public List<TestStepAction> testStepsActions { get; } = new List<TestStepAction>();
+        internal List<TestStepAction> TestStepActions { get; } = new List<TestStepAction>();
 
         public abstract void SetUpSpecs();
 
@@ -17,7 +17,7 @@ namespace BddSpec.Core
             TestStepDescription testDescription = new TestStepDescription(
                 sourceFilePath, sourceLineNumber, description, TestStepType.When);
 
-            testStepsActions.Add(new TestStepAction(testDescription, action));
+            TestStepActions.Add(new TestStepAction(testDescription, action));
         }
 
         public void It(string description, Action action,
@@ -27,7 +27,7 @@ namespace BddSpec.Core
             TestStepDescription testDescription = new TestStepDescription(
                 sourceFilePath, sourceLineNumber, description, TestStepType.It);
 
-            testStepsActions.Add(new TestStepAction(testDescription, action));
+            TestStepActions.Add(new TestStepAction(testDescription, action));
         }
 
         public void Method(string description, Action action,
@@ -37,7 +37,7 @@ namespace BddSpec.Core
             TestStepDescription testDescription = new TestStepDescription(
                 sourceFilePath, sourceLineNumber, description, TestStepType.Method);
 
-            testStepsActions.Add(new TestStepAction(testDescription, action));
+            TestStepActions.Add(new TestStepAction(testDescription, action));
         }
     }
 }

@@ -5,15 +5,15 @@ using BddSpec.Core.Printer;
 
 namespace BddSpec.Core
 {
-    public partial class TestExecutionStep
+    internal partial class TestExecutionStep
     {
         private bool _isInitialized;
 
-        public bool IsInitialized { get => _isInitialized; }
+        internal bool IsInitialized { get => _isInitialized; }
 
-        public void Execute(TestStepAction stepAction, SpecClass specClassInstance)
+        internal void Execute(TestStepAction stepAction, SpecClass specClassInstance)
         {
-            specClassInstance.testStepsActions.Clear();
+            specClassInstance.TestStepActions.Clear();
             SafeExecute(stepAction);
 
             if (!IsInitialized)
@@ -22,9 +22,9 @@ namespace BddSpec.Core
 
         private void CreateInnerStepsFromAddedActions(SpecClass specClassInstance)
         {
-            for (int i = 0; i < specClassInstance.testStepsActions.Count; i++)
+            for (int i = 0; i < specClassInstance.TestStepActions.Count; i++)
             {
-                TestStepAction innerTestAction = specClassInstance.testStepsActions[i];
+                TestStepAction innerTestAction = specClassInstance.TestStepActions[i];
                 CreateInnerStepFromAction(innerTestAction, i);
             }
 

@@ -3,7 +3,7 @@ using CommandLine;
 
 namespace BddSpec.Core.Options
 {
-    public class StartOptions
+    internal class StartOptions
     {
         const string VERBOSITY_HELP_TEXT =
 @"set the verbosity of the output
@@ -12,15 +12,15 @@ namespace BddSpec.Core.Options
 - s[ummary] : print every step only after end of execution";
 
         [Option('v', "verbosity", Default = OptionVerbosityLevel.errors, HelpText = VERBOSITY_HELP_TEXT)]
-        public OptionVerbosityLevel VerbosityLevel { get; set; }
+        internal OptionVerbosityLevel VerbosityLevel { get; set; }
 
         [Option('l', "show-line", Default = false, HelpText = "Shows the execution line after the step")]
-        public bool ShowLine { get; set; }
+        internal bool ShowLine { get; set; }
 
         [Option('t', "show-time", Default = false, HelpText = "Shows the execution time after the step")]
-        public bool ShowTime { get; set; }
+        internal bool ShowTime { get; set; }
 
         [Option('a', "async", Default = false, HelpText = "Executes spec classes asynchronous")]
-        public bool ExecuteAsynchronous { get; set; }
+        internal bool ExecuteAsynchronous { get; set; }
     }
 }

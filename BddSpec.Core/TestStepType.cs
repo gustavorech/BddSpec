@@ -1,7 +1,7 @@
 
 namespace BddSpec.Core
 {
-    public enum TestStepType
+    internal enum TestStepType
     {
         Class,
         Method,
