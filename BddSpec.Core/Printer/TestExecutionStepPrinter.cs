@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Linq;
 
 namespace BddSpec.Core.Printer
 {
@@ -34,13 +35,10 @@ namespace BddSpec.Core.Printer
 
             PrintDescription(executionStep, testStepDescription);
 
-            if (ExecutionConfiguration.ShowLine)
-                ConsolePrinter.WriteInfo($" (ln:{testStepDescription.SourceFileNumber})");
-
             if (ExecutionConfiguration.ShowTime)
                 PrintStepTimeSpan(executionStep.TotalTimeSpent);
 
-            PrintException(executionStep.ErrorException);
+            PrintException(executionStep.ErrorException, executionStep.StepLevel);
 
             Console.WriteLine();
         }
@@ -49,6 +47,9 @@ namespace BddSpec.Core.Printer
             TestStepDescription testStepDescription)
         {
             string message = $"{testStepDescription.ContextTypeName}: {testStepDescription.TestDescription}";
+
+            if (ExecutionConfiguration.ShowLine)
+                message = $"{message} :{testStepDescription.SourceFileNumber}";
 
             if (testExecutionStep.IsHadError)
                 ConsolePrinter.WriteError(message);
@@ -60,25 +61,36 @@ namespace BddSpec.Core.Printer
 
         private static void PrintStepTimeSpan(TimeSpan time)
         {
-            if (time > TimeSpan.FromMinutes(1))
-                ConsolePrinter.WriteInfo($" ({time.ToString("mm")}:{time.ToString("ss")}minutes)");
-            else if (time > TimeSpan.FromSeconds(1))
-                ConsolePrinter.WriteInfo($" ({time.ToString("ss")}:{time.ToString("fff")}s)");
-            else if (time > TimeSpan.FromMilliseconds(100))
-                ConsolePrinter.WriteInfo(" (" + time.ToString("fff") + "ms)");
-            else if (time > TimeSpan.FromMilliseconds(10))
-                ConsolePrinter.WriteInfo(" (" + time.ToString("fff").Substring(1) + "ms)");
+            ConsolePrinter.WriteInfo(" (" + time.TotalMilliseconds + "ms)");
         }
 
-        private static void PrintException(Exception ex)
+        private static void PrintException(Exception ex, int stepLevel)
         {
             if (!ExecutionConfiguration.PrintExceptions || ex == null)
                 return;
 
             Console.WriteLine();
-            ConsolePrinter.WriteError("Erro: " + ex.Message);
+            ex.Message
+                ?.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)
+                .ToList()
+                .ForEach(messageLine =>
+                {
+                    Console.WriteLine();
+                    ConsolePrinter.WriteIdentation(stepLevel + 1);
+                    ConsolePrinter.WriteError(messageLine);
+                });
+
             Console.WriteLine();
-            ConsolePrinter.WriteInfo("StackTrace: " + ex.StackTrace);
+            ex.StackTrace
+                ?.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)
+                .ToList()
+                .ForEach(messageLine =>
+                {
+                    Console.WriteLine();
+                    ConsolePrinter.WriteIdentation(stepLevel);
+                    ConsolePrinter.WriteInfo(messageLine);
+                });
+
             Console.WriteLine();
         }
     }
