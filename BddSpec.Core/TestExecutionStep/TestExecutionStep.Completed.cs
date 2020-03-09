@@ -27,5 +27,19 @@ namespace BddSpec.Core
             if (_quantityOfInnerStepsCompleted == _innerSteps.Count)
                 NotifyCompleted();
         }
+
+        private void NotifyInitialized()
+        {
+            if (_isInitialized)
+                return;
+
+            _isInitialized = true;
+
+            if (IsLeaf)
+                NotifyCompleted();
+
+            if (IsCompleted || !IsLeaf)
+                TestExecutionStepPrinter.PrintVerboseOrStatus(this);
+        }
     }
 }

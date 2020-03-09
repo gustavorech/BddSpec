@@ -14,6 +14,7 @@ namespace BddSpec.ConsoleTest
         public override void SetUpSpecs()
         {
             ToTest toTest = new ToTest();
+            After = () => Console.WriteLine("After");
 
             When("the name is Gustavo", () =>
             {
@@ -35,6 +36,7 @@ namespace BddSpec.ConsoleTest
 
             When("the name is Pedro", () =>
             {
+                After = () => throw new Exception("wtf is going on?");
                 toTest.Name = "Pedro";
 
                 It("is Pedro", () => Assert.AreEqual(toTest.Name, "Pedro"));

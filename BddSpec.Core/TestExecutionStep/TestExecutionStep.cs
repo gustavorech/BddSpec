@@ -44,12 +44,12 @@ namespace BddSpec.Core
         {
             metrics.TotalNodesReached++;
 
-            if (IsALeafStep)
+            if (IsLeaf)
                 metrics.TotalLeafNodes++;
 
             if (IsHadError)
                 metrics.TotalNodeErrors++;
-            else if (IsALeafStep)
+            else if (IsLeaf)
                 metrics.TotalLeafNodesPassed++;
 
             metrics.TotalNodesExecuted += TimesExecuted;

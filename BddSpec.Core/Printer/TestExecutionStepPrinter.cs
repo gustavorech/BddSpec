@@ -23,7 +23,7 @@ namespace BddSpec.Core.Printer
         {
             if (executionStep.IsHadError)
                 ConsolePrinter.WriteError("F");
-            else if (executionStep.IsALeafStep)
+            else if (executionStep.IsLeaf)
                 ConsolePrinter.WriteSuccess(".");
         }
 
@@ -53,7 +53,7 @@ namespace BddSpec.Core.Printer
 
             if (testExecutionStep.IsHadError)
                 ConsolePrinter.WriteError(message);
-            else if (testExecutionStep.IsALeafStep)
+            else if (testExecutionStep.IsLeaf)
                 ConsolePrinter.WriteSuccess(message);
             else
                 Console.Write(message);

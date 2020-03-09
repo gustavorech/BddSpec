@@ -7,7 +7,7 @@ namespace BddSpec.Core
     {
         private List<TestExecutionStep> _innerSteps = new List<TestExecutionStep>();
 
-        internal bool IsALeafStep { get => _innerSteps.Count == 0; }
+        internal bool IsLeaf { get => _innerSteps.Count == 0; }
 
         internal TestExecutionStep GetCurrentInnerStepToExecute()
         {

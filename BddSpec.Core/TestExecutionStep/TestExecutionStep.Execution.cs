@@ -14,7 +14,8 @@ namespace BddSpec.Core
         internal void Execute(TestStepAction stepAction, SpecClass specClassInstance)
         {
             specClassInstance.TestStepActions.Clear();
-            SafeExecute(stepAction);
+
+            SafeExecute(stepAction.Action);
 
             if (!IsInitialized)
                 CreateInnerStepsFromAddedActions(specClassInstance);
@@ -28,30 +29,27 @@ namespace BddSpec.Core
                 CreateInnerStepFromAction(innerTestAction, i);
             }
 
+            IfIsALeafExecuteAfters(specClassInstance);
+
             NotifyInitialized();
         }
 
-        private void NotifyInitialized()
+        private void IfIsALeafExecuteAfters(SpecClass specClassInstance)
         {
-            if (_isInitialized)
+            if (!IsLeaf)
                 return;
 
-            _isInitialized = true;
-
-            if (IsALeafStep)
-                NotifyCompleted();
-
-            if (IsCompleted || !IsALeafStep)
-                TestExecutionStepPrinter.PrintVerboseOrStatus(this);
+            while (specClassInstance.AfterActions.Count > 0 && !IsHadError)
+                SafeExecute(specClassInstance.AfterActions.Pop());
         }
 
-        private void SafeExecute(TestStepAction stepAction)
+        private void SafeExecute(Action action)
         {
             Stopwatch timer = Stopwatch.StartNew();
 
             try
             {
-                stepAction.Action.Invoke();
+                action.Invoke();
             }
             catch (Exception ex)
             {

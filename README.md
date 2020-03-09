@@ -4,7 +4,7 @@ Currently, a proof of concept only
 
 ## Things to do
 
-* Add after stack execution
+* Make the execution steps more clear, try to unify the boolean verifications creating meaningful conjunctions
 * Search how to create a CLI, dotnet tool, nuget package
 * Print it better
 * Search how to inform the terminal that not all tests passed (exit 0 os something like that)
@@ -19,6 +19,7 @@ Currently, a proof of concept only
 
 ## Completed
 
+* ~~Add after stack execution~~
 * ~~Ident errors better~~
 * ~~Treat and show exceptions~~
 * ~~Specify and work with input args to configure the output~~
