@@ -7,43 +7,55 @@ namespace BddSpec.Core
 {
     internal partial class TestExecutionStep
     {
-        private bool _isInitialized;
-
-        internal bool IsInitialized { get => _isInitialized; }
-
         internal void Execute(TestStepAction stepAction, SpecClass specClassInstance)
         {
             specClassInstance.TestStepActions.Clear();
 
-            SafeExecute(stepAction.Action);
+            SafeExecuteAction(stepAction.Action);
 
-            if (!IsInitialized)
-                CreateInnerStepsFromAddedActions(specClassInstance);
+            InitializeOnFirstExecution(specClassInstance);
         }
 
-        private void CreateInnerStepsFromAddedActions(SpecClass specClassInstance)
+        private void InitializeOnFirstExecution(SpecClass specClassInstance)
         {
-            for (int i = 0; i < specClassInstance.TestStepActions.Count; i++)
-            {
-                TestStepAction innerTestAction = specClassInstance.TestStepActions[i];
-                CreateInnerStepFromAction(innerTestAction, i);
-            }
+            if (IsInitialized)
+                return;
 
-            IfIsALeafExecuteAfters(specClassInstance);
+            CreateInnerStepsFromActions(specClassInstance);
 
             NotifyInitialized();
+
+            ExecutePostInitializationActions(specClassInstance);
         }
 
-        private void IfIsALeafExecuteAfters(SpecClass specClassInstance)
+        private void ExecutePostInitializationActions(SpecClass specClassInstance)
         {
-            if (!IsLeaf)
+            IfIsALeafExecuteAftersAndComplete(specClassInstance);
+
+            VerifyPrintAfterInitialization();
+        }
+
+        private void IfIsALeafExecuteAftersAndComplete(SpecClass specClassInstance)
+        {
+            if (IsBranch)
                 return;
 
             while (specClassInstance.AfterActions.Count > 0 && !IsHadError)
-                SafeExecute(specClassInstance.AfterActions.Pop());
+                SafeExecuteAction(specClassInstance.AfterActions.Pop());
+
+            NotifyCompleted();
         }
 
-        private void SafeExecute(Action action)
+        private void VerifyPrintAfterInitialization()
+        {
+            bool printIfIsABranchWithNoErorrsInitialization = IsBranch && !IsHadError;
+            bool printIfIsCompletedOnInitialization = IsCompleted;
+
+            if (printIfIsABranchWithNoErorrsInitialization || printIfIsCompletedOnInitialization)
+                TestExecutionStepPrinter.PrintVerboseOrStatus(this);
+        }
+
+        private void SafeExecuteAction(Action action)
         {
             Stopwatch timer = Stopwatch.StartNew();
 

@@ -8,6 +8,7 @@ namespace BddSpec.Core
         private List<TestExecutionStep> _innerSteps = new List<TestExecutionStep>();
 
         internal bool IsLeaf { get => _innerSteps.Count == 0; }
+        internal bool IsBranch { get => _innerSteps.Count > 0; }
 
         internal TestExecutionStep GetCurrentInnerStepToExecute()
         {
@@ -24,6 +25,15 @@ namespace BddSpec.Core
                 positionThisActionWillBeFindOnTheStack, StepLevel + 1);
 
             _innerSteps.Add(innerStepCreated);
+        }
+
+        private void CreateInnerStepsFromActions(SpecClass specClassInstance)
+        {
+            for (int i = 0; i < specClassInstance.TestStepActions.Count; i++)
+            {
+                TestStepAction innerTestAction = specClassInstance.TestStepActions[i];
+                CreateInnerStepFromAction(innerTestAction, i);
+            }
         }
     }
 }
