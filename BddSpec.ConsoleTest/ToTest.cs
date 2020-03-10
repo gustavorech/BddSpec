@@ -1,5 +1,5 @@
 ﻿using System;
-using BddSpec.Core;
+using BddSpec;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BddSpec.ConsoleTest

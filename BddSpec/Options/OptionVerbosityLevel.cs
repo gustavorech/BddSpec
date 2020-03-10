@@ -1,7 +1,7 @@
 using System;
 using CommandLine;
 
-namespace BddSpec.Core.Options
+namespace BddSpec.Options
 {
     public enum OptionVerbosityLevel
     {

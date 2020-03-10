@@ -1,9 +1,9 @@
 
 using System;
 
-namespace BddSpec.Core
+namespace BddSpec.Execution
 {
-    internal partial class TestExecutionStep
+    internal partial class ExecutionStep
     {
         private bool _isInnerStepHadError;
         private bool _isHadError;

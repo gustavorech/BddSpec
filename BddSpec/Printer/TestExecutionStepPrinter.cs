@@ -1,14 +1,16 @@
 ﻿
 using System;
 using System.Linq;
+using BddSpec.Configuration;
+using BddSpec.Execution;
 
-namespace BddSpec.Core.Printer
+namespace BddSpec.Printer
 {
     internal class TestExecutionStepPrinter
     {
         private static object _printerLock = new object();
 
-        internal static void PrintVerboseOrStatus(TestExecutionStep executionStep)
+        internal static void PrintVerboseOrStatus(ExecutionStep executionStep)
         {
             lock (_printerLock)
             {
@@ -19,7 +21,7 @@ namespace BddSpec.Core.Printer
             }
         }
 
-        internal static void PrintOnlyStatus(TestExecutionStep executionStep)
+        internal static void PrintOnlyStatus(ExecutionStep executionStep)
         {
             if (executionStep.IsHadError)
                 ConsolePrinter.WriteError("F");
@@ -27,9 +29,9 @@ namespace BddSpec.Core.Printer
                 ConsolePrinter.WriteSuccess(".");
         }
 
-        internal static void PrintVerbose(TestExecutionStep executionStep)
+        internal static void PrintVerbose(ExecutionStep executionStep)
         {
-            TestStepDescription testStepDescription = executionStep.TestStepDescription;
+            SpecDescription testStepDescription = executionStep.TestStepDescription;
 
             ConsolePrinter.WriteIdentation(executionStep.StepLevel);
 
@@ -43,8 +45,8 @@ namespace BddSpec.Core.Printer
             Console.WriteLine();
         }
 
-        private static void PrintDescription(TestExecutionStep testExecutionStep,
-            TestStepDescription testStepDescription)
+        private static void PrintDescription(ExecutionStep testExecutionStep,
+            SpecDescription testStepDescription)
         {
             string message = $"{testStepDescription.ContextTypeName} {testStepDescription.TestDescription}";
 

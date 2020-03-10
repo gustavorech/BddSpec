@@ -1,12 +1,13 @@
 
 using CommandLine;
-using BddSpec.Core.Printer;
+using BddSpec.Printer;
+using BddSpec.Configuration;
 
-namespace BddSpec.Core.Options
+namespace BddSpec.Options
 {
     internal class OptionsProcessor
     {
-        internal static bool ReadOptions(string[] args)
+        internal static bool CreateExecuteConfigurationFromOptions(string[] args)
         {
             bool isSuccess = true;
 

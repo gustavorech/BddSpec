@@ -1,8 +1,8 @@
 using System;
 
-namespace BddSpec.Core
+namespace BddSpec.Execution
 {
-    internal class Metrics
+    internal class ExecutionMetrics
     {
         internal int TotalTestClasses { get; set; }
         internal int TotalNodesReached { get; set; }

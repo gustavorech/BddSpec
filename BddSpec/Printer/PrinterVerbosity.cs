@@ -1,5 +1,5 @@
 ﻿
-namespace BddSpec.Core.Printer
+namespace BddSpec.Printer
 {
     internal enum PrinterVerbosity
     {

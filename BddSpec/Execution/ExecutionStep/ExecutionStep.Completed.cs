@@ -1,9 +1,9 @@
 
-using BddSpec.Core.Printer;
+using BddSpec.Printer;
 
-namespace BddSpec.Core
+namespace BddSpec.Execution
 {
-    internal partial class TestExecutionStep
+    internal partial class ExecutionStep
     {
         private bool _isInitialized;
         private bool _isCompleted;

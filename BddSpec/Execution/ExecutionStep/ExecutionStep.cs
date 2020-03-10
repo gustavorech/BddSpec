@@ -1,21 +1,21 @@
 
 using System;
-using BddSpec.Core.Printer;
+using BddSpec.Printer;
 
-namespace BddSpec.Core
+namespace BddSpec.Execution
 {
-    internal partial class TestExecutionStep
+    internal partial class ExecutionStep
     {
-        private TestExecutionStep _parentStep;
+        private ExecutionStep _parentStep;
         internal int PositionToGetTheActionInTheStack { get; }
         internal int StepLevel { get; }
-        internal TestStepDescription TestStepDescription { get; }
+        internal SpecDescription TestStepDescription { get; }
 
         internal int TimesExecuted { get; private set; }
         internal TimeSpan TotalTimeSpent { get; private set; } = TimeSpan.Zero;
 
-        internal TestExecutionStep(TestExecutionStep parentStep,
-            TestStepAction stepAction, int positionInStack, int level)
+        internal ExecutionStep(ExecutionStep parentStep,
+            SpecAction stepAction, int positionInStack, int level)
         {
             this._parentStep = parentStep;
             TestStepDescription = stepAction.Description;
@@ -40,7 +40,7 @@ namespace BddSpec.Core
             _innerSteps.ForEach(c => c.PrintOnlyErrors());
         }
 
-        internal void CollectMetrics(Metrics metrics)
+        internal void CollectMetrics(ExecutionMetrics metrics)
         {
             metrics.TotalNodesReached++;
 

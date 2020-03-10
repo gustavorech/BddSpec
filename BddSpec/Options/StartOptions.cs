@@ -1,7 +1,7 @@
 
 using CommandLine;
 
-namespace BddSpec.Core.Options
+namespace BddSpec.Options
 {
     public class StartOptions
     {

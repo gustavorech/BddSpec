@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace BddSpec.Core
+namespace BddSpec
 {
     public abstract partial class SpecClass
     {
-        internal List<TestStepAction> TestStepActions { get; } = new List<TestStepAction>();
+        internal List<SpecAction> SpecActions { get; } = new List<SpecAction>();
         internal Stack<Action> AfterActions { get; } = new Stack<Action>();
 
         public abstract void SetUpSpecs();
@@ -20,30 +20,30 @@ namespace BddSpec.Core
             [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
-            TestStepDescription testDescription = new TestStepDescription(
-                sourceFilePath, sourceLineNumber, description, TestStepType.When);
+            SpecDescription testDescription = new SpecDescription(
+                sourceFilePath, sourceLineNumber, description, SpecType.When);
 
-            TestStepActions.Add(new TestStepAction(testDescription, action));
+            SpecActions.Add(new SpecAction(testDescription, action));
         }
 
         public void It(string description, Action action,
             [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
-            TestStepDescription testDescription = new TestStepDescription(
-                sourceFilePath, sourceLineNumber, description, TestStepType.It);
+            SpecDescription testDescription = new SpecDescription(
+                sourceFilePath, sourceLineNumber, description, SpecType.It);
 
-            TestStepActions.Add(new TestStepAction(testDescription, action));
+            SpecActions.Add(new SpecAction(testDescription, action));
         }
 
         public void Method(string description, Action action,
             [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
         {
-            TestStepDescription testDescription = new TestStepDescription(
-                sourceFilePath, sourceLineNumber, description, TestStepType.Method);
+            SpecDescription testDescription = new SpecDescription(
+                sourceFilePath, sourceLineNumber, description, SpecType.Method);
 
-            TestStepActions.Add(new TestStepAction(testDescription, action));
+            SpecActions.Add(new SpecAction(testDescription, action));
         }
     }
 }

@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BddSpec.ConsoleTest", "BddSpec.ConsoleTest\BddSpec.ConsoleTest.csproj", "{E02A920A-E458-40F4-AAD5-003CFA8AD607}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BddSpec.Core", "BddSpec.Core\BddSpec.Core.csproj", "{F1BCF36B-E0C7-4EF0-9276-294A7B63F9DC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BddSpec", "BddSpec\BddSpec.csproj", "{F1BCF36B-E0C7-4EF0-9276-294A7B63F9DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

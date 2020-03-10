@@ -2,11 +2,12 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Collections.Generic;
-using BddSpec.Core.Printer;
+using BddSpec.Printer;
+using BddSpec.Configuration;
 
-namespace BddSpec.Core
+namespace BddSpec.Execution
 {
-    internal class TestDiscoverer
+    internal class SuiteExecutor
     {
         private static List<Type> specClassesTypes = new List<Type>();
 
@@ -27,7 +28,7 @@ namespace BddSpec.Core
                 .ForEach(c => Console.WriteLine(c));
             Console.WriteLine();
 
-            List<TestClassExecutor> specExecutors = ExecuteSyncOrASync();
+            List<SpecExecutor> specExecutors = ExecuteSyncOrASync();
             Console.WriteLine();
             Console.WriteLine();
 
@@ -45,22 +46,7 @@ namespace BddSpec.Core
 
         private static void DiscoverSpecClassesTypes()
         {
-            specClassesTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(x => x.GetTypes())
-                .Where(x =>
-                {
-                    return typeof(SpecClass).IsAssignableFrom(x)
-                    && !x.IsInterface
-                    && !x.IsAbstract;
-                })
-                .ToList();
-            
-            if (!string.IsNullOrEmpty(ExecutionConfiguration.SpecSelector))
-            {
-                specClassesTypes = specClassesTypes
-                    .Where(c => c.Name == ExecutionConfiguration.SpecSelector)
-                    .ToList();
-            }
+            specClassesTypes = SpecDiscoverer.FilteredSpecClassesTypes();
 
             if (!specClassesTypes.Any())
             {
@@ -71,7 +57,7 @@ namespace BddSpec.Core
             }
         }
 
-        private static List<TestClassExecutor> ExecuteSyncOrASync()
+        private static List<SpecExecutor> ExecuteSyncOrASync()
         {
             bool shouldBlockAsynchronous =
                 ExecutionConfiguration.Verbosity == PrinterVerbosity.VerboseSteps;
@@ -82,26 +68,26 @@ namespace BddSpec.Core
                 return ExecuteSynchronous();
         }
 
-        private static List<TestClassExecutor> ExecuteSynchronous() =>
+        private static List<SpecExecutor> ExecuteSynchronous() =>
             specClassesTypes
                 .Select(CreateAndExecuteTestClassExecutor)
                 .ToList();
 
-        private static List<TestClassExecutor> ExecuteAsynchronous() =>
+        private static List<SpecExecutor> ExecuteAsynchronous() =>
             specClassesTypes
                 .AsParallel()
                 .Select(CreateAndExecuteTestClassExecutor)
                 .ToList();
 
-        private static TestClassExecutor CreateAndExecuteTestClassExecutor(Type type)
+        private static SpecExecutor CreateAndExecuteTestClassExecutor(Type type)
         {
-            TestClassExecutor testExecutor = new TestClassExecutor(type);
+            SpecExecutor testExecutor = new SpecExecutor(type);
             testExecutor.IsolateAndExecuteAllPaths();
 
             return testExecutor;
         }
 
-        private static void VerifyPrintSummaryAtEnd(List<TestClassExecutor> testExecutors)
+        private static void VerifyPrintSummaryAtEnd(List<SpecExecutor> testExecutors)
         {
             if (ExecutionConfiguration.Verbosity == PrinterVerbosity.VerboseAfterCompletion)
                 testExecutors
@@ -111,7 +97,7 @@ namespace BddSpec.Core
                     });
         }
 
-        private static void PrintErorrsIfOccurred(List<TestClassExecutor> specExecutors)
+        private static void PrintErorrsIfOccurred(List<SpecExecutor> specExecutors)
         {
             ExecutionConfiguration.PrintExceptions = true;
             ExecutionConfiguration.ShowLine = true;
@@ -119,9 +105,9 @@ namespace BddSpec.Core
             specExecutors.ForEach(c => c.PrintOnlyErrors());
         }
 
-        private static bool CollectAndPrintMetrics(List<TestClassExecutor> testExecutors)
+        private static bool CollectAndPrintMetrics(List<SpecExecutor> testExecutors)
         {
-            Metrics metrics = new Metrics();
+            ExecutionMetrics metrics = new ExecutionMetrics();
             testExecutors.ForEach(c => c.CollectMetrics(metrics));
 
             Console.WriteLine();

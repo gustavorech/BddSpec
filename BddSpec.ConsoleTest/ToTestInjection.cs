@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using Autofac.Extras.Moq;
-using BddSpec.Core;
+using BddSpec;
 using FluentAssertions;
 using Moq;
 

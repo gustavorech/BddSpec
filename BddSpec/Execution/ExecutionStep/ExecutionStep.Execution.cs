@@ -1,15 +1,15 @@
 
 using System;
 using System.Diagnostics;
-using BddSpec.Core.Printer;
+using BddSpec.Printer;
 
-namespace BddSpec.Core
+namespace BddSpec.Execution
 {
-    internal partial class TestExecutionStep
+    internal partial class ExecutionStep
     {
-        internal void Execute(TestStepAction stepAction, SpecClass specClassInstance)
+        internal void Execute(SpecAction stepAction, SpecClass specClassInstance)
         {
-            specClassInstance.TestStepActions.Clear();
+            specClassInstance.SpecActions.Clear();
 
             SafeExecuteAction(stepAction.Action);
 
@@ -21,7 +21,7 @@ namespace BddSpec.Core
             if (IsInitialized)
                 return;
 
-            CreateInnerStepsFromActions(specClassInstance);
+            AddInnerStepsFromActions(specClassInstance.SpecActions);
 
             NotifyInitialized();
 

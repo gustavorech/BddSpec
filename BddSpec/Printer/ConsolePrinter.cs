@@ -1,7 +1,7 @@
 ﻿
 using System;
 
-namespace BddSpec.Core.Printer
+namespace BddSpec.Printer
 {
     internal class ConsolePrinter
     {
