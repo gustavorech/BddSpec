@@ -35,8 +35,8 @@ namespace BddSpec
         {
             if (ExecutionConfiguration.SpecSelector.Contains("%"))
             {
-                string namespaceFilter = "^" + ExecutionConfiguration.SpecSelector
-                    .Replace(".", "[.]").Replace("%", ".*") + "$";
+                string namespaceFilter = "^" + Regex.Escape(ExecutionConfiguration.SpecSelector)
+                    .Replace("%", ".*") + "$";
 
                 Regex regex = new Regex(namespaceFilter, RegexOptions.IgnoreCase);
 
