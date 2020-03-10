@@ -6,16 +6,15 @@ namespace BddSpec
         internal string SourceFilePath { get; }
         internal int SourceFileNumber { get; }
         internal string TestDescription { get; }
-        internal SpecType ContextType { get; }
-        internal string ContextTypeName { get => ContextType.ToString().ToLower(); }
+        internal string Verb { get; }
 
         internal SpecDescription(string sourceFilePath, int sourceFileNumber,
-            string testDescription, SpecType contextType)
+            string testDescription, string verb)
         {
             SourceFilePath = sourceFilePath;
             SourceFileNumber = sourceFileNumber;
             TestDescription = testDescription;
-            ContextType = contextType;
+            Verb = verb;
         }
     }
 }

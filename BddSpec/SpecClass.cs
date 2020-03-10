@@ -21,7 +21,7 @@ namespace BddSpec
             [CallerLineNumber] int sourceLineNumber = 0)
         {
             SpecDescription testDescription = new SpecDescription(
-                sourceFilePath, sourceLineNumber, description, SpecType.When);
+                sourceFilePath, sourceLineNumber, description, "when");
 
             SpecActions.Add(new SpecAction(testDescription, action));
         }
@@ -31,7 +31,7 @@ namespace BddSpec
             [CallerLineNumber] int sourceLineNumber = 0)
         {
             SpecDescription testDescription = new SpecDescription(
-                sourceFilePath, sourceLineNumber, description, SpecType.It);
+                sourceFilePath, sourceLineNumber, description, "it");
 
             SpecActions.Add(new SpecAction(testDescription, action));
         }
@@ -41,7 +41,7 @@ namespace BddSpec
             [CallerLineNumber] int sourceLineNumber = 0)
         {
             SpecDescription testDescription = new SpecDescription(
-                sourceFilePath, sourceLineNumber, description, SpecType.Method);
+                sourceFilePath, sourceLineNumber, description, "method");
 
             SpecActions.Add(new SpecAction(testDescription, action));
         }

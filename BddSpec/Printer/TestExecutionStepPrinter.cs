@@ -48,7 +48,7 @@ namespace BddSpec.Printer
         private static void PrintDescription(ExecutionStep testExecutionStep,
             SpecDescription testStepDescription)
         {
-            string message = $"{testStepDescription.ContextTypeName} {testStepDescription.TestDescription}";
+            string message = $"{testStepDescription.Verb} {testStepDescription.TestDescription}";
 
             if (ExecutionConfiguration.ShowLine)
                 message = $"{message}:{testStepDescription.SourceFileNumber}";

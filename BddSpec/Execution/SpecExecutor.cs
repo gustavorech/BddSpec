@@ -18,7 +18,7 @@ namespace BddSpec.Execution
             {
                 SpecClass specClassInstance = (SpecClass)Activator.CreateInstance(_type);
 
-                SpecDescription stepDescription = new SpecDescription("", 0, _type.Name, SpecType.Class);
+                SpecDescription stepDescription = new SpecDescription("", 0, _type.Name, "class");
                 SpecAction stepAction = new SpecAction(stepDescription, specClassInstance.SetUpSpecs);
 
                 specClassInstance.SpecActions.Add(stepAction);
