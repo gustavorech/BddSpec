@@ -16,34 +16,48 @@ namespace BddSpec
             set => AfterActions.Push(value);
         }
 
+        internal void ClearSpecActionsToExecuteNextStep()
+        {
+            SpecActions.Clear();
+        }
+
+        public void AddSpecAction(string verb, string description, Action action,
+            string sourceFilePath, int sourceLineNumber)
+        {
+            SpecDescription specDescription = new SpecDescription(
+                sourceFilePath, sourceLineNumber, description, "when");
+
+            SpecActions.Add(new SpecAction(specDescription, action));
+        }
+
         public void When(string description, Action action,
             [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
-        {
-            SpecDescription testDescription = new SpecDescription(
-                sourceFilePath, sourceLineNumber, description, "when");
-
-            SpecActions.Add(new SpecAction(testDescription, action));
-        }
+            => AddSpecAction("when", description, action, sourceFilePath, sourceLineNumber);
 
         public void It(string description, Action action,
             [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
-        {
-            SpecDescription testDescription = new SpecDescription(
-                sourceFilePath, sourceLineNumber, description, "it");
-
-            SpecActions.Add(new SpecAction(testDescription, action));
-        }
+            => AddSpecAction("it", description, action, sourceFilePath, sourceLineNumber);
 
         public void Method(string description, Action action,
             [CallerFilePath] string sourceFilePath = "",
             [CallerLineNumber] int sourceLineNumber = 0)
-        {
-            SpecDescription testDescription = new SpecDescription(
-                sourceFilePath, sourceLineNumber, description, "method");
+            => AddSpecAction("method", description, action, sourceFilePath, sourceLineNumber);
 
-            SpecActions.Add(new SpecAction(testDescription, action));
-        }
+        public void Context(string description, Action action,
+            [CallerFilePath] string sourceFilePath = "",
+            [CallerLineNumber] int sourceLineNumber = 0)
+            => AddSpecAction("context", description, action, sourceFilePath, sourceLineNumber);
+
+        public void Describe(string description, Action action,
+            [CallerFilePath] string sourceFilePath = "",
+            [CallerLineNumber] int sourceLineNumber = 0)
+            => AddSpecAction("describe", description, action, sourceFilePath, sourceLineNumber);
+
+        public void Then(string description, Action action,
+            [CallerFilePath] string sourceFilePath = "",
+            [CallerLineNumber] int sourceLineNumber = 0)
+            => AddSpecAction("then", description, action, sourceFilePath, sourceLineNumber);
     }
 }

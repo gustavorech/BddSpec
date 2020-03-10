@@ -9,7 +9,7 @@ namespace BddSpec.Execution
     {
         internal void Execute(SpecAction stepAction, SpecClass specClassInstance)
         {
-            specClassInstance.SpecActions.Clear();
+            specClassInstance.ClearSpecActionsToExecuteNextStep();
 
             SafeExecuteAction(stepAction.Action);
 

@@ -86,6 +86,9 @@ namespace BddSpec.Execution
             SpecExecutor testExecutor = new SpecExecutor(type);
             testExecutor.IsolateAndExecuteAllPaths();
 
+            if (ExecutionConfiguration.Verbosity == PrinterVerbosity.VerboseSteps)
+                Console.WriteLine();
+
             return testExecutor;
         }
 
@@ -96,6 +99,7 @@ namespace BddSpec.Execution
                     .ForEach(testExecutor =>
                     {
                         testExecutor.PrintAllVerbose();
+                        Console.WriteLine();
                     });
         }
 
