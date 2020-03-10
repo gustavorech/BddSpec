@@ -21,7 +21,7 @@ namespace BddSpec.Execution
 
             DiscoverSpecClassesTypes();
 
-            Console.WriteLine("Spec classes:");
+            Console.WriteLine("Found specs to test:");
             specClassesTypes
                 .Select(c => c.FullName)
                 .ToList()
@@ -53,6 +53,8 @@ namespace BddSpec.Execution
                 Console.WriteLine();
                 Console.WriteLine();
                 ConsolePrinter.WriteError("No spec classes was found");
+                Console.WriteLine();
+                Console.WriteLine();
                 Environment.Exit(1);
             }
         }

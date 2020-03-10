@@ -4,6 +4,12 @@ run:
 class:
 	dotnet run -p BddSpec.ConsoleTest -- ToTestTest
 
+namespace:
+	dotnet run -p BddSpec.ConsoleTest -- %OtherNamespace%
+
+namespace-one:
+	dotnet run -p BddSpec.ConsoleTest -- %space.one%
+
 summary:
 	dotnet run -p BddSpec.ConsoleTest -- -v summary
 
