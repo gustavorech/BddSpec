@@ -14,20 +14,20 @@ namespace BddSpec.ConsoleTest
         public override void SetUpSpecs()
         {
             ToTest toTest = new ToTest();
-            After = () => Console.WriteLine("After");
+            //After = () => Console.WriteLine("After");
 
             When("the name is Gustavo", () =>
             {
                 toTest.Name = "Gustavo";
 
                 It("is Gustavo", () => Assert.AreEqual(toTest.Name, "Gustavo"));
-                It("first letter is G", () => Assert.AreEqual(toTest.Name[0], 'P'));
+                It("first letter is G", () => Assert.AreEqual(toTest.Name[0], 'G'));
 
                 When("has surname Rech", () =>
                 {
                     toTest.Name += " Rech";
 
-                    throw new Exception("oq aconteceu");
+                    //throw new Exception("oq aconteceu");
 
                     It("is Gustavo Rech", () => Assert.AreEqual(toTest.Name, "Gustavo Rech"));
                     It("first letter is G", () => Assert.AreEqual(toTest.Name[0], 'G')); ;
@@ -36,7 +36,7 @@ namespace BddSpec.ConsoleTest
 
             When("the name is Pedro", () =>
             {
-                After = () => throw new Exception("wtf is going on?");
+                //After = () => throw new Exception("wtf is going on?");
                 toTest.Name = "Pedro";
 
                 It("is Pedro", () => Assert.AreEqual(toTest.Name, "Pedro"));

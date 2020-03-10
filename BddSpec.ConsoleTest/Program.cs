@@ -9,7 +9,7 @@ namespace BddSpec.ConsoleTest
         {
             SpecExecutor.Execute(args);
 
-            Console.ReadLine();
+            Environment.Exit(0);
         }
     }
 }

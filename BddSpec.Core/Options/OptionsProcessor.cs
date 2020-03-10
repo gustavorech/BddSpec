@@ -13,6 +13,7 @@ namespace BddSpec.Core.Options
             Parser.Default.ParseArguments<StartOptions>(args)
                 .WithParsed<StartOptions>(options =>
                 {
+                    ExecutionConfiguration.SpecSelector = options.SpecSelector;
                     ExecutionConfiguration.ShowLine = options.ShowLine;
                     ExecutionConfiguration.ShowTime = options.ShowTime;
                     ExecutionConfiguration.ExecuteAsynchronous = options.ExecuteAsynchronous;

@@ -46,10 +46,10 @@ namespace BddSpec.Core.Printer
         private static void PrintDescription(TestExecutionStep testExecutionStep,
             TestStepDescription testStepDescription)
         {
-            string message = $"{testStepDescription.ContextTypeName}: {testStepDescription.TestDescription}";
+            string message = $"{testStepDescription.ContextTypeName} {testStepDescription.TestDescription}";
 
             if (ExecutionConfiguration.ShowLine)
-                message = $"{message} :{testStepDescription.SourceFileNumber}";
+                message = $"{message}:{testStepDescription.SourceFileNumber}";
 
             if (testExecutionStep.IsHadError)
                 ConsolePrinter.WriteError(message);

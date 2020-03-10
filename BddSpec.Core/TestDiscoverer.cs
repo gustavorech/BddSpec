@@ -54,6 +54,13 @@ namespace BddSpec.Core
                     && !x.IsAbstract;
                 })
                 .ToList();
+            
+            if (!string.IsNullOrEmpty(ExecutionConfiguration.SpecSelector))
+            {
+                specClassesTypes = specClassesTypes
+                    .Where(c => c.Name == ExecutionConfiguration.SpecSelector)
+                    .ToList();
+            }
 
             if (!specClassesTypes.Any())
             {

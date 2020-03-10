@@ -1,6 +1,9 @@
 run:
 	dotnet run -p BddSpec.ConsoleTest
 
+class:
+	dotnet run -p BddSpec.ConsoleTest -- ToTestTest
+
 summary:
 	dotnet run -p BddSpec.ConsoleTest -- -v summary
 
