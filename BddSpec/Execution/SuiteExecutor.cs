@@ -28,9 +28,9 @@ namespace BddSpec.Execution
             if (ExecutionConfiguration.IsSpecFiltered)
                 ExecutionPrinter.NotifySpecsFiltered(specClassesTypes);
 
+            ExecutionPrinter.NotifyStartingExecution();
+
             List<SpecExecutor> specExecutors = ExecuteSyncOrASync();
-            Console.WriteLine();
-            Console.WriteLine();
 
             VerifyPrintSummaryAtEnd(specExecutors);
 
@@ -71,12 +71,10 @@ namespace BddSpec.Execution
         private static SpecExecutor CreateAndExecuteTestClassExecutor(Type type)
         {
             SpecExecutor specExecutor = new SpecExecutor(type);
+
+            ExecutionPrinter.NotifyInitialized(specExecutor);
+
             specExecutor.IsolateAndExecuteAllPaths();
-
-            ExecutionPrinter.NotifyCompleted(specExecutor);
-
-            if (ExecutionConfiguration.Verbosity == PrinterVerbosity.VerboseSteps)
-                Console.WriteLine();
 
             return specExecutor;
         }

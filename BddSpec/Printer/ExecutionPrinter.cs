@@ -10,15 +10,14 @@ namespace BddSpec.Printer
     {
         public static void NotifyDiscovererInitialized()
         {
-            Console.WriteLine();
-            Console.WriteLine("Initializing");
-            Console.WriteLine("Discovering spec classes");
+            ConsolePrinter.WriteInfoLine("Initializing.");
+            ConsolePrinter.WriteInfoLine("Discovering spec classes.");
         }
 
         public static void NotifySpecDiscovererFilter(string filter)
         {
             Console.WriteLine();
-            Console.WriteLine("Filtering spec classes by: " + filter);
+            ConsolePrinter.WriteInfoLine("Filtering spec classes by: " + filter);
         }
 
         public static void NotifySpecsFiltered(List<Type> specClassesTypes)
@@ -29,7 +28,7 @@ namespace BddSpec.Printer
             specClassesTypes
                 .Select(c => c.FullName)
                 .ToList()
-                .ForEach(c => ConsolePrinter.WriteLine("- " + c, 1));
+                .ForEach(c => ConsolePrinter.WriteSuccessLine("- " + c, 1));
         }
 
         public static void NotifyNoSpecClassesFound()
@@ -40,7 +39,13 @@ namespace BddSpec.Printer
             Console.WriteLine();
         }
 
-        public static void NotifyCompleted(SpecExecutor specExecutor)
+        public static void NotifyStartingExecution()
+        {
+            Console.WriteLine();
+            ConsolePrinter.WriteInfoLine("Executing specs:");
+        }
+
+        public static void NotifyInitialized(SpecExecutor specExecutor)
         {
             bool separateSpecClassPrinterByOneLine = ExecutionConfiguration.IsPrintVerbose;
 
@@ -67,6 +72,9 @@ namespace BddSpec.Printer
         public static void NotifyCompleted(ExecutionStep executionStep)
         {
             if (executionStep.IsBranch)
+                return;
+
+            if (executionStep.IsHadError)
                 return;
 
             TestExecutionStepPrinter.PrintVerboseOrStatus(executionStep);

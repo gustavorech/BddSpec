@@ -10,8 +10,11 @@ namespace:
 namespace-one:
 	dotnet run -p BddSpec.ConsoleTest -- %space.one%
 
-not:
+not-filter:
 	dotnet run -p BddSpec.ConsoleTest -- NotExistedClass
+
+not-option:
+	dotnet run -p BddSpec.ConsoleTest -- -non-existed-option
 
 summary:
 	dotnet run -p BddSpec.ConsoleTest -- -v summary

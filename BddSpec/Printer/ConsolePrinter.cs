@@ -28,19 +28,22 @@ namespace BddSpec.Printer
             Console.ResetColor();
         }
 
-        public static void WriteLine(string message, int level = 0) =>
-            WriteMessageLine(message, Console.ForegroundColor, level);
-
         public static void WriteError(string message, int level = 0) =>
             WriteMessage(message, ConsoleColor.DarkRed, level);
-
-        public static void WriteErrorLine(string message, int level = 0) =>
-            WriteMessageLine(message, ConsoleColor.DarkRed, level);
 
         public static void WriteSuccess(string message, int level = 0) =>
             WriteMessage(message, ConsoleColor.Green, level);
 
         public static void WriteInfo(string message, int level = 0) =>
             WriteMessage(message, ConsoleColor.DarkGray, level);
+
+        public static void WriteErrorLine(string message, int level = 0) =>
+            WriteMessageLine(message, ConsoleColor.DarkRed, level);
+
+        public static void WriteSuccessLine(string message, int level = 0) =>
+            WriteMessageLine(message, ConsoleColor.Green, level);
+
+        public static void WriteInfoLine(string message, int level = 0) =>
+            WriteMessageLine(message, ConsoleColor.DarkGray, level);
     }
 }
