@@ -13,5 +13,6 @@ namespace BddSpec.Configuration
         public static bool ShowTime { get; set; }
 
         public static bool IsPrintVerbose { get => Verbosity == PrinterVerbosity.VerboseSteps; }
+        public static bool IsSpecFiltered { get => !string.IsNullOrEmpty(SpecSelector); }
     }
 }

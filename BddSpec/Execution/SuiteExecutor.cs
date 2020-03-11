@@ -11,22 +11,22 @@ namespace BddSpec.Execution
     {
         private static List<Type> specClassesTypes = new List<Type>();
 
-        public static void DiscoverAndExecute()
+        public static bool DiscoverAndExecute()
         {
             Stopwatch timer = Stopwatch.StartNew();
 
-            Console.WriteLine("Initializing tests...");
-            Console.WriteLine("Executing...");
-            Console.WriteLine();
+            ExecutionPrinter.NotifyDiscovererInitialized();
 
-            DiscoverSpecClassesTypes();
+            specClassesTypes = SpecDiscoverer.FilteredSpecClassesTypes();
 
-            Console.WriteLine("Found specs to test:");
-            specClassesTypes
-                .Select(c => c.FullName)
-                .ToList()
-                .ForEach(c => Console.WriteLine(c));
-            Console.WriteLine();
+            if (!specClassesTypes.Any())
+            {
+                ExecutionPrinter.NotifyNoSpecClassesFound();
+                return false;
+            }
+
+            if (ExecutionConfiguration.IsSpecFiltered)
+                ExecutionPrinter.NotifySpecsFiltered(specClassesTypes);
 
             List<SpecExecutor> specExecutors = ExecuteSyncOrASync();
             Console.WriteLine();
@@ -41,22 +41,9 @@ namespace BddSpec.Execution
             Console.WriteLine("Total time: " + timer.Elapsed.ToString());
 
             if (hasErrors)
-                Environment.Exit(1);
-        }
+                return false;
 
-        private static void DiscoverSpecClassesTypes()
-        {
-            specClassesTypes = SpecDiscoverer.FilteredSpecClassesTypes();
-
-            if (!specClassesTypes.Any())
-            {
-                Console.WriteLine();
-                Console.WriteLine();
-                ConsolePrinter.WriteError("No spec classes was found");
-                Console.WriteLine();
-                Console.WriteLine();
-                Environment.Exit(1);
-            }
+            return true;
         }
 
         private static List<SpecExecutor> ExecuteSyncOrASync()

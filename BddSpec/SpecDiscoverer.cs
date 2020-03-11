@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using BddSpec.Configuration;
+using BddSpec.Printer;
 
 namespace BddSpec
 {
@@ -26,29 +27,39 @@ namespace BddSpec
                 !string.IsNullOrEmpty(ExecutionConfiguration.SpecSelector);
 
             if (isSpecFiltered)
-                return FilteredByClassOrNamespace();
+                return FilteredByRegexMatchOrClassName();
 
             return AllSpecClassesTypes();
         }
 
-        private static List<Type> FilteredByClassOrNamespace()
+        private static List<Type> FilteredByRegexMatchOrClassName()
         {
             if (ExecutionConfiguration.SpecSelector.Contains("%"))
-            {
-                string namespaceFilter = "^" + Regex.Escape(ExecutionConfiguration.SpecSelector)
-                    .Replace("%", ".*") + "$";
+                return FilteredByRegexMatch();
+            else
+                return FilteredByClassName();
+        }
 
-                Regex regex = new Regex(namespaceFilter, RegexOptions.IgnoreCase);
-
-                Console.WriteLine("searching for: " + namespaceFilter);
-
-                return AllSpecClassesTypes()
-                    .Where(c => regex.IsMatch(c.FullName))
-                    .ToList();
-            }
+        private static List<Type> FilteredByClassName()
+        {
+            ExecutionPrinter.NotifySpecDiscovererFilter(ExecutionConfiguration.SpecSelector);
 
             return AllSpecClassesTypes()
                 .Where(c => c.Name.Equals(ExecutionConfiguration.SpecSelector, StringComparison.InvariantCultureIgnoreCase))
+                .ToList();
+        }
+
+        private static List<Type> FilteredByRegexMatch()
+        {
+            string namespaceFilter = "^" + Regex.Escape(ExecutionConfiguration.SpecSelector)
+                .Replace("%", ".*") + "$";
+
+            Regex regex = new Regex(namespaceFilter, RegexOptions.IgnoreCase);
+
+            ExecutionPrinter.NotifySpecDiscovererFilter(namespaceFilter);
+
+            return AllSpecClassesTypes()
+                .Where(c => regex.IsMatch(c.FullName))
                 .ToList();
         }
     }

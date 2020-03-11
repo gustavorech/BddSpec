@@ -14,7 +14,12 @@ namespace BddSpec
             if (!successReadOptions)
                 Environment.Exit(1);
 
-            SuiteExecutor.DiscoverAndExecute();
+            bool success = SuiteExecutor.DiscoverAndExecute();
+
+            if (!success)
+                Environment.Exit(1);
+
+            Environment.Exit(0);
         }
     }
 }
