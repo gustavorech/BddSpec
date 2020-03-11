@@ -1,6 +1,7 @@
 using System;
 using BddSpec.Execution;
 using BddSpec.Options;
+using BddSpec.Printer;
 
 namespace BddSpec
 {
@@ -8,18 +9,29 @@ namespace BddSpec
     {
         public static void Execute(string[] args)
         {
-            bool successReadingOptions =
-                OptionsProcessor.CreateExecuteConfigurationFromOptions(args);
+            try
+            {
+                bool successReadingOptions =
+                    OptionsProcessor.CreateExecuteConfigurationFromOptions(args);
 
-            if (!successReadingOptions)
+                if (!successReadingOptions)
+                    Environment.Exit(1);
+
+                bool successExecuting = SuiteExecutor.DiscoverAndExecute();
+
+                if (!successExecuting)
+                    Environment.Exit(1);
+
+                Environment.Exit(0);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine();
+                ConsolePrinter.WriteErrorLine("> Unknown fatal error");
+                ExceptionPrinter.Print(ex);
+
                 Environment.Exit(1);
-
-            bool successExecuting = SuiteExecutor.DiscoverAndExecute();
-
-            if (!successExecuting)
-                Environment.Exit(1);
-
-            Environment.Exit(0);
+            }
         }
     }
 }
