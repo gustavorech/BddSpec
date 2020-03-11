@@ -8,7 +8,6 @@ namespace BddSpec.Printer
         public static void Print(Exception exception)
         {
             Console.WriteLine();
-            Console.WriteLine();
             ConsolePrinter.WriteErrorLine("Failure: ", 1);
             exception.Message
                 ?.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)
@@ -27,6 +26,7 @@ namespace BddSpec.Printer
                 {
                     ConsolePrinter.WriteInfoLine(messageLine, 2);
                 });
+            Console.WriteLine();
         }
     }
 }

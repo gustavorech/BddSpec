@@ -56,12 +56,17 @@ namespace BddSpec.Printer
 
         public static void NotifyPrintingSummary()
         {
-            ConsolePrinter.WriteInfoLine("> Printing summary of the execution");
+            ConsolePrinter.WriteInfoLine("> Showing summary of the execution");
         }
 
-        public static void NotifyPrintingErrorDescriptionAndStackTrace()
+        public static void NotifyPrintingErrorDetailed()
         {
             ConsolePrinter.WriteInfoLine("> Showing detailed failures descriptions and StackTrace");
+        }
+
+        public static void NotifyPrintingErrorSummary()
+        {
+            ConsolePrinter.WriteInfoLine("> Showing summary of failures (see details above)");
         }
 
         public static void NotifyCompleted(SpecExecutor specExecutor)

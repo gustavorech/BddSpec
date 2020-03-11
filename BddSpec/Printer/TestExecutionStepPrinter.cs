@@ -40,8 +40,6 @@ namespace BddSpec.Printer
             if (ExecutionConfiguration.ShowTime)
                 PrintStepTimeSpan(executionStep.TotalTimeSpent);
 
-            PrintException(executionStep.ErrorException, executionStep.StepLevel);
-
             Console.WriteLine();
         }
 
@@ -64,14 +62,6 @@ namespace BddSpec.Printer
         private static void PrintStepTimeSpan(TimeSpan time)
         {
             ConsolePrinter.WriteInfo(" (" + time.TotalMilliseconds + "ms)");
-        }
-
-        private static void PrintException(Exception ex, int stepLevel)
-        {
-            if (!ExecutionConfiguration.PrintExceptions || ex == null)
-                return;
-
-            ExceptionPrinter.Print(ex);
         }
     }
 }

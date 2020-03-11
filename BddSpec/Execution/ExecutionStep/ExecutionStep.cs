@@ -1,5 +1,6 @@
 
 using System;
+using BddSpec.Configuration;
 using BddSpec.Printer;
 
 namespace BddSpec.Execution
@@ -7,7 +8,7 @@ namespace BddSpec.Execution
     public partial class ExecutionStep
     {
         private ExecutionStep _parentStep;
-        public int PositionToGetTheActionInTheStack { get; }
+        public int PositionOfTheActionInTheStack { get; }
         public int StepLevel { get; }
         public SpecDescription TestStepDescription { get; }
 
@@ -19,25 +20,38 @@ namespace BddSpec.Execution
         {
             this._parentStep = parentStep;
             TestStepDescription = stepAction.Description;
-            PositionToGetTheActionInTheStack = positionInStack;
+            PositionOfTheActionInTheStack = positionInStack;
             StepLevel = level;
         }
 
-        public void PrintSelfAndInnerSteps()
+        public void PrintSummary()
         {
             TestExecutionStepPrinter.PrintVerbose(this);
 
-            _innerSteps.ForEach(c => c.PrintSelfAndInnerSteps());
+            _innerSteps.ForEach(c => c.PrintSummary());
         }
 
-        public void PrintOnlyErrors()
+        public void PrintErrorsDetailed()
         {
             if (!this.IsBranchHadError)
                 return;
 
             TestExecutionStepPrinter.PrintVerbose(this);
 
-            _innerSteps.ForEach(c => c.PrintOnlyErrors());
+            if (IsHadError)
+                ExceptionPrinter.Print(ErrorException);
+
+            _innerSteps.ForEach(c => c.PrintErrorsDetailed());
+        }
+
+        public void PrintErrorsSummary()
+        {
+            if (!this.IsBranchHadError)
+                return;
+
+            TestExecutionStepPrinter.PrintVerbose(this);
+
+            _innerSteps.ForEach(c => c.PrintErrorsSummary());
         }
 
         public void CollectMetrics(ExecutionMetrics metrics)

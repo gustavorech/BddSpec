@@ -108,7 +108,7 @@ namespace BddSpec.Execution
                 testExecutors
                     .ForEach(testExecutor =>
                     {
-                        testExecutor.PrintAllVerbose();
+                        testExecutor.PrintSummary();
                         Console.WriteLine();
                     });
             }
@@ -116,13 +116,16 @@ namespace BddSpec.Execution
 
         private static void PrintErorrsIfOccurred(List<SpecExecutor> specExecutors)
         {
-            ExecutionConfiguration.PrintExceptions = true;
             ExecutionConfiguration.ShowLine = true;
 
             if (specExecutors.Any(c => c.IsBranchHadError))
-                ExecutionPrinter.NotifyPrintingErrorDescriptionAndStackTrace();
+            {
+                ExecutionPrinter.NotifyPrintingErrorDetailed();
+                specExecutors.ForEach(c => c.PrintErrorsDetailed());
 
-            specExecutors.ForEach(c => c.PrintOnlyErrors());
+                ExecutionPrinter.NotifyPrintingErrorSummary();
+                specExecutors.ForEach(c => c.PrintErrorsSummary());
+            }
         }
 
         private static ExecutionMetrics CollectAndPrintMetrics(List<SpecExecutor> testExecutors)

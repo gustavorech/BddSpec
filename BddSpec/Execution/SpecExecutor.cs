@@ -46,7 +46,7 @@ namespace BddSpec.Execution
             while (currentStep != null)
             {
                 SpecAction currentAction =
-                    specClassInstance.SpecActions[currentStep.PositionToGetTheActionInTheStack];
+                    specClassInstance.SpecActions[currentStep.PositionOfTheActionInTheStack];
 
                 currentStep.Execute(currentAction, specClassInstance);
 
@@ -54,17 +54,25 @@ namespace BddSpec.Execution
             }
         }
 
-        public void PrintAllVerbose()
+        public void PrintSummary()
         {
-            _rootStep.PrintSelfAndInnerSteps();
+            _rootStep.PrintSummary();
         }
 
-        public void PrintOnlyErrors()
+        public void PrintErrorsDetailed()
         {
             if (!_rootStep.IsBranchHadError)
                 return;
 
-            _rootStep.PrintOnlyErrors();
+            _rootStep.PrintErrorsDetailed();
+        }
+
+        public void PrintErrorsSummary()
+        {
+            if (!_rootStep.IsBranchHadError)
+                return;
+
+            _rootStep.PrintErrorsSummary();
         }
 
         public void CollectMetrics(ExecutionMetrics metrics)
