@@ -8,15 +8,15 @@ namespace BddSpec
     {
         public static void Execute(string[] args)
         {
-            bool successReadOptions =
+            bool successReadingOptions =
                 OptionsProcessor.CreateExecuteConfigurationFromOptions(args);
 
-            if (!successReadOptions)
+            if (!successReadingOptions)
                 Environment.Exit(1);
 
-            bool success = SuiteExecutor.DiscoverAndExecute();
+            bool successExecuting = SuiteExecutor.DiscoverAndExecute();
 
-            if (!success)
+            if (!successExecuting)
                 Environment.Exit(1);
 
             Environment.Exit(0);

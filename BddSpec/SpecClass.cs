@@ -9,12 +9,14 @@ namespace BddSpec
         public List<SpecAction> SpecActions { get; } = new List<SpecAction>();
         public Stack<Action> AfterActions { get; } = new Stack<Action>();
 
-        public abstract void SetUpSpecs();
+        public string SourceFilePath { get; set; }
 
         public Action After
         {
             set => AfterActions.Push(value);
         }
+
+        public abstract void SetUpSpecs();
 
         public void ClearSpecActionsToExecuteNextStep()
         {
@@ -24,6 +26,8 @@ namespace BddSpec
         public void AddSpecAction(string verb, string description, Action action,
             string sourceFilePath, int sourceLineNumber)
         {
+            SourceFilePath = sourceFilePath;
+
             SpecDescription specDescription = new SpecDescription(
                 sourceFilePath, sourceLineNumber, description, verb);
 

@@ -15,6 +15,24 @@ namespace BddSpec.Execution
         {
             Stopwatch timer = Stopwatch.StartNew();
 
+            bool isSuccessDiscovering = Discover();
+            if (!isSuccessDiscovering)
+                return false;
+
+            List<SpecExecutor> specExecutors = ExecuteSyncOrASync();
+
+            bool hasErrors = ActionsAfterExecution(specExecutors);
+
+            Console.WriteLine("Total time: " + timer.Elapsed.ToString());
+
+            if (hasErrors)
+                return false;
+
+            return true;
+        }
+
+        private static bool Discover()
+        {
             ExecutionPrinter.NotifyDiscovererInitialized();
 
             specClassesTypes = SpecDiscoverer.FilteredSpecClassesTypes();
@@ -28,30 +46,20 @@ namespace BddSpec.Execution
             if (ExecutionConfiguration.IsSpecFiltered)
                 ExecutionPrinter.NotifySpecsFiltered(specClassesTypes);
 
-            ExecutionPrinter.NotifyStartingExecution();
-
-            List<SpecExecutor> specExecutors = ExecuteSyncOrASync();
-
-            VerifyPrintSummaryAtEnd(specExecutors);
-
-            PrintErorrsIfOccurred(specExecutors);
-
-            bool hasErrors = CollectAndPrintMetrics(specExecutors);
-
-            Console.WriteLine("Total time: " + timer.Elapsed.ToString());
-
-            if (hasErrors)
-                return false;
-
             return true;
         }
 
         private static List<SpecExecutor> ExecuteSyncOrASync()
         {
+            ExecutionPrinter.NotifyStartingExecution();
+
             bool shouldBlockAsynchronous =
                 ExecutionConfiguration.Verbosity == PrinterVerbosity.VerboseSteps;
 
-            if (ExecutionConfiguration.ExecuteAsynchronous && !shouldBlockAsynchronous)
+            bool executeAsynchronous =
+                ExecutionConfiguration.ExecuteAsynchronous && !shouldBlockAsynchronous;
+
+            if (executeAsynchronous)
                 return ExecuteAsynchronous();
             else
                 return ExecuteSynchronous();
@@ -77,6 +85,15 @@ namespace BddSpec.Execution
             specExecutor.IsolateAndExecuteAllPaths();
 
             return specExecutor;
+        }
+
+        private static bool ActionsAfterExecution(List<SpecExecutor> specExecutors)
+        {
+            VerifyPrintSummaryAtEnd(specExecutors);
+
+            PrintErorrsIfOccurred(specExecutors);
+
+            return CollectAndPrintMetrics(specExecutors);
         }
 
         private static void VerifyPrintSummaryAtEnd(List<SpecExecutor> testExecutors)
