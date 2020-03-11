@@ -7,6 +7,8 @@ namespace BddSpec.Execution
         private Type _type;
         private ExecutionStep _rootStep;
 
+        public Type Type { get => _type; }
+
         public bool IsBranchHadError
         {
             get => _rootStep?.IsBranchHadError ?? false;

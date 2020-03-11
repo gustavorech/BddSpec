@@ -103,5 +103,15 @@ namespace BddSpec.Printer
 
             TestExecutionStepPrinter.PrintVerboseOrStatus(executionStep);
         }
+
+        public static void PrintSpecClassesWithError(List<SpecExecutor> specExecutors)
+        {
+            Console.WriteLine("Spec classes with failures:");
+
+            specExecutors
+                .Where(c => c.IsBranchHadError)
+                .ToList()
+                .ForEach(c => ConsolePrinter.WriteErrorLine("- " + c.Type.FullName, 1));
+        }
     }
 }

@@ -124,7 +124,16 @@ namespace BddSpec.Execution
                 specExecutors.ForEach(c => c.PrintErrorsDetailed());
 
                 ExecutionPrinter.NotifyPrintingErrorSummary();
-                specExecutors.ForEach(c => c.PrintErrorsSummary());
+                specExecutors
+                    .Where(c => c.IsBranchHadError)
+                    .ToList()
+                    .ForEach(c =>
+                    {
+                        c.PrintErrorsSummary();
+                        Console.WriteLine();
+                    });
+
+                ExecutionPrinter.PrintSpecClassesWithError(specExecutors);
             }
         }
 
