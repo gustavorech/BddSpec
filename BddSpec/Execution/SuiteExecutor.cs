@@ -93,7 +93,9 @@ namespace BddSpec.Execution
 
             PrintErorrsIfOccurred(specExecutors);
 
-            return CollectAndPrintMetrics(specExecutors);
+            ExecutionMetrics executionMetrics = CollectAndPrintMetrics(specExecutors);
+
+            return executionMetrics.TotalNodeErrors > 0;
         }
 
         private static void VerifyPrintSummaryAtEnd(List<SpecExecutor> testExecutors)
@@ -115,42 +117,14 @@ namespace BddSpec.Execution
             specExecutors.ForEach(c => c.PrintOnlyErrors());
         }
 
-        private static bool CollectAndPrintMetrics(List<SpecExecutor> testExecutors)
+        private static ExecutionMetrics CollectAndPrintMetrics(List<SpecExecutor> testExecutors)
         {
-            ExecutionMetrics metrics = new ExecutionMetrics();
-            testExecutors.ForEach(c => c.CollectMetrics(metrics));
+            ExecutionMetrics executionMetrics = new ExecutionMetrics();
+            testExecutors.ForEach(c => c.CollectMetrics(executionMetrics));
 
-            Console.WriteLine();
-            Console.WriteLine("METRICS");
-            Console.WriteLine("Test classes executed: " + metrics.TotalTestClasses);
-            Console.WriteLine("Nodes reached: " + metrics.TotalNodesReached);
-            Console.WriteLine("Leaf nodes reached: " + metrics.TotalLeafNodes);
-            Console.WriteLine("--");
-            Console.WriteLine("Nodes executions: " + metrics.TotalNodesExecuted);
-            Console.WriteLine("Execution time: " + metrics.TotalTime.ToString());
-            Console.WriteLine("--");
-            ConsolePrinter.WriteSuccess("Total leaf nodes passed: " + metrics.TotalLeafNodesPassed);
-            Console.WriteLine();
-            ConsolePrinter.WriteError("Total nodes with errors: " + metrics.TotalNodeErrors);
-            Console.WriteLine();
-            Console.WriteLine();
+            ExecutionMetricsPrinter.NotifyMetricsCollected(executionMetrics);
 
-            if (metrics.TotalNodeErrors == 0)
-            {
-                ConsolePrinter.WriteIdentation(20);
-                ConsolePrinter.WriteSuccess("-- THAT'S IT, ALL GREEN! --");
-                Console.WriteLine();
-                Console.WriteLine();
-            }
-            else
-            {
-                ConsolePrinter.WriteIdentation(20);
-                ConsolePrinter.WriteError($"you have {metrics.TotalNodeErrors} more things to do");
-                Console.WriteLine();
-                Console.WriteLine();
-            }
-
-            return metrics.TotalNodeErrors > 0;
+            return executionMetrics;
         }
     }
 }
