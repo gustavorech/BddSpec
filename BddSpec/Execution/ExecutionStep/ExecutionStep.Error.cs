@@ -1,18 +1,19 @@
 
 using System;
+using BddSpec.Printer;
 
 namespace BddSpec.Execution
 {
-    internal partial class ExecutionStep
+    public partial class ExecutionStep
     {
         private bool _isInnerStepHadError;
         private bool _isHadError;
 
-        internal Exception ErrorException { get; private set; }
+        public Exception ErrorException { get; private set; }
 
-        internal bool IsInnerStepHadError { get => _isInnerStepHadError; }
-        internal bool IsHadError { get => _isHadError; }
-        internal bool IsBranchHadError { get => IsInnerStepHadError || IsHadError; }
+        public bool IsInnerStepHadError { get => _isInnerStepHadError; }
+        public bool IsHadError { get => _isHadError; }
+        public bool IsBranchHadError { get => IsInnerStepHadError || IsHadError; }
 
         private void NotifyHadError(Exception ex)
         {
@@ -21,6 +22,8 @@ namespace BddSpec.Execution
 
             _isHadError = true;
             ErrorException = ex;
+
+            ExecutionPrinter.NotifyError(this);
 
             NotifyCompleted();
 

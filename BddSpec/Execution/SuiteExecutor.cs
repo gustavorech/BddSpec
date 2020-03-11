@@ -7,11 +7,11 @@ using BddSpec.Configuration;
 
 namespace BddSpec.Execution
 {
-    internal class SuiteExecutor
+    public class SuiteExecutor
     {
         private static List<Type> specClassesTypes = new List<Type>();
 
-        internal static void DiscoverAndExecute()
+        public static void DiscoverAndExecute()
         {
             Stopwatch timer = Stopwatch.StartNew();
 
@@ -83,13 +83,15 @@ namespace BddSpec.Execution
 
         private static SpecExecutor CreateAndExecuteTestClassExecutor(Type type)
         {
-            SpecExecutor testExecutor = new SpecExecutor(type);
-            testExecutor.IsolateAndExecuteAllPaths();
+            SpecExecutor specExecutor = new SpecExecutor(type);
+            specExecutor.IsolateAndExecuteAllPaths();
+
+            ExecutionPrinter.NotifyCompleted(specExecutor);
 
             if (ExecutionConfiguration.Verbosity == PrinterVerbosity.VerboseSteps)
                 Console.WriteLine();
 
-            return testExecutor;
+            return specExecutor;
         }
 
         private static void VerifyPrintSummaryAtEnd(List<SpecExecutor> testExecutors)

@@ -7,9 +7,9 @@ using BddSpec.Configuration;
 
 namespace BddSpec
 {
-    internal class SpecDiscoverer
+    public class SpecDiscoverer
     {
-        internal static List<Type> AllSpecClassesTypes() =>
+        public static List<Type> AllSpecClassesTypes() =>
             AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(x => x.GetTypes())
                 .Where(x =>
@@ -20,7 +20,7 @@ namespace BddSpec
                 })
                 .ToList();
 
-        internal static List<Type> FilteredSpecClassesTypes()
+        public static List<Type> FilteredSpecClassesTypes()
         {
             bool isSpecFiltered =
                 !string.IsNullOrEmpty(ExecutionConfiguration.SpecSelector);

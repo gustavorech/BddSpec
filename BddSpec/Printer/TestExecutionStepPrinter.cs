@@ -6,11 +6,11 @@ using BddSpec.Execution;
 
 namespace BddSpec.Printer
 {
-    internal class TestExecutionStepPrinter
+    public class TestExecutionStepPrinter
     {
         private static object _printerLock = new object();
 
-        internal static void PrintVerboseOrStatus(ExecutionStep executionStep)
+        public static void PrintVerboseOrStatus(ExecutionStep executionStep)
         {
             lock (_printerLock)
             {
@@ -21,7 +21,7 @@ namespace BddSpec.Printer
             }
         }
 
-        internal static void PrintOnlyStatus(ExecutionStep executionStep)
+        public static void PrintOnlyStatus(ExecutionStep executionStep)
         {
             if (executionStep.IsHadError)
                 ConsolePrinter.WriteError("F");
@@ -29,7 +29,7 @@ namespace BddSpec.Printer
                 ConsolePrinter.WriteSuccess(".");
         }
 
-        internal static void PrintVerbose(ExecutionStep executionStep)
+        public static void PrintVerbose(ExecutionStep executionStep)
         {
             SpecDescription testStepDescription = executionStep.TestStepDescription;
 

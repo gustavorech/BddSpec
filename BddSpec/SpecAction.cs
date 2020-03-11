@@ -2,12 +2,12 @@ using System;
 
 namespace BddSpec
 {
-    internal class SpecAction
+    public class SpecAction
     {
-        internal SpecDescription Description { get; }
-        internal Action Action { get; }
+        public SpecDescription Description { get; }
+        public Action Action { get; }
 
-        internal SpecAction(SpecDescription description, Action action)
+        public SpecAction(SpecDescription description, Action action)
         {
             Description = description;
             Action = action;

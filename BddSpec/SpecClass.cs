@@ -6,8 +6,8 @@ namespace BddSpec
 {
     public abstract partial class SpecClass
     {
-        internal List<SpecAction> SpecActions { get; } = new List<SpecAction>();
-        internal Stack<Action> AfterActions { get; } = new Stack<Action>();
+        public List<SpecAction> SpecActions { get; } = new List<SpecAction>();
+        public Stack<Action> AfterActions { get; } = new Stack<Action>();
 
         public abstract void SetUpSpecs();
 
@@ -16,7 +16,7 @@ namespace BddSpec
             set => AfterActions.Push(value);
         }
 
-        internal void ClearSpecActionsToExecuteNextStep()
+        public void ClearSpecActionsToExecuteNextStep()
         {
             SpecActions.Clear();
         }
@@ -25,7 +25,7 @@ namespace BddSpec
             string sourceFilePath, int sourceLineNumber)
         {
             SpecDescription specDescription = new SpecDescription(
-                sourceFilePath, sourceLineNumber, description, "when");
+                sourceFilePath, sourceLineNumber, description, verb);
 
             SpecActions.Add(new SpecAction(specDescription, action));
         }

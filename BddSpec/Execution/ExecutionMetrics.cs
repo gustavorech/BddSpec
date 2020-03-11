@@ -2,14 +2,14 @@ using System;
 
 namespace BddSpec.Execution
 {
-    internal class ExecutionMetrics
+    public class ExecutionMetrics
     {
-        internal int TotalTestClasses { get; set; }
-        internal int TotalNodesReached { get; set; }
-        internal int TotalNodesExecuted { get; set; }
-        internal int TotalLeafNodes { get; set; }
-        internal int TotalLeafNodesPassed { get; set; }
-        internal int TotalNodeErrors { get; set; }
-        internal TimeSpan TotalTime { get; set; }
+        public int TotalTestClasses { get; set; }
+        public int TotalNodesReached { get; set; }
+        public int TotalNodesExecuted { get; set; }
+        public int TotalLeafNodes { get; set; }
+        public int TotalLeafNodesPassed { get; set; }
+        public int TotalNodeErrors { get; set; }
+        public TimeSpan TotalTime { get; set; }
     }
 }

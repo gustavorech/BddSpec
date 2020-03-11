@@ -1,14 +1,14 @@
 
 namespace BddSpec
 {
-    internal class SpecDescription
+    public class SpecDescription
     {
-        internal string SourceFilePath { get; }
-        internal int SourceFileNumber { get; }
-        internal string TestDescription { get; }
-        internal string Verb { get; }
+        public string SourceFilePath { get; }
+        public int SourceFileNumber { get; }
+        public string TestDescription { get; }
+        public string Verb { get; }
 
-        internal SpecDescription(string sourceFilePath, int sourceFileNumber,
+        public SpecDescription(string sourceFilePath, int sourceFileNumber,
             string testDescription, string verb)
         {
             SourceFilePath = sourceFilePath;

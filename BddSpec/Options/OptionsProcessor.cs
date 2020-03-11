@@ -5,9 +5,9 @@ using BddSpec.Configuration;
 
 namespace BddSpec.Options
 {
-    internal class OptionsProcessor
+    public class OptionsProcessor
     {
-        internal static bool CreateExecuteConfigurationFromOptions(string[] args)
+        public static bool CreateExecuteConfigurationFromOptions(string[] args)
         {
             bool isSuccess = true;
 

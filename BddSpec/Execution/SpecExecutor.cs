@@ -2,17 +2,17 @@
 
 namespace BddSpec.Execution
 {
-    internal class SpecExecutor
+    public class SpecExecutor
     {
         private Type _type;
         private ExecutionStep _rootStep;
 
-        internal SpecExecutor(Type type)
+        public SpecExecutor(Type type)
         {
             this._type = type;
         }
 
-        internal void IsolateAndExecuteAllPaths()
+        public void IsolateAndExecuteAllPaths()
         {
             do
             {
@@ -49,14 +49,14 @@ namespace BddSpec.Execution
             }
         }
 
-        internal void PrintAllVerbose()
+        public void PrintAllVerbose()
         {
             Console.WriteLine();
 
             _rootStep.Print();
         }
 
-        internal void PrintOnlyErrors()
+        public void PrintOnlyErrors()
         {
             if (!_rootStep.IsBranchHadError)
                 return;
@@ -66,7 +66,7 @@ namespace BddSpec.Execution
             _rootStep.PrintOnlyErrors();
         }
 
-        internal void CollectMetrics(ExecutionMetrics metrics)
+        public void CollectMetrics(ExecutionMetrics metrics)
         {
             metrics.TotalTestClasses++;
 

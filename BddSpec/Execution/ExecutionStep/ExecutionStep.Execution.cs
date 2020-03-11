@@ -5,9 +5,9 @@ using BddSpec.Printer;
 
 namespace BddSpec.Execution
 {
-    internal partial class ExecutionStep
+    public partial class ExecutionStep
     {
-        internal void Execute(SpecAction stepAction, SpecClass specClassInstance)
+        public void Execute(SpecAction stepAction, SpecClass specClassInstance)
         {
             specClassInstance.ClearSpecActionsToExecuteNextStep();
 
@@ -25,15 +25,15 @@ namespace BddSpec.Execution
 
             NotifyInitialized();
 
-            ExecutePostInitializationActions(specClassInstance);
-        }
-
-        private void ExecutePostInitializationActions(SpecClass specClassInstance)
-        {
             IfIsALeafExecuteAftersAndComplete(specClassInstance);
-
-            VerifyPrintAfterInitialization();
         }
+
+        // private void ExecutePostInitializationActions(SpecClass specClassInstance)
+        // {
+        //     IfIsALeafExecuteAftersAndComplete(specClassInstance);
+
+        //     // VerifyPrintAfterInitialization();
+        // }
 
         private void IfIsALeafExecuteAftersAndComplete(SpecClass specClassInstance)
         {
@@ -46,14 +46,14 @@ namespace BddSpec.Execution
             NotifyCompleted();
         }
 
-        private void VerifyPrintAfterInitialization()
-        {
-            bool printIfIsABranchWithNoErorrsInitialization = IsBranch && !IsHadError;
-            bool printIfIsCompletedOnInitialization = IsCompleted;
+        // private void VerifyPrintAfterInitialization()
+        // {
+        //     bool printIfIsABranchWithNoErorrsInitialization = IsBranch && !IsHadError;
+        //     bool printIfIsCompletedOnInitialization = IsCompleted;
 
-            if (printIfIsABranchWithNoErorrsInitialization || printIfIsCompletedOnInitialization)
-                TestExecutionStepPrinter.PrintVerboseOrStatus(this);
-        }
+        //     if (printIfIsABranchWithNoErorrsInitialization || printIfIsCompletedOnInitialization)
+        //         TestExecutionStepPrinter.PrintVerboseOrStatus(this);
+        // }
 
         private void SafeExecuteAction(Action action)
         {

@@ -3,14 +3,14 @@ using BddSpec.Printer;
 
 namespace BddSpec.Execution
 {
-    internal partial class ExecutionStep
+    public partial class ExecutionStep
     {
         private bool _isInitialized;
         private bool _isCompleted;
         private int _quantityOfInnerStepsCompleted;
 
-        internal bool IsInitialized { get => _isInitialized; }
-        internal bool IsCompleted { get => _isCompleted; }
+        public bool IsInitialized { get => _isInitialized; }
+        public bool IsCompleted { get => _isCompleted; }
 
         private void NotifyInitialized()
         {
@@ -18,19 +18,23 @@ namespace BddSpec.Execution
                 return;
 
             _isInitialized = true;
+
+            ExecutionPrinter.NotifyInitialized(this);
         }
 
-        internal void NotifyCompleted()
+        public void NotifyCompleted()
         {
             if (_isCompleted)
                 return;
 
             _isCompleted = true;
 
+            ExecutionPrinter.NotifyCompleted(this);
+
             _parentStep?.NotifyInnerStepCompleted();
         }
 
-        internal void NotifyInnerStepCompleted()
+        public void NotifyInnerStepCompleted()
         {
             _quantityOfInnerStepsCompleted++;
 

@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace BddSpec.Execution
 {
-    internal partial class ExecutionStep
+    public partial class ExecutionStep
     {
         private List<ExecutionStep> _innerSteps = new List<ExecutionStep>();
 
-        internal bool IsLeaf { get => _innerSteps.Count == 0; }
-        internal bool IsBranch { get => _innerSteps.Count > 0; }
+        public bool IsLeaf { get => _innerSteps.Count == 0; }
+        public bool IsBranch { get => _innerSteps.Count > 0; }
 
-        internal ExecutionStep GetNotCompletedInnerStepToExecute()
+        public ExecutionStep GetNotCompletedInnerStepToExecute()
         {
             if (_quantityOfInnerStepsCompleted >= _innerSteps.Count)
                 return null;
