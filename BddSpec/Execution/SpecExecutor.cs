@@ -56,9 +56,7 @@ namespace BddSpec.Execution
 
         public void PrintAllVerbose()
         {
-            Console.WriteLine();
-
-            _rootStep.Print();
+            _rootStep.PrintSelfAndInnerSteps();
         }
 
         public void PrintOnlyErrors()

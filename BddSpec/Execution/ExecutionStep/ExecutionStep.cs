@@ -23,11 +23,11 @@ namespace BddSpec.Execution
             StepLevel = level;
         }
 
-        public void Print()
+        public void PrintSelfAndInnerSteps()
         {
             TestExecutionStepPrinter.PrintVerbose(this);
 
-            _innerSteps.ForEach(c => c.Print());
+            _innerSteps.ForEach(c => c.PrintSelfAndInnerSteps());
         }
 
         public void PrintOnlyErrors()

@@ -101,12 +101,16 @@ namespace BddSpec.Execution
         private static void VerifyPrintSummaryAtEnd(List<SpecExecutor> testExecutors)
         {
             if (ExecutionConfiguration.Verbosity == PrinterVerbosity.VerboseAfterCompletion)
+            {
+                ExecutionPrinter.NotifyPrintingSummary();
+
                 testExecutors
                     .ForEach(testExecutor =>
                     {
                         testExecutor.PrintAllVerbose();
                         Console.WriteLine();
                     });
+            }
         }
 
         private static void PrintErorrsIfOccurred(List<SpecExecutor> specExecutors)
