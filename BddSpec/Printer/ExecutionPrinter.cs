@@ -45,6 +45,13 @@ namespace BddSpec.Printer
             ConsolePrinter.WriteInfoLine("Executing specs:");
         }
 
+        public static void NotifyPrintingErrorDescriptionAndStackTrace()
+        {
+            Console.WriteLine();
+            Console.WriteLine();
+            ConsolePrinter.WriteInfoLine("Showing failures descriptions and stacktrace:");
+        }
+
         public static void NotifyInitialized(SpecExecutor specExecutor)
         {
             bool separateSpecClassPrinterByOneLine = ExecutionConfiguration.IsPrintVerbose;

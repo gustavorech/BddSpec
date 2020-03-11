@@ -5,7 +5,7 @@ namespace BddSpec.Printer
 {
     public class ExecutionMetricsPrinter
     {
-        public static void NotifyMetricsCollected(ExecutionMetrics executionMetrics)
+        public static void Print(ExecutionMetrics executionMetrics)
         {
             Console.WriteLine();
             Console.WriteLine("METRICS");

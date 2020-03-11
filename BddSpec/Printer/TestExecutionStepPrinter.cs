@@ -17,11 +17,11 @@ namespace BddSpec.Printer
                 if (ExecutionConfiguration.Verbosity == PrinterVerbosity.VerboseSteps)
                     TestExecutionStepPrinter.PrintVerbose(executionStep);
                 else
-                    PrintOnlyStatus(executionStep);
+                    PrintStatus(executionStep);
             }
         }
 
-        public static void PrintOnlyStatus(ExecutionStep executionStep)
+        public static void PrintStatus(ExecutionStep executionStep)
         {
             if (executionStep.IsHadError)
                 ConsolePrinter.WriteError("F");
@@ -71,29 +71,7 @@ namespace BddSpec.Printer
             if (!ExecutionConfiguration.PrintExceptions || ex == null)
                 return;
 
-            Console.WriteLine();
-            ex.Message
-                ?.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)
-                .ToList()
-                .ForEach(messageLine =>
-                {
-                    Console.WriteLine();
-                    ConsolePrinter.WriteIdentation(stepLevel + 1);
-                    ConsolePrinter.WriteError(messageLine);
-                });
-
-            Console.WriteLine();
-            ex.StackTrace
-                ?.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)
-                .ToList()
-                .ForEach(messageLine =>
-                {
-                    Console.WriteLine();
-                    ConsolePrinter.WriteIdentation(stepLevel);
-                    ConsolePrinter.WriteInfo(messageLine);
-                });
-
-            Console.WriteLine();
+            ExceptionPrinter.Print(ex);
         }
     }
 }

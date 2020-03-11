@@ -7,6 +7,11 @@ namespace BddSpec.Execution
         private Type _type;
         private ExecutionStep _rootStep;
 
+        public bool IsBranchHadError
+        {
+            get => _rootStep?.IsBranchHadError ?? false;
+        }
+
         public SpecExecutor(Type type)
         {
             this._type = type;
@@ -61,8 +66,6 @@ namespace BddSpec.Execution
             if (!_rootStep.IsBranchHadError)
                 return;
 
-            Console.WriteLine();
-            Console.WriteLine("ERRORS!!!");
             _rootStep.PrintOnlyErrors();
         }
 

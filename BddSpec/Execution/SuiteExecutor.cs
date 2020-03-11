@@ -114,6 +114,9 @@ namespace BddSpec.Execution
             ExecutionConfiguration.PrintExceptions = true;
             ExecutionConfiguration.ShowLine = true;
 
+            if (specExecutors.Any(c => c.IsBranchHadError))
+                ExecutionPrinter.NotifyPrintingErrorDescriptionAndStackTrace();
+
             specExecutors.ForEach(c => c.PrintOnlyErrors());
         }
 
@@ -122,7 +125,7 @@ namespace BddSpec.Execution
             ExecutionMetrics executionMetrics = new ExecutionMetrics();
             testExecutors.ForEach(c => c.CollectMetrics(executionMetrics));
 
-            ExecutionMetricsPrinter.NotifyMetricsCollected(executionMetrics);
+            ExecutionMetricsPrinter.Print(executionMetrics);
 
             return executionMetrics;
         }
