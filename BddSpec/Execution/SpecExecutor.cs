@@ -23,18 +23,37 @@ namespace BddSpec.Execution
         {
             do
             {
-                SpecClass specClassInstance = (SpecClass)Activator.CreateInstance(_type);
+                try
+                {
+                    SpecClass specClassInstance = (SpecClass)Activator.CreateInstance(_type);
 
-                SpecDescription stepDescription = new SpecDescription("", 0, _type.Name, "class");
-                SpecAction stepAction = new SpecAction(stepDescription, specClassInstance.SetUpSpecs);
+                    SpecDescription stepDescription = new SpecDescription("", 0, _type.Name, "class");
+                    SpecAction stepAction = new SpecAction(stepDescription, specClassInstance.SetUpSpecs);
 
-                specClassInstance.SpecActions.Add(stepAction);
+                    specClassInstance.SpecActions.Add(stepAction);
 
-                VerifyCreateRootStepOnFirstIteration(stepAction);
+                    VerifyCreateRootStepOnFirstIteration(stepAction);
 
-                RecursiveExecuteOnePathThroughCompletion(specClassInstance, _rootStep);
+                    RecursiveExecuteOnePathThroughCompletion(specClassInstance, _rootStep);
+                }
+                catch (Exception ex)
+                {
+                    ExecutionError(ex);
+                }
             }
             while (!_rootStep.IsCompleted);
+        }
+
+        private void ExecutionError(Exception ex)
+        {
+            if (_rootStep == null)
+            {
+                SpecDescription stepDescription = new SpecDescription("", 0, _type.Name, "class");
+                SpecAction stepAction = new SpecAction(stepDescription, () => { });
+                _rootStep = new ExecutionStep(null, stepAction, 0, 0);
+            }
+
+            _rootStep.NotifyHadError(ex);
         }
 
         private void VerifyCreateRootStepOnFirstIteration(SpecAction stepAction)

@@ -11,6 +11,8 @@ namespace BddSpec.ConsoleTest
 
     public class ToTestTest : SpecClass
     {
+        public ToTestTest(string a) { }
+
         public override void SetUpSpecs()
         {
             ToTest toTest = new ToTest();

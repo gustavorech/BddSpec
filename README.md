@@ -5,7 +5,6 @@ Currently, a proof of concept only
 ## Things to do
 
 * Test especific line number
-* Protect test discoverer and test execution from possible errors
 * Create a nuget package
 * Create a readme
 * Verify the text of the printing
@@ -13,6 +12,7 @@ Currently, a proof of concept only
 
 ## Completed
 
+* ~~Protect test --discoverer and test execution from possible errors~~
 * ~~Protect the entire suit from possible errors and show it~~
 * ~~Print errors without exceptions at end end~~
 * ~~Print it better~~

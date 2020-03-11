@@ -15,7 +15,7 @@ namespace BddSpec.Execution
         public bool IsHadError { get => _isHadError; }
         public bool IsBranchHadError { get => IsInnerStepHadError || IsHadError; }
 
-        private void NotifyHadError(Exception ex)
+        public void NotifyHadError(Exception ex)
         {
             if (_isHadError)
                 return;

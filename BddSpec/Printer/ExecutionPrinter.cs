@@ -34,8 +34,8 @@ namespace BddSpec.Printer
         public static void NotifyNoSpecClassesFound()
         {
             Console.WriteLine();
-            ConsolePrinter.WriteErrorLine("> No spec classes were found");
-            ConsolePrinter.WriteErrorLine("> Aborting the execution");
+            ConsolePrinter.WriteErrorLine("No spec classes were found");
+            ConsolePrinter.WriteErrorLine("Aborting the execution");
             Console.WriteLine();
         }
 
