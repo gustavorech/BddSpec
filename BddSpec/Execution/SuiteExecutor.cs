@@ -79,16 +79,17 @@ namespace BddSpec.Execution
         private static SpecExecutor CreateAndExecuteTestClassExecutor(Type type)
         {
             SpecExecutor specExecutor = new SpecExecutor(type);
-
-            ExecutionPrinter.NotifyInitialized(specExecutor);
-
             specExecutor.IsolateAndExecuteAllPaths();
+
+            ExecutionPrinter.NotifyCompleted(specExecutor);
 
             return specExecutor;
         }
 
         private static bool ActionsAfterExecution(List<SpecExecutor> specExecutors)
         {
+            ExecutionPrinter.NotifySuiteExecutionCompleted();
+
             VerifyPrintSummaryAtEnd(specExecutors);
 
             PrintErorrsIfOccurred(specExecutors);

@@ -10,14 +10,14 @@ namespace BddSpec.Printer
     {
         public static void NotifyDiscovererInitialized()
         {
-            ConsolePrinter.WriteInfoLine("Initializing.");
-            ConsolePrinter.WriteInfoLine("Discovering spec classes.");
+            ConsolePrinter.WriteInfoLine("> Initializing");
+            ConsolePrinter.WriteInfoLine("> Discovering spec classes");
         }
 
         public static void NotifySpecDiscovererFilter(string filter)
         {
             Console.WriteLine();
-            ConsolePrinter.WriteInfoLine("Filtering spec classes by: " + filter);
+            ConsolePrinter.WriteInfoLine("> Filtering spec classes by: " + filter);
         }
 
         public static void NotifySpecsFiltered(List<Type> specClassesTypes)
@@ -34,32 +34,37 @@ namespace BddSpec.Printer
         public static void NotifyNoSpecClassesFound()
         {
             Console.WriteLine();
-            ConsolePrinter.WriteErrorLine("No spec classes was found", 2);
-            ConsolePrinter.WriteErrorLine("Aborting the execution", 2);
+            ConsolePrinter.WriteErrorLine("> No spec classes were found");
+            ConsolePrinter.WriteErrorLine("> Aborting the execution");
             Console.WriteLine();
         }
 
         public static void NotifyStartingExecution()
         {
             Console.WriteLine();
-            ConsolePrinter.WriteInfoLine("Executing specs:");
+            ConsolePrinter.WriteInfoLine("> Executing specs");
+        }
+
+        public static void NotifySuiteExecutionCompleted()
+        {
+            if (!ExecutionConfiguration.IsPrintVerbose)
+            {
+                Console.WriteLine();
+                Console.WriteLine();
+            }
         }
 
         public static void NotifyPrintingSummary()
         {
-            Console.WriteLine();
-            Console.WriteLine();
-            ConsolePrinter.WriteInfoLine("Printing summary of the execution:");
+            ConsolePrinter.WriteInfoLine("> Printing summary of the execution");
         }
 
         public static void NotifyPrintingErrorDescriptionAndStackTrace()
         {
-            Console.WriteLine();
-            Console.WriteLine();
-            ConsolePrinter.WriteInfoLine("Showing failures descriptions and stacktrace:");
+            ConsolePrinter.WriteInfoLine("> Showing detailed failures descriptions and StackTrace");
         }
 
-        public static void NotifyInitialized(SpecExecutor specExecutor)
+        public static void NotifyCompleted(SpecExecutor specExecutor)
         {
             bool separateSpecClassPrinterByOneLine = ExecutionConfiguration.IsPrintVerbose;
 

@@ -8,34 +8,29 @@ namespace BddSpec.Printer
         public static void Print(ExecutionMetrics executionMetrics)
         {
             Console.WriteLine();
-            Console.WriteLine("METRICS");
-            Console.WriteLine("Test classes executed: " + executionMetrics.TotalTestClasses);
-            Console.WriteLine("Nodes reached: " + executionMetrics.TotalNodesReached);
-            Console.WriteLine("Leaf nodes reached: " + executionMetrics.TotalLeafNodes);
-            Console.WriteLine("--");
-            Console.WriteLine("Nodes executions: " + executionMetrics.TotalNodesExecuted);
-            Console.WriteLine("Execution time: " + executionMetrics.TotalTime.ToString());
-            Console.WriteLine("--");
-            ConsolePrinter.WriteSuccess("Total leaf nodes passed: " + executionMetrics.TotalLeafNodesPassed);
+            ConsolePrinter.WriteInfoLine("Execution metrics:");
+            ConsolePrinter.WriteInfoLine("Test classes executed: " + executionMetrics.TotalTestClasses, 1);
+            ConsolePrinter.WriteInfoLine("Nodes reached: " + executionMetrics.TotalNodesReached, 1);
+            ConsolePrinter.WriteInfoLine("Leaf nodes reached: " + executionMetrics.TotalLeafNodes, 1);
+            ConsolePrinter.WriteInfoLine("--", 1);
+            ConsolePrinter.WriteInfoLine("Nodes executions: " + executionMetrics.TotalNodesExecuted, 1);
+            ConsolePrinter.WriteInfoLine("Execution time: " + executionMetrics.TotalTime.ToString(), 1);
             Console.WriteLine();
-            ConsolePrinter.WriteError("Total nodes with errors: " + executionMetrics.TotalNodeErrors);
-            Console.WriteLine();
+            ConsolePrinter.WriteSuccessLine("Total leaf nodes passed: " + executionMetrics.TotalLeafNodesPassed);
+
+            if (executionMetrics.TotalNodeErrors == 0)
+                Console.WriteLine("No failures");
+            else
+                ConsolePrinter.WriteErrorLine("Total nodes with errors: " + executionMetrics.TotalNodeErrors);
+
             Console.WriteLine();
 
             if (executionMetrics.TotalNodeErrors == 0)
-            {
-                ConsolePrinter.WriteIdentation(20);
-                ConsolePrinter.WriteSuccess("-- THAT'S IT, ALL GREEN! --");
-                Console.WriteLine();
-                Console.WriteLine();
-            }
+                ConsolePrinter.WriteSuccessLine("[ALL GREEN]");
             else
-            {
-                ConsolePrinter.WriteIdentation(20);
-                ConsolePrinter.WriteError($"you have {executionMetrics.TotalNodeErrors} more things to do");
-                Console.WriteLine();
-                Console.WriteLine();
-            }
+                ConsolePrinter.WriteErrorLine("[HAD SOME FAILURES]");
+
+            Console.WriteLine();
         }
     }
 }
