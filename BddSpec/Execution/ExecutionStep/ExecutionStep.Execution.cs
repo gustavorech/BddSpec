@@ -1,7 +1,6 @@
 
 using System;
 using System.Diagnostics;
-using BddSpec.Printer;
 
 namespace BddSpec.Execution
 {
@@ -28,13 +27,6 @@ namespace BddSpec.Execution
             IfIsALeafExecuteAftersAndComplete(specClassInstance);
         }
 
-        // private void ExecutePostInitializationActions(SpecClass specClassInstance)
-        // {
-        //     IfIsALeafExecuteAftersAndComplete(specClassInstance);
-
-        //     // VerifyPrintAfterInitialization();
-        // }
-
         private void IfIsALeafExecuteAftersAndComplete(SpecClass specClassInstance)
         {
             if (IsBranch)
@@ -45,15 +37,6 @@ namespace BddSpec.Execution
 
             NotifyCompleted();
         }
-
-        // private void VerifyPrintAfterInitialization()
-        // {
-        //     bool printIfIsABranchWithNoErorrsInitialization = IsBranch && !IsHadError;
-        //     bool printIfIsCompletedOnInitialization = IsCompleted;
-
-        //     if (printIfIsABranchWithNoErorrsInitialization || printIfIsCompletedOnInitialization)
-        //         TestExecutionStepPrinter.PrintVerboseOrStatus(this);
-        // }
 
         private void SafeExecuteAction(Action action)
         {

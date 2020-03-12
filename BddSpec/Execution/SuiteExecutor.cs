@@ -46,6 +46,12 @@ namespace BddSpec.Execution
             if (ExecutionConfiguration.IsSpecFiltered)
                 ExecutionPrinter.NotifySpecsFiltered(specClassesTypes);
 
+            if (ExecutionConfiguration.IsSpecificLine && specClassesTypes.Count > 1)
+            {
+                ExecutionPrinter.NotifyOnlyOneStepForSpecificLine();
+                return false;
+            }
+
             return true;
         }
 

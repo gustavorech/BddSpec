@@ -39,6 +39,14 @@ namespace BddSpec.Printer
             Console.WriteLine();
         }
 
+        public static void NotifyOnlyOneStepForSpecificLine()
+        {
+            Console.WriteLine();
+            ConsolePrinter.WriteErrorLine("To use a specific line number you need to filter by only one spec class");
+            ConsolePrinter.WriteErrorLine("Aborting the execution");
+            Console.WriteLine();
+        }
+
         public static void NotifyStartingExecution()
         {
             Console.WriteLine();

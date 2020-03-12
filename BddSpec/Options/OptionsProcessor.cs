@@ -2,6 +2,8 @@
 using CommandLine;
 using BddSpec.Printer;
 using BddSpec.Configuration;
+using System.Text.RegularExpressions;
+using System;
 
 namespace BddSpec.Options
 {
@@ -34,6 +36,8 @@ namespace BddSpec.Options
 
                     if (options.VerbosityLevel == OptionVerbosityLevel.errors)
                         ExecutionConfiguration.Verbosity = PrinterVerbosity.OnlyShowErrors;
+
+                    VerifyAndSeparateSpecificLine();
                 })
                 .WithNotParsed(c =>
                 {
@@ -41,6 +45,26 @@ namespace BddSpec.Options
                 });
 
             return isSuccess;
+        }
+
+        private static void VerifyAndSeparateSpecificLine()
+        {
+            if (string.IsNullOrEmpty(ExecutionConfiguration.SpecSelector))
+                return;
+
+            // ClassToTest:135 -- pos 1: ClassToTest; pos 3: 135
+            Regex splitFilterAndNumber = new Regex("([^:]*)([:](.*))?");
+
+            Match result = splitFilterAndNumber.Match(ExecutionConfiguration.SpecSelector);
+
+            ExecutionConfiguration.SpecSelector = result.Groups[1].Value;
+
+            failSilentlyConvertingTheLineNumber();
+            void failSilentlyConvertingTheLineNumber()
+            {
+                if (int.TryParse(result.Groups[3].Value, out int value))
+                    ExecutionConfiguration.SpecificLine = value;
+            }
         }
     }
 }

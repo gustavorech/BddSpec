@@ -2,13 +2,13 @@ run:
 	dotnet run -p BddSpec.ConsoleTest
 
 class:
-	dotnet run -p BddSpec.ConsoleTest -- ToTestTest
+	dotnet run -p BddSpec.ConsoleTest -- ToTestTest:445
 
 namespace:
 	dotnet run -p BddSpec.ConsoleTest -- %OtherNamespace%
 
 namespace-one:
-	dotnet run -p BddSpec.ConsoleTest -- %space.one%
+	dotnet run -p BddSpec.ConsoleTest -- %space.one%:445
 
 not-filter:
 	dotnet run -p BddSpec.ConsoleTest -- NotExistedClass
