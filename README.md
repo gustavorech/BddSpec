@@ -4,14 +4,15 @@ Currently, a proof of concept only
 
 ## Things to do
 
-* Test especific line number
 * Create a nuget package
 * Create a readme
 * Verify the text of the printing
 * Metrics is too big
+* Change to summary verbosity if test especific line number and is configured to show only errors
 
 ## Completed
 
+* ~~Test especific line number~~
 * ~~Protect test --discoverer and test execution from possible errors~~
 * ~~Protect the entire suit from possible errors and show it~~
 * ~~Print errors without exceptions at end end~~
