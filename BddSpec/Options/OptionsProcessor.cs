@@ -65,6 +65,10 @@ namespace BddSpec.Options
                 if (int.TryParse(result.Groups[3].Value, out int value))
                     ExecutionConfiguration.SpecificLine = value;
             }
+
+            if (ExecutionConfiguration.IsSpecificLine
+                && ExecutionConfiguration.Verbosity == PrinterVerbosity.OnlyShowErrors)
+                ExecutionConfiguration.Verbosity = PrinterVerbosity.VerboseAfterCompletion;
         }
     }
 }

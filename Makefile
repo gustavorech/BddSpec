@@ -11,7 +11,7 @@ namespace-one:
 	dotnet run -p BddSpec.ConsoleTest -- %space.one%:445
 
 line:
-	dotnet run -p BddSpec.ConsoleTest -- ToTestInjection:74 -v verbose
+	dotnet run -p BddSpec.ConsoleTest -- ToTestInjection:74
 
 not-filter:
 	dotnet run -p BddSpec.ConsoleTest -- NotExistedClass
