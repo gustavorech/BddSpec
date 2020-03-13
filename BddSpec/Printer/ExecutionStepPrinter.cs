@@ -44,7 +44,11 @@ namespace BddSpec.Printer
         private static void PrintDescription(ExecutionStep testExecutionStep,
             SpecDescription testStepDescription)
         {
-            string message = $"{testStepDescription.Verb} {testStepDescription.TestDescription}";
+            string message = null;
+            if (string.IsNullOrEmpty(testStepDescription.Verb))
+                message = testStepDescription.TestDescription;
+            else
+                message = $"{testStepDescription.Verb} {testStepDescription.TestDescription}";
 
             if (Configuration.ShowLine && testStepDescription.SourceFileNumber != 0)
                 message = $"{message}:{testStepDescription.SourceFileNumber}";
