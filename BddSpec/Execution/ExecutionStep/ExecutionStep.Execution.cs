@@ -17,7 +17,12 @@ namespace BddSpec.Execution
 
         private void InitializeOnFirstExecution(SpecClass specClassInstance)
         {
-            if (IsInitialized)
+            if (IsInitialized || IsHadError)
+                return;
+
+            ExecuteOnceBeforeIfHaveAndCleanIt(specClassInstance);
+
+            if (IsHadError)
                 return;
 
             AddInnerStepsFromActions(specClassInstance.SpecActions);
@@ -25,6 +30,14 @@ namespace BddSpec.Execution
             NotifyInitialized();
 
             IfIsALeafExecuteAftersAndComplete(specClassInstance);
+        }
+
+        private void ExecuteOnceBeforeIfHaveAndCleanIt(SpecClass specClassInstance)
+        {
+            if (specClassInstance.OnceBefore != null)
+                SafeExecuteAction(specClassInstance.OnceBefore);
+
+            specClassInstance.OnceBefore = null;
         }
 
         private void IfIsALeafExecuteAftersAndComplete(SpecClass specClassInstance)

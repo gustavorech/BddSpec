@@ -8,6 +8,7 @@ namespace BddSpec
     {
         public List<SpecAction> SpecActions { get; } = new List<SpecAction>();
         public Stack<Action> AfterActions { get; } = new Stack<Action>();
+        public Action OnceBefore { get; set; }
 
         public string SourceFilePath { get; set; }
 
