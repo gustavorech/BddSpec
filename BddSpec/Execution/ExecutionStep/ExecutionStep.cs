@@ -26,7 +26,7 @@ namespace BddSpec.Execution
 
         public void PrintSummary()
         {
-            TestExecutionStepPrinter.PrintVerbose(this);
+            ExecutionStepPrinter.PrintVerbose(this);
 
             _innerSteps.ForEach(c => c.PrintSummary());
         }
@@ -36,7 +36,7 @@ namespace BddSpec.Execution
             if (!this.IsBAnyInBranchFailed)
                 return;
 
-            TestExecutionStepPrinter.PrintVerbose(this);
+            ExecutionStepPrinter.PrintVerbose(this);
 
             if (IsFailed)
                 ExceptionPrinter.Print(ErrorException);
@@ -49,7 +49,7 @@ namespace BddSpec.Execution
             if (!this.IsBAnyInBranchFailed)
                 return;
 
-            TestExecutionStepPrinter.PrintVerbose(this);
+            ExecutionStepPrinter.PrintVerbose(this);
 
             _innerSteps.ForEach(c => c.PrintErrorsSummary());
         }

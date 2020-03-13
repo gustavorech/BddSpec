@@ -42,7 +42,7 @@ namespace BddSpec.Execution
 
         private static List<Type> FilteredByClassName()
         {
-            ExecutionPrinter.NotifySpecDiscovererFilter(ExecutionConfiguration.SpecFilter);
+            ExecutionPrinter.PrintSpecDiscovererFilter(ExecutionConfiguration.SpecFilter);
 
             return AllSpecClassesTypes()
                 .Where(c => c.Name.Equals(ExecutionConfiguration.SpecFilter, StringComparison.InvariantCultureIgnoreCase))
@@ -56,7 +56,7 @@ namespace BddSpec.Execution
 
             Regex regex = new Regex(namespaceFilter, RegexOptions.IgnoreCase);
 
-            ExecutionPrinter.NotifySpecDiscovererFilter(namespaceFilter);
+            ExecutionPrinter.PrintSpecDiscovererFilter(namespaceFilter);
 
             return AllSpecClassesTypes()
                 .Where(c => regex.IsMatch(c.FullName))

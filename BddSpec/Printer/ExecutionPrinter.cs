@@ -8,19 +8,19 @@ namespace BddSpec.Printer
 {
     public class ExecutionPrinter
     {
-        public static void NotifyDiscovererInitialized()
+        public static void PrintDiscovererInitialized()
         {
-            ConsolePrinter.WriteInfoLine("> Initializing");
-            ConsolePrinter.WriteInfoLine("> Discovering spec classes");
+            PrinterHelper.WriteInfoLine("> Initializing");
+            PrinterHelper.WriteInfoLine("> Discovering spec classes");
         }
 
-        public static void NotifySpecDiscovererFilter(string filter)
+        public static void PrintSpecDiscovererFilter(string filter)
         {
             Console.WriteLine();
-            ConsolePrinter.WriteInfoLine("> Filtering spec classes by: " + filter);
+            PrinterHelper.WriteInfoLine("> Filtering spec classes by: " + filter);
         }
 
-        public static void NotifySpecsFiltered(List<Type> specClassesTypes)
+        public static void PrintSpecsFiltered(List<Type> specClassesTypes)
         {
             Console.WriteLine();
             Console.WriteLine("Filtered spec classes:");
@@ -28,32 +28,32 @@ namespace BddSpec.Printer
             specClassesTypes
                 .Select(c => c.FullName)
                 .ToList()
-                .ForEach(c => ConsolePrinter.WriteSuccessLine("- " + c, 1));
+                .ForEach(c => PrinterHelper.WriteSuccessLine("- " + c, 1));
         }
 
-        public static void NotifyNoSpecClassesFound()
+        public static void PrintNoSpecClassesFound()
         {
             Console.WriteLine();
-            ConsolePrinter.WriteErrorLine("No spec classes were found");
-            ConsolePrinter.WriteErrorLine("Aborting the execution");
+            PrinterHelper.WriteErrorLine("No spec classes were found");
+            PrinterHelper.WriteErrorLine("Aborting the execution");
             Console.WriteLine();
         }
 
-        public static void NotifyOnlyOneStepForSpecificLine()
+        public static void PrintErrorMoreThanOneSpecClassForSpecificLine()
         {
             Console.WriteLine();
-            ConsolePrinter.WriteErrorLine("To use a specific line number you need to filter by only one spec class");
-            ConsolePrinter.WriteErrorLine("Aborting the execution");
+            PrinterHelper.WriteErrorLine("To use a specific line number you need to filter by only one spec class");
+            PrinterHelper.WriteErrorLine("Aborting the execution");
             Console.WriteLine();
         }
 
-        public static void NotifyStartingExecution()
+        public static void PrintExecutionSpecs()
         {
             Console.WriteLine();
-            ConsolePrinter.WriteInfoLine("> Executing specs");
+            PrinterHelper.WriteInfoLine("> Executing specs");
         }
 
-        public static void NotifySuiteExecutionCompleted()
+        public static void PrintSuiteExecutionCompleted()
         {
             if (!ExecutionConfiguration.IsPrintVerbose)
             {
@@ -62,64 +62,29 @@ namespace BddSpec.Printer
             }
         }
 
-        public static void NotifyPrintingSummary()
+        public static void PrintShowingSummary()
         {
-            ConsolePrinter.WriteInfoLine("> Showing summary of the execution");
+            PrinterHelper.WriteInfoLine("> Showing summary of the execution");
         }
 
-        public static void NotifyPrintingErrorDetailed()
+        public static void PrintShowingFailureDetailed()
         {
-            ConsolePrinter.WriteInfoLine("> Showing detailed failures descriptions and StackTrace");
+            PrinterHelper.WriteInfoLine("> Showing detailed failures descriptions and StackTrace");
         }
 
-        public static void NotifyPrintingErrorSummary()
+        public static void PrintShowingFailuresSummary()
         {
-            ConsolePrinter.WriteInfoLine("> Showing summary of failures (see details above)");
+            PrinterHelper.WriteInfoLine("> Showing summary of failures (see details above)");
         }
 
-        public static void NotifyCompleted(SpecExecutor specExecutor)
-        {
-            bool separateSpecClassPrinterByOneLine = ExecutionConfiguration.IsPrintVerbose;
-
-            if (ExecutionConfiguration.IsPrintVerbose)
-                Console.WriteLine();
-        }
-
-        public static void NotifyInitialized(ExecutionStep executionStep)
-        {
-            if (!ExecutionConfiguration.IsPrintVerbose)
-                return;
-
-            if (executionStep.IsLeafStep)
-                return;
-
-            TestExecutionStepPrinter.PrintVerbose(executionStep);
-        }
-
-        public static void NotifyError(ExecutionStep executionStep)
-        {
-            TestExecutionStepPrinter.PrintVerboseOrStatus(executionStep);
-        }
-
-        public static void NotifyCompleted(ExecutionStep executionStep)
-        {
-            if (executionStep.IsBranchStep)
-                return;
-
-            if (executionStep.IsFailed)
-                return;
-
-            TestExecutionStepPrinter.PrintVerboseOrStatus(executionStep);
-        }
-
-        public static void PrintSpecClassesWithError(List<SpecExecutor> specExecutors)
+        public static void PrintSpecClassesWithFailure(List<SpecExecutor> specExecutors)
         {
             Console.WriteLine("Spec classes with failures:");
 
             specExecutors
                 .Where(c => c.IsBranchHadError)
                 .ToList()
-                .ForEach(c => ConsolePrinter.WriteErrorLine("- " + c.Type.FullName, 1));
+                .ForEach(c => PrinterHelper.WriteErrorLine("- " + c.Type.FullName, 1));
         }
     }
 }

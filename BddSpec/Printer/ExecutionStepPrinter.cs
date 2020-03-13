@@ -6,7 +6,7 @@ using BddSpec.Execution;
 
 namespace BddSpec.Printer
 {
-    public class TestExecutionStepPrinter
+    public class ExecutionStepPrinter
     {
         private static object _printerLock = new object();
 
@@ -15,7 +15,7 @@ namespace BddSpec.Printer
             lock (_printerLock)
             {
                 if (ExecutionConfiguration.Verbosity == PrinterVerbosity.VerboseSteps)
-                    TestExecutionStepPrinter.PrintVerbose(executionStep);
+                    ExecutionStepPrinter.PrintVerbose(executionStep);
                 else
                     PrintStatus(executionStep);
             }
@@ -24,16 +24,16 @@ namespace BddSpec.Printer
         public static void PrintStatus(ExecutionStep executionStep)
         {
             if (executionStep.IsFailed)
-                ConsolePrinter.WriteError("F");
+                PrinterHelper.WriteError("F");
             else if (executionStep.IsLeafStep)
-                ConsolePrinter.WriteSuccess(".");
+                PrinterHelper.WriteSuccess(".");
         }
 
         public static void PrintVerbose(ExecutionStep executionStep)
         {
             SpecDescription testStepDescription = executionStep.TestStepDescription;
 
-            ConsolePrinter.WriteIdentation(executionStep.StepLevel);
+            PrinterHelper.WriteIdentation(executionStep.StepLevel);
 
             PrintDescription(executionStep, testStepDescription);
 
@@ -52,16 +52,16 @@ namespace BddSpec.Printer
                 message = $"{message}:{testStepDescription.SourceFileNumber}";
 
             if (testExecutionStep.IsFailed)
-                ConsolePrinter.WriteError(message);
+                PrinterHelper.WriteError(message);
             else if (testExecutionStep.IsLeafStep)
-                ConsolePrinter.WriteSuccess(message);
+                PrinterHelper.WriteSuccess(message);
             else
                 Console.Write(message);
         }
 
         private static void PrintStepTimeSpan(TimeSpan time)
         {
-            ConsolePrinter.WriteInfo(" (" + time.TotalMilliseconds + "ms)");
+            PrinterHelper.WriteInfo(" (" + time.TotalMilliseconds + "ms)");
         }
     }
 }

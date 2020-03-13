@@ -3,7 +3,7 @@ using System;
 
 namespace BddSpec.Printer
 {
-    public class ConsolePrinter
+    public class PrinterHelper
     {
         public static void WriteIdentation(int level) =>
             Console.Write(new string(' ', level * 2));

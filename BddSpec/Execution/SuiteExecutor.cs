@@ -33,22 +33,22 @@ namespace BddSpec.Execution
 
         private static bool DiscoverSpecClasses()
         {
-            ExecutionPrinter.NotifyDiscovererInitialized();
+            ExecutionPrinter.PrintDiscovererInitialized();
 
             specClassesTypes = SpecDiscoverer.FilteredSpecClassesTypes();
 
             if (!specClassesTypes.Any())
             {
-                ExecutionPrinter.NotifyNoSpecClassesFound();
+                ExecutionPrinter.PrintNoSpecClassesFound();
                 return false;
             }
 
             if (ExecutionConfiguration.IsSpecFiltered)
-                ExecutionPrinter.NotifySpecsFiltered(specClassesTypes);
+                ExecutionPrinter.PrintSpecsFiltered(specClassesTypes);
 
             if (ExecutionConfiguration.IsSpecificLine && specClassesTypes.Count > 1)
             {
-                ExecutionPrinter.NotifyOnlyOneStepForSpecificLine();
+                ExecutionPrinter.PrintErrorMoreThanOneSpecClassForSpecificLine();
                 return false;
             }
 
@@ -57,7 +57,7 @@ namespace BddSpec.Execution
 
         private static List<SpecExecutor> ExecuteSyncOrASync()
         {
-            ExecutionPrinter.NotifyStartingExecution();
+            ExecutionPrinter.PrintExecutionSpecs();
 
             bool shouldBlockAsynchronous =
                 ExecutionConfiguration.Verbosity == PrinterVerbosity.VerboseSteps;
@@ -87,14 +87,14 @@ namespace BddSpec.Execution
             SpecExecutor specExecutor = new SpecExecutor(type);
             specExecutor.IsolateAndExecuteAllPaths();
 
-            ExecutionPrinter.NotifyCompleted(specExecutor);
+            VerbosePrinter.NotifyCompleted(specExecutor);
 
             return specExecutor;
         }
 
         private static bool ActionsAfterExecutionCompleted(List<SpecExecutor> specExecutors)
         {
-            ExecutionPrinter.NotifySuiteExecutionCompleted();
+            ExecutionPrinter.PrintSuiteExecutionCompleted();
 
             VerifyPrintSummaryAtEnd(specExecutors);
 
@@ -109,7 +109,7 @@ namespace BddSpec.Execution
         {
             if (ExecutionConfiguration.Verbosity == PrinterVerbosity.VerboseAfterCompletion)
             {
-                ExecutionPrinter.NotifyPrintingSummary();
+                ExecutionPrinter.PrintShowingSummary();
 
                 testExecutors
                     .ForEach(testExecutor =>
@@ -126,10 +126,10 @@ namespace BddSpec.Execution
 
             if (specExecutors.Any(c => c.IsBranchHadError))
             {
-                ExecutionPrinter.NotifyPrintingErrorDetailed();
+                ExecutionPrinter.PrintShowingFailureDetailed();
                 specExecutors.ForEach(c => c.PrintErrorsDetailed());
 
-                ExecutionPrinter.NotifyPrintingErrorSummary();
+                ExecutionPrinter.PrintShowingFailuresSummary();
                 specExecutors
                     .Where(c => c.IsBranchHadError)
                     .ToList()
@@ -139,7 +139,7 @@ namespace BddSpec.Execution
                         Console.WriteLine();
                     });
 
-                ExecutionPrinter.PrintSpecClassesWithError(specExecutors);
+                ExecutionPrinter.PrintSpecClassesWithFailure(specExecutors);
             }
         }
 

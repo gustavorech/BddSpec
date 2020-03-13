@@ -23,7 +23,7 @@ namespace BddSpec.Execution
             _isFailed = true;
             ErrorException = exception;
 
-            ExecutionPrinter.NotifyError(this);
+            VerbosePrinter.NotifyError(this);
 
             NotifyCompletion();
 

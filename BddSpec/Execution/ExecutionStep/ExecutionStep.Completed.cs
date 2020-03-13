@@ -19,7 +19,7 @@ namespace BddSpec.Execution
 
             _isInitialized = true;
 
-            ExecutionPrinter.NotifyInitialized(this);
+            VerbosePrinter.NotifyInitialized(this);
         }
 
         public void NotifyCompletion()
@@ -29,7 +29,7 @@ namespace BddSpec.Execution
 
             _isCompleted = true;
 
-            ExecutionPrinter.NotifyCompleted(this);
+            VerbosePrinter.NotifyCompleted(this);
 
             _parentStep?.NotifyInnerStepCompletion();
         }
