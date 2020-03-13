@@ -68,7 +68,10 @@ namespace BddSpec.Options
 
             if (ExecutionConfiguration.IsSpecificLine
                 && ExecutionConfiguration.Verbosity == PrinterVerbosity.OnlyShowErrors)
+            {
                 ExecutionConfiguration.Verbosity = PrinterVerbosity.VerboseAfterCompletion;
+                ExecutionConfiguration.ShowLine = true;
+            }
         }
     }
 }
