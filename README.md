@@ -4,13 +4,13 @@ Currently, a proof of concept only
 
 ## Things to do
 
-* Create a nuget package
 * Create a readme
 * Verify the text of the printing
 * Metrics is too big
 
 ## Completed
 
+* ~~Create a nuget package~~
 * ~~Change to summary verbosity if test specific line number and is configured to show only errors~~
 * ~~Test specific line number~~
 * ~~Protect test --discoverer and test execution from possible errors~~
