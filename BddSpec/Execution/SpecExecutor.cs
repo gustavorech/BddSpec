@@ -11,7 +11,7 @@ namespace BddSpec.Execution
 
         public bool IsBranchHadError
         {
-            get => _rootStep?.IsBranchHadError ?? false;
+            get => _rootStep?.IsBAnyInBranchFailed ?? false;
         }
 
         public SpecExecutor(Type type)
@@ -53,7 +53,7 @@ namespace BddSpec.Execution
                 _rootStep = new ExecutionStep(null, stepAction, 0, 0);
             }
 
-            _rootStep.NotifyHadError(ex);
+            _rootStep.NotifyFailure(ex);
         }
 
         private void VerifyCreateRootStepOnFirstIteration(SpecAction stepAction)
@@ -67,11 +67,11 @@ namespace BddSpec.Execution
             while (currentStep != null)
             {
                 SpecAction currentAction =
-                    specClassInstance.SpecActions[currentStep.PositionOfTheActionInTheStack];
+                    specClassInstance.SpecActions[currentStep.PositionOfTheActionOnSpecClass];
 
                 currentStep.Execute(currentAction, specClassInstance);
 
-                currentStep = currentStep.GetNotCompletedInnerStepToExecute();
+                currentStep = currentStep.GetCurrentInnerStepToExecute();
             }
         }
 
@@ -82,7 +82,7 @@ namespace BddSpec.Execution
 
         public void PrintErrorsDetailed()
         {
-            if (!_rootStep.IsBranchHadError)
+            if (!_rootStep.IsBAnyInBranchFailed)
                 return;
 
             _rootStep.PrintErrorsDetailed();
@@ -90,7 +90,7 @@ namespace BddSpec.Execution
 
         public void PrintErrorsSummary()
         {
-            if (!_rootStep.IsBranchHadError)
+            if (!_rootStep.IsBAnyInBranchFailed)
                 return;
 
             _rootStep.PrintErrorsSummary();
@@ -98,7 +98,7 @@ namespace BddSpec.Execution
 
         public void CollectMetrics(ExecutionMetrics metrics)
         {
-            metrics.TotalTestClasses++;
+            metrics.TotalSpecClasses++;
 
             _rootStep.CollectMetrics(metrics);
         }

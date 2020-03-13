@@ -15,13 +15,13 @@ namespace BddSpec.Execution
         {
             Stopwatch timer = Stopwatch.StartNew();
 
-            bool isSuccessDiscovering = Discover();
+            bool isSuccessDiscovering = DiscoverSpecClasses();
             if (!isSuccessDiscovering)
                 return false;
 
             List<SpecExecutor> specExecutors = ExecuteSyncOrASync();
 
-            bool hasErrors = ActionsAfterExecution(specExecutors);
+            bool hasErrors = ActionsAfterExecutionCompleted(specExecutors);
 
             Console.WriteLine("Total time: " + timer.Elapsed.ToString());
 
@@ -31,7 +31,7 @@ namespace BddSpec.Execution
             return true;
         }
 
-        private static bool Discover()
+        private static bool DiscoverSpecClasses()
         {
             ExecutionPrinter.NotifyDiscovererInitialized();
 
@@ -92,7 +92,7 @@ namespace BddSpec.Execution
             return specExecutor;
         }
 
-        private static bool ActionsAfterExecution(List<SpecExecutor> specExecutors)
+        private static bool ActionsAfterExecutionCompleted(List<SpecExecutor> specExecutors)
         {
             ExecutionPrinter.NotifySuiteExecutionCompleted();
 
@@ -102,7 +102,7 @@ namespace BddSpec.Execution
 
             ExecutionMetrics executionMetrics = CollectAndPrintMetrics(specExecutors);
 
-            return executionMetrics.TotalNodeErrors > 0;
+            return executionMetrics.TotalNodeWithFailures > 0;
         }
 
         private static void VerifyPrintSummaryAtEnd(List<SpecExecutor> testExecutors)

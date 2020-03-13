@@ -11,14 +11,14 @@ Currently, a proof of concept only
 
 ## Completed
 
-* ~~Change to summary verbosity if test especific line number and is configured to show only errors~~
-* ~~Test especific line number~~
+* ~~Change to summary verbosity if test specific line number and is configured to show only errors~~
+* ~~Test specific line number~~
 * ~~Protect test --discoverer and test execution from possible errors~~
 * ~~Protect the entire suit from possible errors and show it~~
 * ~~Print errors without exceptions at end end~~
 * ~~Print it better~~
 * ~~Add all the test types~~
-* ~~Test Especific classes / namespaces~~
+* ~~Test specific classes / namespaces~~
 * ~~Search how to inform the terminal that not all tests passed (exit 0 os something like that)~~
 * ~~Make the execution steps more clear, try to unify the boolean verifications creating meaningful conjunctions~~
 * ~~Add after stack execution~~

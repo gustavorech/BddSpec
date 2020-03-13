@@ -90,7 +90,7 @@ namespace BddSpec.Printer
             if (!ExecutionConfiguration.IsPrintVerbose)
                 return;
 
-            if (executionStep.IsLeaf)
+            if (executionStep.IsLeafStep)
                 return;
 
             TestExecutionStepPrinter.PrintVerbose(executionStep);
@@ -103,10 +103,10 @@ namespace BddSpec.Printer
 
         public static void NotifyCompleted(ExecutionStep executionStep)
         {
-            if (executionStep.IsBranch)
+            if (executionStep.IsBranchStep)
                 return;
 
-            if (executionStep.IsHadError)
+            if (executionStep.IsFailed)
                 return;
 
             TestExecutionStepPrinter.PrintVerboseOrStatus(executionStep);

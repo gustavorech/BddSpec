@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using BddSpec.Configuration;
 using BddSpec.Printer;
 
-namespace BddSpec
+namespace BddSpec.Execution
 {
     public class SpecDiscoverer
     {

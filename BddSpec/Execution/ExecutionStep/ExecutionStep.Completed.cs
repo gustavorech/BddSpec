@@ -22,7 +22,7 @@ namespace BddSpec.Execution
             ExecutionPrinter.NotifyInitialized(this);
         }
 
-        public void NotifyCompleted()
+        public void NotifyCompletion()
         {
             if (_isCompleted)
                 return;
@@ -31,15 +31,15 @@ namespace BddSpec.Execution
 
             ExecutionPrinter.NotifyCompleted(this);
 
-            _parentStep?.NotifyInnerStepCompleted();
+            _parentStep?.NotifyInnerStepCompletion();
         }
 
-        public void NotifyInnerStepCompleted()
+        public void NotifyInnerStepCompletion()
         {
             _quantityOfInnerStepsCompleted++;
 
             if (_quantityOfInnerStepsCompleted == _innerSteps.Count)
-                NotifyCompleted();
+                NotifyCompletion();
         }
     }
 }

@@ -6,37 +6,37 @@ namespace BddSpec.Execution
 {
     public partial class ExecutionStep
     {
-        private bool _isInnerStepHadError;
-        private bool _isHadError;
+        private bool _isAnyInnerStepFailed;
+        private bool _isFailed;
 
         public Exception ErrorException { get; private set; }
 
-        public bool IsInnerStepHadError { get => _isInnerStepHadError; }
-        public bool IsHadError { get => _isHadError; }
-        public bool IsBranchHadError { get => IsInnerStepHadError || IsHadError; }
+        public bool IsAnyInnerStepFailed { get => _isAnyInnerStepFailed; }
+        public bool IsFailed { get => _isFailed; }
+        public bool IsBAnyInBranchFailed { get => IsAnyInnerStepFailed || IsFailed; }
 
-        public void NotifyHadError(Exception ex)
+        public void NotifyFailure(Exception exception)
         {
-            if (_isHadError)
+            if (_isFailed)
                 return;
 
-            _isHadError = true;
-            ErrorException = ex;
+            _isFailed = true;
+            ErrorException = exception;
 
             ExecutionPrinter.NotifyError(this);
 
-            NotifyCompleted();
+            NotifyCompletion();
 
-            _parentStep?.NotifyInnerStepHadError();
+            _parentStep?.NotifyInnerStepFailure();
         }
 
-        private void NotifyInnerStepHadError()
+        private void NotifyInnerStepFailure()
         {
-            if (_isInnerStepHadError)
+            if (_isAnyInnerStepFailed)
                 return;
 
-            _isInnerStepHadError = true;
-            _parentStep?.NotifyInnerStepHadError();
+            _isAnyInnerStepFailed = true;
+            _parentStep?.NotifyInnerStepFailure();
         }
     }
 }

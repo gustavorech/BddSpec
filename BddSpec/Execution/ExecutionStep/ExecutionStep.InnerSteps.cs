@@ -9,10 +9,10 @@ namespace BddSpec.Execution
     {
         private List<ExecutionStep> _innerSteps = new List<ExecutionStep>();
 
-        public bool IsLeaf { get => _innerSteps.Count == 0; }
-        public bool IsBranch { get => _innerSteps.Count > 0; }
+        public bool IsLeafStep { get => _innerSteps.Count == 0; }
+        public bool IsBranchStep { get => _innerSteps.Count > 0; }
 
-        public ExecutionStep GetNotCompletedInnerStepToExecute()
+        public ExecutionStep GetCurrentInnerStepToExecute()
         {
             if (_quantityOfInnerStepsCompleted >= _innerSteps.Count)
                 return null;

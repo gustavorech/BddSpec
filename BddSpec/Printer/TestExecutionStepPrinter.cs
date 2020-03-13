@@ -23,9 +23,9 @@ namespace BddSpec.Printer
 
         public static void PrintStatus(ExecutionStep executionStep)
         {
-            if (executionStep.IsHadError)
+            if (executionStep.IsFailed)
                 ConsolePrinter.WriteError("F");
-            else if (executionStep.IsLeaf)
+            else if (executionStep.IsLeafStep)
                 ConsolePrinter.WriteSuccess(".");
         }
 
@@ -51,9 +51,9 @@ namespace BddSpec.Printer
             if (ExecutionConfiguration.ShowLine && testStepDescription.SourceFileNumber != 0)
                 message = $"{message}:{testStepDescription.SourceFileNumber}";
 
-            if (testExecutionStep.IsHadError)
+            if (testExecutionStep.IsFailed)
                 ConsolePrinter.WriteError(message);
-            else if (testExecutionStep.IsLeaf)
+            else if (testExecutionStep.IsLeafStep)
                 ConsolePrinter.WriteSuccess(message);
             else
                 Console.Write(message);

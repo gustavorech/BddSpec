@@ -8,20 +8,20 @@ namespace BddSpec.Execution
     public partial class ExecutionStep
     {
         private ExecutionStep _parentStep;
-        public int PositionOfTheActionInTheStack { get; }
+        public int PositionOfTheActionOnSpecClass { get; }
         public int StepLevel { get; }
         public SpecDescription TestStepDescription { get; }
 
-        public int TimesExecuted { get; private set; }
+        public int TotalTimesExecuted { get; private set; }
         public TimeSpan TotalTimeSpent { get; private set; } = TimeSpan.Zero;
 
         public ExecutionStep(ExecutionStep parentStep,
-            SpecAction stepAction, int positionInStack, int level)
+            SpecAction stepAction, int positionInStack, int stepLevel)
         {
-            this._parentStep = parentStep;
+            _parentStep = parentStep;
             TestStepDescription = stepAction.Description;
-            PositionOfTheActionInTheStack = positionInStack;
-            StepLevel = level;
+            PositionOfTheActionOnSpecClass = positionInStack;
+            StepLevel = stepLevel;
         }
 
         public void PrintSummary()
@@ -33,12 +33,12 @@ namespace BddSpec.Execution
 
         public void PrintErrorsDetailed()
         {
-            if (!this.IsBranchHadError)
+            if (!this.IsBAnyInBranchFailed)
                 return;
 
             TestExecutionStepPrinter.PrintVerbose(this);
 
-            if (IsHadError)
+            if (IsFailed)
                 ExceptionPrinter.Print(ErrorException);
 
             _innerSteps.ForEach(c => c.PrintErrorsDetailed());
@@ -46,7 +46,7 @@ namespace BddSpec.Execution
 
         public void PrintErrorsSummary()
         {
-            if (!this.IsBranchHadError)
+            if (!this.IsBAnyInBranchFailed)
                 return;
 
             TestExecutionStepPrinter.PrintVerbose(this);
@@ -58,16 +58,16 @@ namespace BddSpec.Execution
         {
             metrics.TotalNodesReached++;
 
-            if (IsLeaf)
-                metrics.TotalLeafNodes++;
+            if (IsLeafStep)
+                metrics.TotalLeafNodesReached++;
 
-            if (IsHadError)
-                metrics.TotalNodeErrors++;
-            else if (IsLeaf)
-                metrics.TotalLeafNodesPassed++;
+            if (IsFailed)
+                metrics.TotalNodeWithFailures++;
+            else if (IsLeafStep)
+                metrics.TotalLeafNodesSucceeded++;
 
-            metrics.TotalNodesExecuted += TimesExecuted;
-            metrics.TotalTime += TotalTimeSpent;
+            metrics.TotalTimesNodesWereExecuted += TotalTimesExecuted;
+            metrics.TotalExecutionTimeSpent += TotalTimeSpent;
 
             _innerSteps.ForEach(step => step.CollectMetrics(metrics));
         }

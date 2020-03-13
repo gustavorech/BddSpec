@@ -17,12 +17,12 @@ namespace BddSpec.Execution
 
         private void InitializeOnFirstExecution(SpecClass specClassInstance)
         {
-            if (IsInitialized || IsHadError)
+            if (IsInitialized || IsFailed)
                 return;
 
             ExecuteOnceBeforeIfHaveAndCleanIt(specClassInstance);
 
-            if (IsHadError)
+            if (IsFailed)
                 return;
 
             AddInnerStepsFromActions(specClassInstance.SpecActions);
@@ -42,13 +42,13 @@ namespace BddSpec.Execution
 
         private void IfIsALeafExecuteAftersAndComplete(SpecClass specClassInstance)
         {
-            if (IsBranch)
+            if (IsBranchStep)
                 return;
 
-            while (specClassInstance.AfterActions.Count > 0 && !IsHadError)
+            while (specClassInstance.AfterActions.Count > 0 && !IsFailed)
                 SafeExecuteAction(specClassInstance.AfterActions.Pop());
 
-            NotifyCompleted();
+            NotifyCompletion();
         }
 
         private void SafeExecuteAction(Action action)
@@ -61,12 +61,12 @@ namespace BddSpec.Execution
             }
             catch (Exception ex)
             {
-                NotifyHadError(ex);
+                NotifyFailure(ex);
             }
             finally
             {
                 timer.Stop();
-                TimesExecuted++;
+                TotalTimesExecuted++;
                 TotalTimeSpent += timer.Elapsed;
             }
         }
