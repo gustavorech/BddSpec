@@ -48,7 +48,7 @@ namespace BddSpec.Printer
         {
             string message = $"{testStepDescription.Verb} {testStepDescription.TestDescription}";
 
-            if (ExecutionConfiguration.ShowLine)
+            if (ExecutionConfiguration.ShowLine && testStepDescription.SourceFileNumber != 0)
                 message = $"{message}:{testStepDescription.SourceFileNumber}";
 
             if (testExecutionStep.IsHadError)

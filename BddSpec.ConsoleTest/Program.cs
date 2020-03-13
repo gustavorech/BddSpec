@@ -8,8 +8,6 @@ namespace BddSpec.ConsoleTest
         static void Main(string[] args)
         {
             BddSpecManager.Execute(args);
-
-            Environment.Exit(0);
         }
     }
 }
