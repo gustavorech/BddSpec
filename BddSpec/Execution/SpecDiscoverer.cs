@@ -24,7 +24,7 @@ namespace BddSpec.Execution
         public static List<Type> FilteredSpecClassesTypes()
         {
             bool isSpecFiltered =
-                !string.IsNullOrEmpty(ExecutionConfiguration.SpecSelector);
+                !string.IsNullOrEmpty(ExecutionConfiguration.SpecFilter);
 
             if (isSpecFiltered)
                 return FilteredByRegexMatchOrClassName();
@@ -34,7 +34,7 @@ namespace BddSpec.Execution
 
         private static List<Type> FilteredByRegexMatchOrClassName()
         {
-            if (ExecutionConfiguration.SpecSelector.Contains("%"))
+            if (ExecutionConfiguration.SpecFilter.Contains("%"))
                 return FilteredByRegexMatch();
             else
                 return FilteredByClassName();
@@ -42,16 +42,16 @@ namespace BddSpec.Execution
 
         private static List<Type> FilteredByClassName()
         {
-            ExecutionPrinter.NotifySpecDiscovererFilter(ExecutionConfiguration.SpecSelector);
+            ExecutionPrinter.NotifySpecDiscovererFilter(ExecutionConfiguration.SpecFilter);
 
             return AllSpecClassesTypes()
-                .Where(c => c.Name.Equals(ExecutionConfiguration.SpecSelector, StringComparison.InvariantCultureIgnoreCase))
+                .Where(c => c.Name.Equals(ExecutionConfiguration.SpecFilter, StringComparison.InvariantCultureIgnoreCase))
                 .ToList();
         }
 
         private static List<Type> FilteredByRegexMatch()
         {
-            string namespaceFilter = "^" + Regex.Escape(ExecutionConfiguration.SpecSelector)
+            string namespaceFilter = "^" + Regex.Escape(ExecutionConfiguration.SpecFilter)
                 .Replace("%", ".*") + "$";
 
             Regex regex = new Regex(namespaceFilter, RegexOptions.IgnoreCase);

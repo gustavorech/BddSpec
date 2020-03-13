@@ -3,7 +3,7 @@ using CommandLine;
 
 namespace BddSpec.Options
 {
-    public class StartOptions
+    public class Options
     {
         const string FILTER_HELP_TEXT =
 @"Filter to execute a subset of the spec suite
@@ -19,7 +19,7 @@ namespace BddSpec.Options
 - s[ummary] : print a summary (verbose) after the end of execution";
 
         [Value(0, MetaName = "Filter", Required = false, HelpText = FILTER_HELP_TEXT)]
-        public string SpecSelector { get; set; }
+        public string Filter { get; set; }
 
         [Option('v', "verbosity", Default = OptionVerbosityLevel.errors, HelpText = VERBOSITY_HELP_TEXT)]
         public OptionVerbosityLevel VerbosityLevel { get; set; }
