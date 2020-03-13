@@ -1,9 +1,9 @@
 ﻿
 using BddSpec.Printer;
 
-namespace BddSpec.Configuration
+namespace BddSpec
 {
-    public class ExecutionConfiguration
+    public class Configuration
     {
         public static string SpecFilter { get; set; }
         public static int? SpecificLine { get; set; }

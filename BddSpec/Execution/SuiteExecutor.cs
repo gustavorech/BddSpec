@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Collections.Generic;
 using BddSpec.Printer;
-using BddSpec.Configuration;
 
 namespace BddSpec.Execution
 {
@@ -43,10 +42,10 @@ namespace BddSpec.Execution
                 return false;
             }
 
-            if (ExecutionConfiguration.IsSpecFiltered)
+            if (Configuration.IsSpecFiltered)
                 ExecutionPrinter.PrintSpecsFiltered(specClassesTypes);
 
-            if (ExecutionConfiguration.IsSpecificLine && specClassesTypes.Count > 1)
+            if (Configuration.IsSpecificLine && specClassesTypes.Count > 1)
             {
                 ExecutionPrinter.PrintErrorMoreThanOneSpecClassForSpecificLine();
                 return false;
@@ -60,10 +59,10 @@ namespace BddSpec.Execution
             ExecutionPrinter.PrintExecutionSpecs();
 
             bool shouldBlockAsynchronous =
-                ExecutionConfiguration.Verbosity == PrinterVerbosity.VerboseSteps;
+                Configuration.Verbosity == PrinterVerbosity.VerboseSteps;
 
             bool executeAsynchronous =
-                ExecutionConfiguration.ExecuteAsynchronous && !shouldBlockAsynchronous;
+                Configuration.ExecuteAsynchronous && !shouldBlockAsynchronous;
 
             if (executeAsynchronous)
                 return ExecuteAsynchronous();
@@ -107,7 +106,7 @@ namespace BddSpec.Execution
 
         private static void VerifyPrintSummaryAtEnd(List<SpecExecutor> testExecutors)
         {
-            if (ExecutionConfiguration.Verbosity == PrinterVerbosity.VerboseAfterCompletion)
+            if (Configuration.Verbosity == PrinterVerbosity.VerboseAfterCompletion)
             {
                 ExecutionPrinter.PrintShowingSummary();
 
@@ -122,7 +121,7 @@ namespace BddSpec.Execution
 
         private static void PrintErorrsIfOccurred(List<SpecExecutor> specExecutors)
         {
-            ExecutionConfiguration.ShowLine = true;
+            Configuration.ShowLine = true;
 
             if (specExecutors.Any(c => c.IsBranchHadError))
             {

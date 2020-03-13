@@ -1,5 +1,4 @@
 using System;
-using BddSpec.Configuration;
 using BddSpec.Execution;
 
 namespace BddSpec.Printer
@@ -8,15 +7,15 @@ namespace BddSpec.Printer
     {
         public static void NotifyCompleted(SpecExecutor specExecutor)
         {
-            bool separateSpecClassPrinterByOneLine = ExecutionConfiguration.IsPrintVerbose;
+            bool separateSpecClassPrinterByOneLine = Configuration.IsPrintVerbose;
 
-            if (ExecutionConfiguration.IsPrintVerbose)
+            if (Configuration.IsPrintVerbose)
                 Console.WriteLine();
         }
 
         public static void NotifyInitialized(ExecutionStep executionStep)
         {
-            if (!ExecutionConfiguration.IsPrintVerbose)
+            if (!Configuration.IsPrintVerbose)
                 return;
 
             if (executionStep.IsLeafStep)

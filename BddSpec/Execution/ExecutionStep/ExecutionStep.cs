@@ -1,6 +1,5 @@
 
 using System;
-using BddSpec.Configuration;
 using BddSpec.Printer;
 
 namespace BddSpec.Execution

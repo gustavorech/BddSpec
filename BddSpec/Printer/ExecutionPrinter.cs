@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using BddSpec.Configuration;
 using BddSpec.Execution;
 
 namespace BddSpec.Printer
@@ -55,7 +54,7 @@ namespace BddSpec.Printer
 
         public static void PrintSuiteExecutionCompleted()
         {
-            if (!ExecutionConfiguration.IsPrintVerbose)
+            if (!Configuration.IsPrintVerbose)
             {
                 Console.WriteLine();
                 Console.WriteLine();

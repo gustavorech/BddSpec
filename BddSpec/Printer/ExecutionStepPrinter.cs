@@ -1,7 +1,5 @@
 ﻿
 using System;
-using System.Linq;
-using BddSpec.Configuration;
 using BddSpec.Execution;
 
 namespace BddSpec.Printer
@@ -14,7 +12,7 @@ namespace BddSpec.Printer
         {
             lock (_printerLock)
             {
-                if (ExecutionConfiguration.Verbosity == PrinterVerbosity.VerboseSteps)
+                if (Configuration.Verbosity == PrinterVerbosity.VerboseSteps)
                     ExecutionStepPrinter.PrintVerbose(executionStep);
                 else
                     PrintStatus(executionStep);
@@ -37,7 +35,7 @@ namespace BddSpec.Printer
 
             PrintDescription(executionStep, testStepDescription);
 
-            if (ExecutionConfiguration.ShowTime)
+            if (Configuration.ShowTime)
                 PrintStepTimeSpan(executionStep.TotalTimeSpent);
 
             Console.WriteLine();
@@ -48,7 +46,7 @@ namespace BddSpec.Printer
         {
             string message = $"{testStepDescription.Verb} {testStepDescription.TestDescription}";
 
-            if (ExecutionConfiguration.ShowLine && testStepDescription.SourceFileNumber != 0)
+            if (Configuration.ShowLine && testStepDescription.SourceFileNumber != 0)
                 message = $"{message}:{testStepDescription.SourceFileNumber}";
 
             if (testExecutionStep.IsFailed)

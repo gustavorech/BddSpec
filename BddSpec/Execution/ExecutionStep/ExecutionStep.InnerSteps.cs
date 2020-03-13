@@ -1,7 +1,5 @@
 using System.Linq;
-
 using System.Collections.Generic;
-using BddSpec.Configuration;
 
 namespace BddSpec.Execution
 {
@@ -22,7 +20,7 @@ namespace BddSpec.Execution
 
         private void AddInnerStepsFromActions(List<SpecAction> stepActions)
         {
-            if (ExecutionConfiguration.IsSpecificLine)
+            if (Configuration.IsSpecificLine)
                 AddFilteredInnerStepsFromActions(stepActions);
             else
                 AddAllInnerStepsFromActions(stepActions);
@@ -36,7 +34,7 @@ namespace BddSpec.Execution
                 return;
             }
 
-            int specificLine = ExecutionConfiguration.SpecificLine.Value;
+            int specificLine = Configuration.SpecificLine.Value;
 
             if (specificLine < stepActions.First().Description.SourceFileNumber)
             {
