@@ -2,7 +2,7 @@
 
 namespace BddSpec.Execution
 {
-    public class SpecExecutor
+    public class SpecClassExecutor
     {
         private Type _type;
         private ExecutionStep _rootStep;
@@ -14,7 +14,7 @@ namespace BddSpec.Execution
             get => _rootStep?.IsBAnyInBranchFailed ?? false;
         }
 
-        public SpecExecutor(Type type)
+        public SpecClassExecutor(Type type)
         {
             this._type = type;
         }
@@ -32,7 +32,7 @@ namespace BddSpec.Execution
 
                     specClassInstance.SpecActions.Add(stepAction);
 
-                    VerifyCreateRootStepOnFirstIteration(stepAction);
+                    CreateRootStepOnFirstIteration(stepAction);
 
                     RecursiveExecuteOnePathThroughCompletion(specClassInstance, _rootStep);
                 }
@@ -56,7 +56,7 @@ namespace BddSpec.Execution
             _rootStep.NotifyFailure(ex);
         }
 
-        private void VerifyCreateRootStepOnFirstIteration(SpecAction stepAction)
+        private void CreateRootStepOnFirstIteration(SpecAction stepAction)
         {
             if (_rootStep == null)
                 _rootStep = new ExecutionStep(null, stepAction, 0, 0);

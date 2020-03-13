@@ -76,7 +76,7 @@ namespace BddSpec.Printer
             PrinterHelper.WriteInfoLine("> Showing summary of failures (see details above)");
         }
 
-        public static void PrintSpecClassesWithFailure(List<SpecExecutor> specExecutors)
+        public static void PrintSpecClassesWithFailure(List<SpecClassExecutor> specExecutors)
         {
             Console.WriteLine("Spec classes with failures:");
 
@@ -84,6 +84,13 @@ namespace BddSpec.Printer
                 .Where(c => c.IsBranchHadError)
                 .ToList()
                 .ForEach(c => PrinterHelper.WriteErrorLine("- " + c.Type.FullName, 1));
+        }
+
+        public static void PrintUnknownFatalError(Exception exception)
+        {
+            Console.WriteLine();
+            PrinterHelper.WriteErrorLine("Unknown fatal error");
+            ExceptionPrinter.Print(exception);
         }
     }
 }

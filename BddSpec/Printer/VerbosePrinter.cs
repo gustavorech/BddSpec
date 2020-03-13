@@ -5,7 +5,7 @@ namespace BddSpec.Printer
 {
     public class VerbosePrinter
     {
-        public static void NotifyCompleted(SpecExecutor specExecutor)
+        public static void NotifyCompleted(SpecClassExecutor specExecutor)
         {
             bool separateSpecClassPrinterByOneLine = Configuration.IsPrintVerbose;
 

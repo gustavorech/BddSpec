@@ -26,10 +26,7 @@ namespace BddSpec
             }
             catch (Exception ex)
             {
-                Console.WriteLine();
-                PrinterHelper.WriteErrorLine("> Unknown fatal error");
-                ExceptionPrinter.Print(ex);
-
+                ExecutionPrinter.PrintUnknownFatalError(ex);
                 Environment.Exit(1);
             }
         }

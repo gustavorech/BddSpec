@@ -29,7 +29,7 @@ namespace BddSpec.Execution
 
             NotifyInitialized();
 
-            IfIsALeafExecuteAftersAndComplete(specClassInstance);
+            ExecuteAftersAndCompleteIfIsALeaf(specClassInstance);
         }
 
         private void ExecuteOnceBeforeIfHaveAndCleanIt(SpecClass specClassInstance)
@@ -40,7 +40,7 @@ namespace BddSpec.Execution
             specClassInstance.OnceBefore = null;
         }
 
-        private void IfIsALeafExecuteAftersAndComplete(SpecClass specClassInstance)
+        private void ExecuteAftersAndCompleteIfIsALeaf(SpecClass specClassInstance)
         {
             if (IsBranchStep)
                 return;
