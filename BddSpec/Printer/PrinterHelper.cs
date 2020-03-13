@@ -28,6 +28,9 @@ namespace BddSpec.Printer
             Console.ResetColor();
         }
 
+        public static void BlankLine() =>
+            Console.WriteLine();
+
         public static void WriteError(string message, int level = 0) =>
             WriteMessage(message, ConsoleColor.DarkRed, level);
 

@@ -92,5 +92,10 @@ namespace BddSpec.Printer
             PrinterHelper.WriteErrorLine("Unknown fatal error");
             ExceptionPrinter.Print(exception);
         }
+
+        public static void PrintTotalTime(TimeSpan time)
+        {
+            Console.WriteLine("Total time: " + time.ToString());
+        }
     }
 }

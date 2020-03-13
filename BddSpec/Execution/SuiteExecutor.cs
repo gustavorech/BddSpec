@@ -22,7 +22,7 @@ namespace BddSpec.Execution
 
             bool hasErrors = ActionsAfterExecutionCompleted(specExecutors);
 
-            Console.WriteLine("Total time: " + timer.Elapsed.ToString());
+            ExecutionPrinter.PrintTotalTime(timer.Elapsed);
 
             if (hasErrors)
                 return false;
@@ -114,7 +114,7 @@ namespace BddSpec.Execution
                     .ForEach(testExecutor =>
                     {
                         testExecutor.PrintSummary();
-                        Console.WriteLine();
+                        PrinterHelper.BlankLine();
                     });
             }
         }
@@ -135,7 +135,7 @@ namespace BddSpec.Execution
                     .ForEach(c =>
                     {
                         c.PrintErrorsSummary();
-                        Console.WriteLine();
+                        PrinterHelper.BlankLine();
                     });
 
                 ExecutionPrinter.PrintSpecClassesWithFailure(specExecutors);
