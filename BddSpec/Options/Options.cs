@@ -24,7 +24,7 @@ namespace BddSpec.Options
         [Option('v', "verbosity", Default = OptionVerbosityLevel.errors, HelpText = VERBOSITY_HELP_TEXT)]
         public OptionVerbosityLevel VerbosityLevel { get; set; }
 
-        [Option('l', "show-line", Default = false, HelpText = "Shows the execution line")]
+        [Option('l', "show-line", Default = false, HelpText = "Shows the execution line of every step")]
         public bool ShowLine { get; set; }
 
         [Option('t', "show-time", Default = false, HelpText = "Shows the time spent on every step")]
