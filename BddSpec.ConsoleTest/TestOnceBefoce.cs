@@ -9,7 +9,7 @@ namespace BddSpec.ConsoleTest
     {
         static string name;
 
-        public override void SetUpSpecs()
+        public override void SetupSpecs()
         {
             When("context", () =>
             {

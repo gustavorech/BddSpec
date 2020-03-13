@@ -6,7 +6,7 @@ namespace BddSpec.ConsoleTest.OtherNamespace
 {
     public class OneToTestTest : SpecClass
     {
-        public override void SetUpSpecs()
+        public override void SetupSpecs()
         {
             ToTest toTest = new ToTest();
             toTest.Name = "Gustavo";
@@ -19,7 +19,7 @@ namespace BddSpec.ConsoleTest.OtherNamespace
     }
     public class ToTestTest2 : SpecClass
     {
-        public override void SetUpSpecs()
+        public override void SetupSpecs()
         {
             ToTest toTest = new ToTest();
             toTest.Name = "Gustavo";
@@ -33,7 +33,7 @@ namespace BddSpec.ConsoleTest.OtherNamespace
 
     public class ToTestTest3 : SpecClass
     {
-        public override void SetUpSpecs()
+        public override void SetupSpecs()
         {
             ToTest toTest = new ToTest();
             toTest.Name = "Gustavo";

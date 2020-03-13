@@ -6,7 +6,7 @@ namespace BddSpec.ConsoleTest
 {
     public class SpecificLineTest : SpecClass
     {
-        public override void SetUpSpecs()
+        public override void SetupSpecs()
         {
             ToTest toTest = new ToTest();
 

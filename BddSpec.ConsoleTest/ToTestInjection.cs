@@ -36,7 +36,7 @@ namespace BddSpec.ConsoleTest
     {
         private AutoMock Auto = AutoMock.GetLoose();
 
-        public override void SetUpSpecs()
+        public override void SetupSpecs()
         {
             var testClass = Auto.Create<InjectedClass>();
             string m1_return = "m1 return";
@@ -129,7 +129,7 @@ namespace BddSpec.ConsoleTest
     {
         private AutoMock Auto = AutoMock.GetLoose();
 
-        public override void SetUpSpecs()
+        public override void SetupSpecs()
         {
             var testClass = Auto.Create<InjectedClass>();
             string m1_return = "m1 return";
@@ -222,7 +222,7 @@ namespace BddSpec.ConsoleTest
     {
         private AutoMock Auto = AutoMock.GetLoose();
 
-        public override void SetUpSpecs()
+        public override void SetupSpecs()
         {
             var testClass = Auto.Create<InjectedClass>();
             string m1_return = "m1 return";

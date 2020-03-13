@@ -13,7 +13,7 @@ namespace BddSpec.ConsoleTest
     {
         public ToTestTest(string a) { }
 
-        public override void SetUpSpecs()
+        public override void SetupSpecs()
         {
             ToTest toTest = new ToTest();
             //After = () => Console.WriteLine("After");

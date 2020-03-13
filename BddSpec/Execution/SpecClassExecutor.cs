@@ -27,8 +27,8 @@ namespace BddSpec.Execution
                 {
                     SpecClass specClassInstance = (SpecClass)Activator.CreateInstance(_type);
 
-                    SpecDescription stepDescription = new SpecDescription("", 0, _type.Name, "class");
-                    SpecAction stepAction = new SpecAction(stepDescription, specClassInstance.SetUpSpecs);
+                    SpecDescription stepDescription = new SpecDescription(0, _type.Name, "class");
+                    SpecAction stepAction = new SpecAction(stepDescription, specClassInstance.SetupSpecs);
 
                     specClassInstance.SpecActions.Add(stepAction);
 
@@ -48,7 +48,7 @@ namespace BddSpec.Execution
         {
             if (_rootStep == null)
             {
-                SpecDescription stepDescription = new SpecDescription("", 0, _type.Name, "class");
+                SpecDescription stepDescription = new SpecDescription(0, _type.Name, "class");
                 SpecAction stepAction = new SpecAction(stepDescription, () => { });
                 _rootStep = new ExecutionStep(null, stepAction, 0, 0);
             }
