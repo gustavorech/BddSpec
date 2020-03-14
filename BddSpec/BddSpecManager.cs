@@ -11,8 +11,10 @@ namespace BddSpec
         {
             try
             {
+                OptionsReader optionsReader = new OptionsReader();
+
                 bool successReadingOptions =
-                    OptionsReader.CreateExecuteConfigurationFromOptions(args);
+                    optionsReader.CreateExecuteConfigurationFromOptions(args);
 
                 if (!successReadingOptions)
                     Environment.Exit(1);

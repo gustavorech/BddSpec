@@ -8,7 +8,7 @@ namespace BddSpec.Options
 {
     public class OptionsReader
     {
-        public static bool CreateExecuteConfigurationFromOptions(string[] args)
+        public bool CreateExecuteConfigurationFromOptions(string[] args)
         {
             bool isSuccess = true;
 
@@ -25,7 +25,7 @@ namespace BddSpec.Options
             return isSuccess;
         }
 
-        private static void PopulateExecutionConfiguration(Options options)
+        private void PopulateExecutionConfiguration(Options options)
         {
             Configuration.SpecFilter = options.Filter;
             Configuration.ShowLine = options.ShowLine;
@@ -37,7 +37,7 @@ namespace BddSpec.Options
             SeparateSpecificLineFromFilter();
         }
 
-        public static void PopulateVerbosityLevel(Options options)
+        public void PopulateVerbosityLevel(Options options)
         {
             switch (options.VerbosityLevel)
             {
@@ -53,7 +53,7 @@ namespace BddSpec.Options
             }
         }
 
-        private static void SeparateSpecificLineFromFilter()
+        private void SeparateSpecificLineFromFilter()
         {
             if (string.IsNullOrEmpty(Configuration.SpecFilter))
                 return;
@@ -75,7 +75,7 @@ namespace BddSpec.Options
             AddMoreVerbosityIfIsSpecificLine();
         }
 
-        public static void AddMoreVerbosityIfIsSpecificLine()
+        public void AddMoreVerbosityIfIsSpecificLine()
         {
             if (Configuration.IsSpecificLine
                 && Configuration.Verbosity == PrinterVerbosity.OnlyShowErrors)
