@@ -20,7 +20,7 @@ namespace BddSpec.Execution
             if (IsInitialized || IsFailed)
                 return;
 
-            ExecuteOnceBeforeIfHaveAndCleanIt(specClassInstance);
+            ExecuteOnceBeforeActionIfHaveAndCleanIt(specClassInstance);
 
             if (IsFailed)
                 return;
@@ -29,10 +29,10 @@ namespace BddSpec.Execution
 
             NotifyInitialized();
 
-            ExecuteAftersAndCompleteIfIsALeaf(specClassInstance);
+            ExecuteAfterActionsAndCompleteIfIsALeaf(specClassInstance);
         }
 
-        private void ExecuteOnceBeforeIfHaveAndCleanIt(SpecClass specClassInstance)
+        private void ExecuteOnceBeforeActionIfHaveAndCleanIt(SpecClass specClassInstance)
         {
             if (specClassInstance.OnceBefore != null)
                 SafeExecuteAction(specClassInstance.OnceBefore);
@@ -40,7 +40,7 @@ namespace BddSpec.Execution
             specClassInstance.OnceBefore = null;
         }
 
-        private void ExecuteAftersAndCompleteIfIsALeaf(SpecClass specClassInstance)
+        private void ExecuteAfterActionsAndCompleteIfIsALeaf(SpecClass specClassInstance)
         {
             if (IsBranchStep)
                 return;

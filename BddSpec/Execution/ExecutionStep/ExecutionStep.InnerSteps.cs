@@ -20,33 +20,37 @@ namespace BddSpec.Execution
 
         private void AddInnerStepsFromActions(List<SpecAction> stepActions)
         {
-            if (Configuration.IsSpecificLine)
-                AddFilteredInnerStepsFromActions(stepActions);
-            else
+            bool shouldAddAllActions = VerifyIfShouldAddAllActions(stepActions);
+
+            if (shouldAddAllActions)
                 AddAllInnerStepsFromActions(stepActions);
+            else
+                AddActionInSpecificLineOrFirstActionBefore(stepActions);
         }
 
-        private void AddFilteredInnerStepsFromActions(List<SpecAction> stepActions)
+        private bool VerifyIfShouldAddAllActions(List<SpecAction> stepActions)
         {
+            if (!Configuration.IsSpecificLine)
+                return true;
+
             if (stepActions.Count <= 1)
-            {
-                AddAllInnerStepsFromActions(stepActions);
-                return;
-            }
+                return true;
 
             int specificLine = Configuration.SpecificLine.Value;
 
-            if (specificLine < stepActions.First().Description.SourceFileNumber)
-            {
-                AddAllInnerStepsFromActions(stepActions);
-                return;
-            }
+            bool specificLineIsBeforeFirstActionLine =
+                specificLine < stepActions.First().Description.SourceFileNumber;
 
-            if (specificLine > stepActions.Last().Description.SourceFileNumber)
-            {
-                AddAllInnerStepsFromActions(stepActions);
-                return;
-            }
+            bool specificLineIsAfterLastActionLine =
+                specificLine > stepActions.Last().Description.SourceFileNumber;
+
+            return specificLineIsBeforeFirstActionLine
+                || specificLineIsAfterLastActionLine;
+        }
+
+        private void AddActionInSpecificLineOrFirstActionBefore(List<SpecAction> stepActions)
+        {
+            int specificLine = Configuration.SpecificLine.Value;
 
             for (int i = 0; i < stepActions.Count; i++)
             {
@@ -59,9 +63,9 @@ namespace BddSpec.Execution
                     return;
                 }
 
-                bool firstStepThatPassSpecificLine = currentLine > specificLine;
+                bool isTheFirstStepThatPassSpecificLine = currentLine > specificLine;
 
-                if (firstStepThatPassSpecificLine)
+                if (isTheFirstStepThatPassSpecificLine)
                 {
                     AddInnerStep(stepActions[i - 1], i - 1);
                     return;
