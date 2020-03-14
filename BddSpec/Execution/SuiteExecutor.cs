@@ -8,9 +8,9 @@ namespace BddSpec.Execution
 {
     public class SuiteExecutor
     {
-        private static List<Type> specClassesTypes = new List<Type>();
+        private List<Type> specClassesTypes = new List<Type>();
 
-        public static bool DiscoverAndExecute()
+        public bool DiscoverAndExecute()
         {
             Stopwatch timer = Stopwatch.StartNew();
 
@@ -30,7 +30,7 @@ namespace BddSpec.Execution
             return true;
         }
 
-        private static bool DiscoverSpecClasses()
+        private bool DiscoverSpecClasses()
         {
             ExecutionPrinter.PrintDiscovererInitialized();
 
@@ -54,7 +54,7 @@ namespace BddSpec.Execution
             return true;
         }
 
-        private static List<SpecClassExecutor> ExecuteSyncOrASync()
+        private List<SpecClassExecutor> ExecuteSyncOrASync()
         {
             ExecutionPrinter.PrintExecutionSpecs();
 
@@ -70,18 +70,18 @@ namespace BddSpec.Execution
                 return ExecuteSynchronous();
         }
 
-        private static List<SpecClassExecutor> ExecuteSynchronous() =>
+        private List<SpecClassExecutor> ExecuteSynchronous() =>
             specClassesTypes
                 .Select(CreateAndExecuteTestClassExecutor)
                 .ToList();
 
-        private static List<SpecClassExecutor> ExecuteAsynchronous() =>
+        private List<SpecClassExecutor> ExecuteAsynchronous() =>
             specClassesTypes
                 .AsParallel()
                 .Select(CreateAndExecuteTestClassExecutor)
                 .ToList();
 
-        private static SpecClassExecutor CreateAndExecuteTestClassExecutor(Type type)
+        private SpecClassExecutor CreateAndExecuteTestClassExecutor(Type type)
         {
             SpecClassExecutor specExecutor = new SpecClassExecutor(type);
             specExecutor.IsolateAndExecuteAllPaths();
@@ -91,7 +91,7 @@ namespace BddSpec.Execution
             return specExecutor;
         }
 
-        private static bool ActionsAfterExecutionCompleted(List<SpecClassExecutor> specExecutors)
+        private bool ActionsAfterExecutionCompleted(List<SpecClassExecutor> specExecutors)
         {
             ExecutionPrinter.PrintSuiteExecutionCompleted();
 
@@ -104,7 +104,7 @@ namespace BddSpec.Execution
             return executionMetrics.TotalNodeWithFailures > 0;
         }
 
-        private static void VerifyPrintSummaryAtEnd(List<SpecClassExecutor> testExecutors)
+        private void VerifyPrintSummaryAtEnd(List<SpecClassExecutor> testExecutors)
         {
             if (Configuration.Verbosity == PrinterVerbosity.VerboseAfterCompletion)
             {
@@ -119,7 +119,7 @@ namespace BddSpec.Execution
             }
         }
 
-        private static void PrintErorrsIfOccurred(List<SpecClassExecutor> specExecutors)
+        private void PrintErorrsIfOccurred(List<SpecClassExecutor> specExecutors)
         {
             Configuration.ShowLine = true;
 
@@ -142,7 +142,7 @@ namespace BddSpec.Execution
             }
         }
 
-        private static ExecutionMetrics CollectAndPrintMetrics(List<SpecClassExecutor> testExecutors)
+        private ExecutionMetrics CollectAndPrintMetrics(List<SpecClassExecutor> testExecutors)
         {
             ExecutionMetrics executionMetrics = new ExecutionMetrics();
             testExecutors.ForEach(c => c.CollectMetrics(executionMetrics));

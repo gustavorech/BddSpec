@@ -17,7 +17,9 @@ namespace BddSpec
                 if (!successReadingOptions)
                     Environment.Exit(1);
 
-                bool successExecuting = SuiteExecutor.DiscoverAndExecute();
+                SuiteExecutor suiteExecutor = new SuiteExecutor();
+
+                bool successExecuting = suiteExecutor.DiscoverAndExecute();
 
                 if (!successExecuting)
                     Environment.Exit(1);
