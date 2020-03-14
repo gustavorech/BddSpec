@@ -34,7 +34,8 @@ namespace BddSpec.Execution
         {
             ExecutionPrinter.PrintDiscovererInitialized();
 
-            specClassesTypes = SpecDiscoverer.FilteredSpecClassesTypes();
+            SpecDiscoverer specDiscoverer = new SpecDiscoverer();
+            specClassesTypes = specDiscoverer.FilteredSpecClassesTypes();
 
             if (!specClassesTypes.Any())
             {

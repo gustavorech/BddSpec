@@ -9,7 +9,7 @@ namespace BddSpec.Execution
 {
     public class SpecDiscoverer
     {
-        public static List<Type> AllSpecClassesTypes() =>
+        public List<Type> AllSpecClassesTypes() =>
             AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(x => x.GetTypes())
                 .Where(x =>
@@ -20,7 +20,7 @@ namespace BddSpec.Execution
                 })
                 .ToList();
 
-        public static List<Type> FilteredSpecClassesTypes()
+        public List<Type> FilteredSpecClassesTypes()
         {
             bool isSpecFiltered =
                 !string.IsNullOrEmpty(Configuration.SpecFilter);
@@ -31,7 +31,7 @@ namespace BddSpec.Execution
             return AllSpecClassesTypes();
         }
 
-        private static List<Type> FilteredByRegexMatchOrClassName()
+        private List<Type> FilteredByRegexMatchOrClassName()
         {
             if (Configuration.SpecFilter.Contains("%"))
                 return FilteredByRegexMatch();
@@ -39,7 +39,7 @@ namespace BddSpec.Execution
                 return FilteredByClassName();
         }
 
-        private static List<Type> FilteredByClassName()
+        private List<Type> FilteredByClassName()
         {
             ExecutionPrinter.PrintSpecDiscovererFilter(Configuration.SpecFilter);
 
@@ -48,7 +48,7 @@ namespace BddSpec.Execution
                 .ToList();
         }
 
-        private static List<Type> FilteredByRegexMatch()
+        private List<Type> FilteredByRegexMatch()
         {
             string namespaceFilter = "^" + Regex.Escape(Configuration.SpecFilter)
                 .Replace("%", ".*") + "$";
