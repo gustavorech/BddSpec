@@ -14,7 +14,7 @@ namespace BddSpec
             ShouldExitWithCode = shouldExitWithCode;
         }
 
-        public void Execute(string[] args)
+        public void Execute(params string[] args)
         {
             try
             {

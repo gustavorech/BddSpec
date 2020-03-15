@@ -1,5 +1,5 @@
-﻿using System;
-using BddSpec;
+﻿using BddSpec;
+using FluentAssertions;
 
 namespace IntegrationTests
 {
@@ -18,13 +18,13 @@ namespace IntegrationTests
 
                     It("it_2", () =>
                     {
-                        throw new Exception("failure");
+                        false.Should().Be(true);
                     });
                 });
 
                 When("when_2", () =>
                 {
-                    throw new Exception("failure");
+                    false.Should().Be(true);
 
                     It("it_3", () =>
                     {

@@ -11,6 +11,7 @@ namespace BddSpec.Options
         public bool CreateExecuteConfigurationFromOptions(string[] args)
         {
             bool isSuccess = true;
+            Configuration.Reset();
 
             Parser.Default.ParseArguments<Options>(args)
                 .WithParsed<Options>(options =>

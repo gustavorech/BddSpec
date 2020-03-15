@@ -7,6 +7,7 @@ using FluentAssertions;
 
 namespace IntegrationTests
 {
+    [Collection("Not run in parallel")]
     public class VerbosityConfigTest
     {
         static string REDUCED_EXECUTION = @"

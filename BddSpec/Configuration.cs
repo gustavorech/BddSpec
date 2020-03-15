@@ -15,5 +15,15 @@ namespace BddSpec
         public static bool IsPrintVerbose { get => Verbosity == PrinterVerbosity.VerboseSteps; }
         public static bool IsSpecFiltered { get => !string.IsNullOrEmpty(SpecFilter); }
         public static bool IsSpecificLine { get => SpecificLine.HasValue; }
+
+        public static void Reset()
+        {
+            SpecFilter = null;
+            SpecificLine = null;
+            Verbosity = PrinterVerbosity.OnlyShowErrors;
+            ExecuteAsynchronous = false;
+            ShowLine = false;
+            ShowTime = false;
+        }
     }
 }
