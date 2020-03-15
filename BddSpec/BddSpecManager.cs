@@ -7,7 +7,14 @@ namespace BddSpec
 {
     public class BddSpecManager
     {
-        public static void Execute(string[] args)
+        public bool ShouldExitWithCode { get; set; }
+
+        public BddSpecManager(bool shouldExitWithCode = true)
+        {
+            ShouldExitWithCode = shouldExitWithCode;
+        }
+
+        public void Execute(string[] args)
         {
             try
             {
@@ -17,22 +24,34 @@ namespace BddSpec
                     optionsReader.CreateExecuteConfigurationFromOptions(args);
 
                 if (!successReadingOptions)
-                    Environment.Exit(1);
+                {
+                    VerifyIfShouldExitWith(1);
+                    return;
+                }
 
                 SuiteExecutor suiteExecutor = new SuiteExecutor();
 
                 bool successExecuting = suiteExecutor.DiscoverAndExecute();
 
                 if (!successExecuting)
-                    Environment.Exit(1);
+                {
+                    VerifyIfShouldExitWith(1);
+                    return;
+                }
 
-                Environment.Exit(0);
+                VerifyIfShouldExitWith(0);
             }
             catch (Exception ex)
             {
                 ExecutionPrinter.PrintUnknownFatalError(ex);
-                Environment.Exit(1);
+                VerifyIfShouldExitWith(1);
             }
+        }
+
+        private void VerifyIfShouldExitWith(int statusCode)
+        {
+            if (ShouldExitWithCode)
+                Environment.Exit(statusCode);
         }
     }
 }

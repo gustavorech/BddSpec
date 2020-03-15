@@ -7,7 +7,7 @@ namespace ConsoleTest
     {
         static void Main(string[] args)
         {
-            BddSpecManager.Execute(args);
+            new BddSpecManager().Execute(args);
         }
     }
 }

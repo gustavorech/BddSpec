@@ -1,4 +1,5 @@
 ﻿using System;
+using BddSpec;
 
 namespace NugetTest
 {

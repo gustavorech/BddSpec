@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using BddSpec;
 
 namespace NugetTest
 {
