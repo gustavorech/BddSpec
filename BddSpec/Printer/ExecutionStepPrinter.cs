@@ -50,7 +50,7 @@ namespace BddSpec.Printer
             else
                 message = $"{testStepDescription.Verb} {testStepDescription.TestDescription}";
 
-            if (Configuration.ShowLine && testStepDescription.SourceFileNumber != 0)
+            if (Configuration.ShouldPrintLine && testStepDescription.SourceFileNumber != 0)
                 message = $"{message}:{testStepDescription.SourceFileNumber}";
 
             if (testExecutionStep.IsFailed)

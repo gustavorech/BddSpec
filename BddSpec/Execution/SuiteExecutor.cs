@@ -122,7 +122,7 @@ namespace BddSpec.Execution
 
         private void PrintErorrsIfOccurred(List<SpecClassExecutor> specExecutors)
         {
-            Configuration.ShowLine = true;
+            Configuration.PrintingErrors = true;
 
             if (specExecutors.Any(c => c.IsBranchHadError))
             {

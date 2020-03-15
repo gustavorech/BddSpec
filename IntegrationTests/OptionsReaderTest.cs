@@ -45,5 +45,30 @@ namespace IntegrationTests
             Configuration.SpecificLine.Should().BeNull();
             Configuration.IsSpecificLine.Should().BeFalse();
         }
+
+        [Theory]
+        [InlineData("NoSpec", "-l")]
+        [InlineData("NoSpec", "--show-line")]
+        public void ShowLine(params string[] args)
+        {
+            var output = new StringWriter();
+            Console.SetOut(output);
+
+            new BddSpecManager(false).Execute(args);
+
+            Configuration.ShowLine.Should().BeTrue();
+        }
+
+        [Theory]
+        [InlineData("NoSpec")]
+        public void DoNotShowLine(params string[] args)
+        {
+            var output = new StringWriter();
+            Console.SetOut(output);
+
+            new BddSpecManager(false).Execute(args);
+
+            Configuration.ShowLine.Should().BeFalse();
+        }
     }
 }

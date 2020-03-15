@@ -11,10 +11,12 @@ namespace BddSpec
         public static bool ExecuteAsynchronous { get; set; }
         public static bool ShowLine { get; set; }
         public static bool ShowTime { get; set; }
+        public static bool PrintingErrors { get; set; }
 
         public static bool IsPrintVerbose { get => Verbosity == PrinterVerbosity.VerboseSteps; }
         public static bool IsSpecFiltered { get => !string.IsNullOrEmpty(SpecFilter); }
         public static bool IsSpecificLine { get => SpecificLine.HasValue; }
+        public static bool ShouldPrintLine { get => ShowLine || PrintingErrors; }
 
         public static void Reset()
         {
@@ -24,6 +26,7 @@ namespace BddSpec
             ExecuteAsynchronous = false;
             ShowLine = false;
             ShowTime = false;
+            PrintingErrors = false;
         }
     }
 }
