@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 
-namespace BddSpec.ConsoleTest
+namespace NugetTest
 {
     public class ToTest
     {

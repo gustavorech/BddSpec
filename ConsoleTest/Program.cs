@@ -1,7 +1,7 @@
 ﻿using System;
 using BddSpec;
 
-namespace BddSpec.ConsoleTest
+namespace ConsoleTest
 {
     class Program
     {

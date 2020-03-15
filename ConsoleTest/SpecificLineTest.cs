@@ -2,7 +2,7 @@
 using BddSpec;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace BddSpec.ConsoleTest
+namespace ConsoleTest
 {
     public class SpecificLineTest : SpecClass
     {

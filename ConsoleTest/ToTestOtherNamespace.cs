@@ -2,7 +2,7 @@
 using BddSpec;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace BddSpec.ConsoleTest.OtherNamespace
+namespace ConsoleTest.OtherNamespace
 {
     public class OneToTestTest : SpecClass
     {

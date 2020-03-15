@@ -3,7 +3,7 @@ using BddSpec;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace BddSpec.ConsoleTest
+namespace ConsoleTest
 {
     public class TestOnceBefore : SpecClass
     {

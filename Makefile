@@ -1,41 +1,41 @@
 run:
-	dotnet run -p BddSpec.ConsoleTest
+	dotnet run -p ConsoleTest
 
 class:
-	dotnet run -p BddSpec.ConsoleTest -- ToTestTest:445
+	dotnet run -p ConsoleTest -- ToTestTest:445
 
 namespace:
-	dotnet run -p BddSpec.ConsoleTest -- %OtherNamespace%
+	dotnet run -p ConsoleTest -- %OtherNamespace%
 
 namespace-one:
-	dotnet run -p BddSpec.ConsoleTest -- %space.one%:445
+	dotnet run -p ConsoleTest -- %space.one%:445
 
 line:
-	dotnet run -p BddSpec.ConsoleTest -- ToTestInjection:74
+	dotnet run -p ConsoleTest -- ToTestInjection:74
 
 not-filter:
-	dotnet run -p BddSpec.ConsoleTest -- NotExistedClass
+	dotnet run -p ConsoleTest -- NotExistedClass
 
 not-option:
-	dotnet run -p BddSpec.ConsoleTest -- -non-existed-option
+	dotnet run -p ConsoleTest -- -non-existed-option
 
 summary:
-	dotnet run -p BddSpec.ConsoleTest -- -v summary
+	dotnet run -p ConsoleTest -- -v summary
 
 verbose:
-	dotnet run -p BddSpec.ConsoleTest -- -v verbose
+	dotnet run -p ConsoleTest -- -v verbose
 
 verbose-line:
-	dotnet run -p BddSpec.ConsoleTest -- -v verbose -l
+	dotnet run -p ConsoleTest -- -v verbose -l
 
 verbose-time:
-	dotnet run -p BddSpec.ConsoleTest -- -v verbose -t
+	dotnet run -p ConsoleTest -- -v verbose -t
 
 verbose-all:
-	dotnet run -p BddSpec.ConsoleTest -- -v verbose -tl
+	dotnet run -p ConsoleTest -- -v verbose -tl
 
 async:
-	dotnet run -p BddSpec.ConsoleTest -- -a
+	dotnet run -p ConsoleTest -- -a
 
 async-summary:
-	dotnet run -p BddSpec.ConsoleTest -- -v summary -a
+	dotnet run -p ConsoleTest -- -v summary -a

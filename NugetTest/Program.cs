@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BddSpec.TestFromNuget
+namespace NugetTest
 {
     class Program
     {

@@ -5,7 +5,7 @@ using BddSpec;
 using FluentAssertions;
 using Moq;
 
-namespace BddSpec.ConsoleTest
+namespace ConsoleTest
 {
     public interface IInject
     {
