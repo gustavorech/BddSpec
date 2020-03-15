@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BddSpec", "BddSpec\BddSpec.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NugetTest", "NugetTest\NugetTest.csproj", "{B74ED7F7-7C07-405F-9FE6-2D7D6F3A1AC5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{51ECA659-72FD-4A2E-B03F-185802ECD2D7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,18 @@ Global
 		{B74ED7F7-7C07-405F-9FE6-2D7D6F3A1AC5}.Release|x64.Build.0 = Release|Any CPU
 		{B74ED7F7-7C07-405F-9FE6-2D7D6F3A1AC5}.Release|x86.ActiveCfg = Release|Any CPU
 		{B74ED7F7-7C07-405F-9FE6-2D7D6F3A1AC5}.Release|x86.Build.0 = Release|Any CPU
+		{51ECA659-72FD-4A2E-B03F-185802ECD2D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51ECA659-72FD-4A2E-B03F-185802ECD2D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51ECA659-72FD-4A2E-B03F-185802ECD2D7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{51ECA659-72FD-4A2E-B03F-185802ECD2D7}.Debug|x64.Build.0 = Debug|Any CPU
+		{51ECA659-72FD-4A2E-B03F-185802ECD2D7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{51ECA659-72FD-4A2E-B03F-185802ECD2D7}.Debug|x86.Build.0 = Debug|Any CPU
+		{51ECA659-72FD-4A2E-B03F-185802ECD2D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51ECA659-72FD-4A2E-B03F-185802ECD2D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51ECA659-72FD-4A2E-B03F-185802ECD2D7}.Release|x64.ActiveCfg = Release|Any CPU
+		{51ECA659-72FD-4A2E-B03F-185802ECD2D7}.Release|x64.Build.0 = Release|Any CPU
+		{51ECA659-72FD-4A2E-B03F-185802ECD2D7}.Release|x86.ActiveCfg = Release|Any CPU
+		{51ECA659-72FD-4A2E-B03F-185802ECD2D7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
