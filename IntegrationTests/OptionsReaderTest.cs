@@ -95,5 +95,54 @@ namespace IntegrationTests
 
             Configuration.ShowTime.Should().BeFalse();
         }
+
+        [Theory]
+        [InlineData("NoSpec")]
+        [InlineData("NonExistentSpec")]
+        [InlineData("SomeNamespace.%")]
+        [InlineData("%SomeFilter%")]
+        public void SpecFilter(params string[] args)
+        {
+            var output = new StringWriter();
+            Console.SetOut(output);
+
+            new BddSpecManager(false).Execute(args);
+
+            Configuration.SpecFilter.Should().Be(args.First());
+            Configuration.IsSpecFiltered.Should().BeTrue();
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("-l")]
+        public void NoSpecFilter(params string[] args)
+        {
+            var output = new StringWriter();
+            Console.SetOut(output);
+
+            new BddSpecManager(false).Execute(args);
+
+            Configuration.SpecFilter.Should().BeNullOrEmpty();
+            Configuration.IsSpecFiltered.Should().BeFalse();
+        }
+
+        [Theory]
+        [InlineData("", 10)]
+        [InlineData("NoSpec", 25)]
+        [InlineData("%SomeFilter%", 50)]
+        public void SeparateSpecFilterAndLine(string specFilter, int line)
+        {
+            var output = new StringWriter();
+            Console.SetOut(output);
+
+            string specFilterWithLine = $"{specFilter}:{line}";
+            string[] args = new string[] { specFilterWithLine };
+
+            new BddSpecManager(false).Execute(args);
+
+            Configuration.SpecFilter.Should().Be(specFilter);
+            Configuration.SpecificLine.Should().Be(line);
+        }
     }
 }
