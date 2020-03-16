@@ -70,5 +70,30 @@ namespace IntegrationTests
 
             Configuration.ShowLine.Should().BeFalse();
         }
+
+        [Theory]
+        [InlineData("NoSpec", "-t")]
+        [InlineData("NoSpec", "--show-time")]
+        public void ShowTime(params string[] args)
+        {
+            var output = new StringWriter();
+            Console.SetOut(output);
+
+            new BddSpecManager(false).Execute(args);
+
+            Configuration.ShowTime.Should().BeTrue();
+        }
+
+        [Theory]
+        [InlineData("NoSpec")]
+        public void DoNotShowTime(params string[] args)
+        {
+            var output = new StringWriter();
+            Console.SetOut(output);
+
+            new BddSpecManager(false).Execute(args);
+
+            Configuration.ShowTime.Should().BeFalse();
+        }
     }
 }
