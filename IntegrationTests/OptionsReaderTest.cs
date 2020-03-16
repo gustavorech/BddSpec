@@ -97,6 +97,31 @@ namespace IntegrationTests
         }
 
         [Theory]
+        [InlineData("NoSpec", "-a")]
+        [InlineData("NoSpec", "--async")]
+        public void ExecuteAsync(params string[] args)
+        {
+            var output = new StringWriter();
+            Console.SetOut(output);
+
+            new BddSpecManager(false).Execute(args);
+
+            Configuration.ExecuteAsynchronous.Should().BeTrue();
+        }
+
+        [Theory]
+        [InlineData("NoSpec")]
+        public void DoNotExecuteAsync(params string[] args)
+        {
+            var output = new StringWriter();
+            Console.SetOut(output);
+
+            new BddSpecManager(false).Execute(args);
+
+            Configuration.ExecuteAsynchronous.Should().BeFalse();
+        }
+
+        [Theory]
         [InlineData("NoSpec")]
         [InlineData("NonExistentSpec")]
         [InlineData("SomeNamespace.%")]
